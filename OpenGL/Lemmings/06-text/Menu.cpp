@@ -3,41 +3,47 @@
 #include <cmath>
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Game.h"
 
 void Menu::render(){
-	glm::mat4 modelview;
-	simpleTexProgram.use();
-	simpleTexProgram.setUniformMatrix4f("projection", projection);
-	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::mat4(1.0f);
-	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
-	fondo->render();
-	titulo->render();
-	
-	simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
+	if (!scene) {
+		glm::mat4 modelview;
+		simpleTexProgram.use();
+		simpleTexProgram.setUniformMatrix4f("projection", projection);
+		simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+		modelview = glm::mat4(1.0f);
+		simpleTexProgram.setUniformMatrix4f("modelview", modelview);
+		fondo->render();
+		titulo->render();
 
-	
+		simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
 
-	if (changeDirection) {
-		changeDirection = false;
-		if (exit) {
 
-			color1 = glm::vec4(1, 1, 1, 1);
-			color2 = glm::vec4(0, 1, 0, 1);
-			play = true;
-			exit = false;
 
+		if (changeDirection) {
+			changeDirection = false;
+			if (play) {
+
+				color1 = glm::vec4(1, 1, 1, 1);
+				color2 = glm::vec4(0, 1, 0, 1);
+				play = false;
+				exit = true;
+
+			}
+			else {
+				color1 = glm::vec4(0, 1, 0, 1);
+				color2 = glm::vec4(1, 1, 1, 1);
+				play = true;
+				exit = false;
+
+			}
 		}
-		else {
-			color1 = glm::vec4(0, 1, 0, 1);
-			color2 = glm::vec4(1, 1, 1, 1);
-			play = false;
-			exit = true;
-
-		}
+		playText.render("PLAY", glm::vec2(CAMERA_WIDTH * 3 / 2 - 446 * 0.15, CAMERA_HEIGHT * 3 / 2), 46, color1);
+		exitText.render("EXIT", glm::vec2(CAMERA_WIDTH * 3 / 2 - 446 * 0.15, CAMERA_HEIGHT * 3 / 2 + 64), 46, color2);
 	}
-	playText.render("PLAY", glm::vec2(CAMERA_WIDTH*3/2-446*0.15, CAMERA_HEIGHT*3/2), 46, color1);
-	exitText.render("EXIT", glm::vec2(CAMERA_WIDTH * 3 / 2 - 446 * 0.15, CAMERA_HEIGHT * 3 / 2 + 64), 46, color2);
+	else {
+		sceneObj.render();
+	}
 
 	
 }
@@ -45,6 +51,7 @@ void Menu::render(){
 void Menu::init(){
 	exit = false;
 	play = false;
+	scene = false;
 	color1, color2 = glm::vec4(1, 1, 1, 1);
 	color1 = color2;
 	changeDirection = false;
@@ -136,5 +143,42 @@ void Menu::initShaders(){
 
 	
 	}
+
+void Menu::enter() {
+	if (play) {
+		if (!scene) {
+			scene = true;
+			sceneObj.init();
+		}
+		
+	}
+	if (exit) {
+		Game::instance().closeGame();
+	}
+}
+
+void Menu::mouseMoved(int mouseX, int mouseY, bool bLeftButton, bool bRightButton) {
+	if (scene) {
+		sceneObj.mouseMoved(mouseX, mouseY, bLeftButton, bRightButton);
+	}
+}
+
+void Menu::update(int deltaTime) {
+	if (scene) {
+		sceneObj.update(deltaTime);
+	}
+}
+
+void Menu::keyPressed(int key) {
+	if(key == 'y')
+		enter();
+}
+
+void Menu::specialKey(int key) {
+	if (key == GLUT_KEY_UP || key == GLUT_KEY_DOWN) {
+		selection();
+	}
+}
+
 
 
