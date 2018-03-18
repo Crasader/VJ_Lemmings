@@ -37,7 +37,9 @@
     <ClCompile Include="VariableTexture.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h">
