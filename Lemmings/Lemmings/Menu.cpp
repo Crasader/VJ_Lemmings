@@ -1,4 +1,9 @@
 #include "Menu.h"
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Game.h"
 
 
 
@@ -12,12 +17,6 @@ Menu::~Menu()
 }
 
 /*
-#include "Menu.h"
-#include <iostream>
-#include <cmath>
-#include <algorithm>
-#include <glm/gtc/matrix_transform.hpp>
-#include "Game.h"
 
 void Menu::render(){
 if (!scene) {
