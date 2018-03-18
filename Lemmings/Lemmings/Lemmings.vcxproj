@@ -14,7 +14,6 @@
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="common_defs.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Lemming.h" />
     <ClInclude Include="MaskedTexturedQuad.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Quad.h" />
@@ -29,12 +28,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Lemming.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MaskedTexturedQuad.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Quad.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -91,7 +88,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\libs\freetype-2.3.5-1-bin\lib;..\..\..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\..\..\libs\freeglut\lib;..\..\..\libs\glew-1.13.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\libs\freetype-2.3.5-1-bin\lib;..\..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\..\libs\freeglut\lib;..\..\libs\glew-1.13.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>freetype.lib;SOIL.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
