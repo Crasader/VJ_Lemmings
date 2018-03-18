@@ -4,6 +4,7 @@
 #include "ShaderProgram.h"
 #include "Sprite.h"
 #include "Text.h"
+#include "PlayScene.h"
 
 class Menu :
 	public Scene
@@ -17,7 +18,7 @@ public:
 	virtual Scene* changeState();
 	
 private:
-	bool bPlay, bExit, bInstructions, bCredits, bUp, bDown;
+	bool bPlay, bExit, bInstructions, bCredits, bUp, bDown,pooledUp,pooledDown;
 	glm::vec4 colorGreen, colorWhite;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	Texture titleTexture, bgTexture;

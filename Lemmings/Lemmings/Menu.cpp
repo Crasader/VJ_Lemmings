@@ -9,6 +9,7 @@
 
 
 
+
 Menu::Menu()
 {
 }
@@ -25,6 +26,8 @@ void Menu::init() {
 	bInstructions = false;
 	bUp = false;
 	bDown = false;
+	pooledUp = false;
+	pooledDown = false;
 	colorGreen = glm::vec4(0, 1, 0, 1);
 	colorWhite = glm::vec4(1, 1, 1, 1);
 	selected = 0;
@@ -118,35 +121,54 @@ void Menu::render() {
 			simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 			backgrownd->render();
 			title->render();
+			float textRPos = (CAMERA_HEIGHT * 3 / 2) - 32;
 
 			simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
-		
+			if (selected == 0)
+				playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorGreen);
+			else playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorWhite);
+			if (selected == 1)
+				instructionsText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64 ), 46, colorGreen);
+			else playText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64), 46, colorWhite);
+			if (selected == 2)
+				creditsText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorGreen);
+			else creditsText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorWhite);
 			if (selected == 3)
-				exitText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, 64.f), 160, colorGreen);
-			else exitText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, 64.f), 160, colorWhite);
+				exitText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorGreen);
+			else exitText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorWhite);
 			
-			if(selected == 0)
-				playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, 64.f), 160-64, colorGreen);
-			else playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, 64.f), 160-64, colorWhite);
+			
 }
 
 void Menu::update(int deltaTime){
 	if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
-		if (selected != 0) selected--;
+		if (!pooledUp) {
+			pooledUp = true;
+			if (selected != 0) selected--;
+		}
 	}
-	if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
-		if (selected != 3) selected++;
+	if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)) {
+		if (!pooledDown) {
+			pooledDown = true;
+			if (selected != 3) selected++;
+		}
 	}
 	if (Game::instance().getKey('y')) {
 		if (selected == 3) bExit = true;
-		else if (selected == 1) bPlay = true;
-		else if (selected == 2) bInstructions = true;
-		else if (selected == 3) bCredits = true;
+		else if (selected == 0) bPlay = true;
+		else if (selected == 1) bInstructions = true;
+		else if (selected == 2) bCredits = true;
 	}
+	if (pooledDown && !Game::instance().getSpecialKey(GLUT_KEY_DOWN)) pooledDown = false;
+	if (pooledUp && !Game::instance().getSpecialKey(GLUT_KEY_UP)) pooledUp = false;
 }
 
 Scene* Menu::changeState() {
-	if (bPlay) {}
+	if (bPlay) {
+		Scene* scene = new PlayScene();
+		scene->init();
+		return scene;
+	}
 	else if (bExit) Game::instance().closeGame();
 	return this;
 }
