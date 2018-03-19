@@ -19,11 +19,10 @@ public:
 	
 private:
 	bool bPlay, bExit, bInstructions, bCredits, bUp, bDown,pooledUp,pooledDown;
-	glm::vec4 colorGreen, colorWhite;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	Texture titleTexture, bgTexture;
 	Sprite* title;
-	Sprite* backgrownd;
+	Sprite* background;
 	glm::mat4 projection;
 	Text playText, exitText, instructionsText, creditsText;
 	int selected;

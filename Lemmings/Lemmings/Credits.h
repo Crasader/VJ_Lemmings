@@ -3,6 +3,7 @@
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "Sprite.h"
+#include "Text.h"
 class Credits :
 	public Scene
 {
@@ -14,11 +15,15 @@ public:
 	void update(int deltaTime);
 	virtual Scene* changeState();
 private: 
-	Texture bgTexture;
+	Texture bgTexture, titleTexture;
 	Sprite* background;
+	Sprite* title;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	glm::mat4 projection;
 	bool exitToMenu;
+	Text simpleText;
+	
+	
 	void initShaders();
 };
 

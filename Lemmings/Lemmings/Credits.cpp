@@ -16,6 +16,7 @@ Credits::Credits()
 
 Credits::~Credits()
 {
+	
 }
 
 void Credits::init(){
@@ -24,7 +25,16 @@ void Credits::init(){
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
 	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
 		&bgTexture, &simpleTexProgram);
+	titleTexture.loadFromFile("images/logo2.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	titleTexture.setMinFilter(GL_NEAREST);
+	titleTexture.setMagFilter(GL_NEAREST);
+	title = Sprite::createSprite(glm::vec2(float((446)*0.30f), float((154)*0.30f)), glm::vec2(1.f, 1.f),
+		&titleTexture, &simpleTexProgram);
+	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
+		cout << "Couldn't load font" << endl;
+	}
 }
 
 void Credits::render(){
@@ -35,6 +45,13 @@ void Credits::render(){
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
+	title->render();
+	float textRPos = (CAMERA_HEIGHT * 3 / 2) - 32;
+	simpleText.render("Replica of the Lemmings DOS game made by:", glm::vec2(446 * 0.15, textRPos ), 32, colorWhite);
+	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+64), 32, colorGreen);
+	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 96), 32, colorGreen);
+
+	simpleText.render("Press ESC to return to the main menu", glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT * 3 - 50), 32 ,colorWhite);
 
 }
 

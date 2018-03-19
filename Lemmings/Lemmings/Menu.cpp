@@ -18,6 +18,8 @@ Menu::Menu()
 
 Menu::~Menu()
 {
+	
+
 }
 
 void Menu::init() {
@@ -29,8 +31,6 @@ void Menu::init() {
 	bDown = false;
 	pooledUp = false;
 	pooledDown = false;
-	colorGreen = glm::vec4(0, 1, 0, 1);
-	colorWhite = glm::vec4(1, 1, 1, 1);
 	selected = 0;
 
 	initShaders();
@@ -45,7 +45,7 @@ void Menu::init() {
 		&titleTexture, &simpleTexProgram);
 	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
 
-	backgrownd = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
+	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
 		&bgTexture, &simpleTexProgram);
 
 	//inicializar texto
@@ -120,7 +120,7 @@ void Menu::render() {
 			simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 			modelview = glm::mat4(1.0f);
 			simpleTexProgram.setUniformMatrix4f("modelview", modelview);
-			backgrownd->render();
+			background->render();
 			title->render();
 			float textRPos = (CAMERA_HEIGHT * 3 / 2) - 32;
 
