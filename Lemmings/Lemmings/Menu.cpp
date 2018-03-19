@@ -6,6 +6,7 @@
 #include "Game.h"
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include "Credits.h"
 
 
 
@@ -170,6 +171,11 @@ Scene* Menu::changeState() {
 		return scene;
 	}
 	else if (bExit) Game::instance().closeGame();
+	else if (bCredits) {
+		Scene* credits = new Credits();
+		credits->init();
+		return credits;
+	}
 	return this;
 }
 
