@@ -46,7 +46,6 @@ void Credits::render(){
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
 	title->render();
-	float textRPos = (CAMERA_HEIGHT * 3 / 2) - 32;
 	simpleText.render("Replica of the Lemmings DOS game made by:", glm::vec2(446 * 0.15, textRPos ), 32, colorWhite);
 	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+64), 32, colorGreen);
 	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 96), 32, colorGreen);

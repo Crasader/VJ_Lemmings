@@ -30,12 +30,22 @@ void InstructionsScene::init(){
 		&titleTexture, &simpleTexProgram);
 	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
+		cout << "Couldn't load font" << endl;
+	}
 	
 }
 
 void InstructionsScene::render(){
+	glm::mat4 modelview;
+	simpleTexProgram.use();
+	simpleTexProgram.setUniformMatrix4f("projection", projection);
+	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
 	title->render();
+	simpleText.render("descibir funcionalidades del juego aqui:", glm::vec2(446 * 0.15, textRPos), 32, colorWhite);
 }
 
 void InstructionsScene::update(int deltaTime){

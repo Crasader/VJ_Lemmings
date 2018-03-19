@@ -122,7 +122,7 @@ void Menu::render() {
 			simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 			background->render();
 			title->render();
-			float textRPos = (CAMERA_HEIGHT * 3 / 2) - 32;
+			
 
 			simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
 			if (selected == 0)
@@ -178,7 +178,7 @@ Scene* Menu::changeState() {
 	}
 	else if (bInstructions) {
 		Scene* instructions = new InstructionsScene();
-		instructions->render();
+		instructions->init();
 		return instructions;
 	}
 	return this;
