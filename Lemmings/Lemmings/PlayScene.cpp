@@ -24,13 +24,14 @@ void PlayScene::init()
 	initShaders();
 
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(CAMERA_WIDTH), float(CAMERA_HEIGHT)) };
-	glm::vec2 texCoords[2] = { glm::vec2(120.f / 442.0, 0.f), glm::vec2((120.f + 320.f) / 442.0f, 160.f / 160.0f) };
+	glm::vec2 texCoords[2] = { glm::vec2(120.f / 512.0, 0.f), glm::vec2((120.f + 320.f) / 512.0f, 160.f / 256.0f) };
+
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile("images/fun3.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile("images/fun4.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile("images/fun3_mask.png", TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile("images/fun4_mask.png", TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
