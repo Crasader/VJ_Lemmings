@@ -1,11 +1,11 @@
+#pragma once
 #include "Scene.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
 #include "Sprite.h"
 #include "Text.h"
 
-class InstructionsScene:
-	public Scene
+class InstructionsScene :	public Scene
 {
 public:
 	InstructionsScene();
