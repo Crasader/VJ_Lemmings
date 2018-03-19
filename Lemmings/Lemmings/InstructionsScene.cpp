@@ -1,4 +1,4 @@
-#include "Credits.h"
+#include "InstructionsScene.h"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
@@ -6,20 +6,18 @@
 #include "Game.h"
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include "Credits.h"
 
 
 
-Credits::Credits()
-{
+InstructionsScene::InstructionsScene(){
 }
 
 
-Credits::~Credits()
-{
-	
+InstructionsScene::~InstructionsScene(){
 }
 
-void Credits::init(){
+void InstructionsScene::init(){
 	initShaders();
 	exitToMenu = false;
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -32,35 +30,19 @@ void Credits::init(){
 		&titleTexture, &simpleTexProgram);
 	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
-	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
-		cout << "Couldn't load font" << endl;
-	}
+	
 }
 
-void Credits::render(){
-	glm::mat4 modelview;
-	simpleTexProgram.use();
-	simpleTexProgram.setUniformMatrix4f("projection", projection);
-	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::mat4(1.0f);
-	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
+void InstructionsScene::render(){
 	background->render();
 	title->render();
-	float textRPos = (CAMERA_HEIGHT * 3 / 2) - 32;
-	simpleText.render("Replica of the Lemmings DOS game made by:", glm::vec2(446 * 0.15, textRPos ), 32, colorWhite);
-	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+64), 32, colorGreen);
-	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 96), 32, colorGreen);
-
-	simpleText.render("Press ESC to return to the main menu", glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT * 3 - 50), 32 ,colorWhite);
-
 }
 
-void Credits::update(int deltaTime){
+void InstructionsScene::update(int deltaTime){
 	if (Game::instance().getKey(27)) exitToMenu = true;
 }
 
-Scene * Credits::changeState()
-{
+Scene * InstructionsScene::changeState(){
 	if (exitToMenu) {
 		Scene* menu = new Menu();
 		menu->init();
@@ -69,7 +51,7 @@ Scene * Credits::changeState()
 	else return this;
 }
 
-void Credits::initShaders(){
+void InstructionsScene::initShaders(){
 	Shader vShader, fShader;
 
 	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");
@@ -98,4 +80,3 @@ void Credits::initShaders(){
 	fShader.free();
 
 }
-

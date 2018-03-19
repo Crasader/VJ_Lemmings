@@ -176,6 +176,11 @@ Scene* Menu::changeState() {
 		credits->init();
 		return credits;
 	}
+	else if (bInstructions) {
+		Scene* instructions = new InstructionsScene();
+		instructions->render();
+		return instructions;
+	}
 	return this;
 }
 

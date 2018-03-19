@@ -3,17 +3,18 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "Text.h"
-class Credits :
+
+class InstructionsScene:
 	public Scene
 {
 public:
-	Credits();
-	~Credits();
+	InstructionsScene();
+	~InstructionsScene();
 	void init();
 	void render();
 	void update(int deltaTime);
 	virtual Scene* changeState();
-private: 
+private:
 	Texture bgTexture, titleTexture;
 	Sprite* background;
 	Sprite* title;
@@ -21,8 +22,6 @@ private:
 	glm::mat4 projection;
 	bool exitToMenu;
 	Text simpleText;
-	
-	
 	void initShaders();
 };
 
