@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Credits.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Estado.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InstructionsScene.cpp" />
     <ClCompile Include="Lemming.cpp" />
@@ -32,6 +34,8 @@
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="common_defs.h" />
     <ClInclude Include="Credits.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Estado.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InstructionsScene.h" />
     <ClInclude Include="Lemming.h" />

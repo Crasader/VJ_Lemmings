@@ -4,6 +4,7 @@
 
 #include "Sprite.h"
 #include "VariableTexture.h"
+#include "Texture.h"
 
 
 // Lemming is basically a Sprite that represents one lemming. As such it has
@@ -14,7 +15,8 @@ class Lemming
 {
 
 public:
-	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram);
+	Lemming();
+	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet);
 	void update(int deltaTime);
 	void render();
 	
@@ -31,7 +33,7 @@ private:
 	};
 
 	LemmingState state;
-	Texture spritesheet;
+	//Texture spritesheet1;
 	Sprite *sprite;
 	VariableTexture *mask;
 

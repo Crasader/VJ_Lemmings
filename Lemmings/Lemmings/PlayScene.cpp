@@ -46,9 +46,9 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-
-	lemming.init(glm::vec2(cameraX+60, 30), simpleTexProgram);
-	lemming.setMapMask(&maskTexture);
+	manager = new EntityManager(2, glm::vec2(60, 30), simpleTexProgram);
+	//lemming.init(glm::vec2(cameraX+60, 30), simpleTexProgram);
+	//lemming.setMapMask(&maskTexture);
 
 
 
@@ -58,7 +58,7 @@ void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	int x = 0, y = 0;
-	lemming.update(deltaTime);
+	manager->update(deltaTime);
 	Game::instance().getMousePosition(x, y);
 
 
@@ -90,7 +90,7 @@ void PlayScene::render()
 	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
-	lemming.render();
+	manager->render();
 }
 
 

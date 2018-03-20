@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Text.cpp">
-      <Filter>Headers</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
@@ -25,14 +22,35 @@
     <ClCompile Include="TexturedQuad.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="MaskedTexturedQuad.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="VariableTexture.cpp" />
-    <ClCompile Include="Credits.cpp" />
-    <ClCompile Include="InstructionsScene.cpp" />
-    <ClCompile Include="Lemming.cpp" />
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableTexture.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskedTexturedQuad.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Lemming.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="InstructionsScene.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Credits.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Estado.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -59,16 +77,38 @@
     <ClInclude Include="Text.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="AnimKeyframes.h" />
-    <ClInclude Include="common_defs.h" />
-    <ClInclude Include="MaskedTexturedQuad.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="VariableTexture.h" />
-    <ClInclude Include="Credits.h" />
-    <ClInclude Include="InstructionsScene.h" />
-    <ClInclude Include="Lemming.h" />
+    <ClInclude Include="AnimKeyframes.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="common_defs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Credits.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InstructionsScene.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Lemming.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MaskedTexturedQuad.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableTexture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Estado.h" />
+    <ClInclude Include="EntityManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

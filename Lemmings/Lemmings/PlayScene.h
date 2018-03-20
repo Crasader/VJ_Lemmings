@@ -7,6 +7,7 @@
 #include "MaskedTexturedQuad.h"
 #include "Game.h"
 #include "Lemming.h"
+#include "EntityManager.h"
 
 class PlayScene :
 	public Scene
@@ -35,7 +36,7 @@ private:
 	bool bExit, bMouseLeft, bMouseRight, bMoveCameraRight, bMoveCameraLeft;
 	float cameraX, cameraY;
 
-	Lemming lemming;
+	EntityManager* manager;
 };
 
 #endif
