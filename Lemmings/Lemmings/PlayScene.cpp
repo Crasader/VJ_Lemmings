@@ -21,6 +21,7 @@ PlayScene::~PlayScene()
 
 void PlayScene::init()
 {
+	bExit = bMouseLeft = bMouseRight = false;
 	initShaders();
 
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(CAMERA_WIDTH), float(CAMERA_HEIGHT)) };
@@ -39,11 +40,25 @@ void PlayScene::init()
 	currentTime = 0.0f;
 
 
+	lemming.init(glm::vec2(60, 30), simpleTexProgram);
+	lemming.setMapMask(&maskTexture);
+
+
+
 }
 
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
+	
+	lemming.update(deltaTime);
+
+
+
+	if (Game::instance().getKey(27)) bExit = true;
+	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
+
+
 }
 
 void PlayScene::render()
@@ -56,11 +71,36 @@ void PlayScene::render()
 	modelview = glm::mat4(1.0f);
 	maskedTexProgram.setUniformMatrix4f("modelview", modelview);
 	map->render(maskedTexProgram, colorTexture, maskTexture);
+
+	simpleTexProgram.use();
+	simpleTexProgram.setUniformMatrix4f("projection", projection);
+	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
+	lemming.render();
 }
 
 
 Scene * PlayScene::changeState()
 {
+	if (bExit) {
+		Scene* menu = new Menu();
+		menu->init();
+		return menu;
+	}
+	else if (bMouseLeft) {
+		int x = 0, y = 0;
+		Game::instance().getMousePosition(x, y);
+		eraseMask(x, y);
+		bMouseLeft = false;
+	}
+	else if (bMouseRight) {
+		int x = 0, y = 0;
+		Game::instance().getMousePosition(x, y);
+		applyMask(x, y);
+		bMouseRight = false;
+	}
+	
 	return this;
 }
 

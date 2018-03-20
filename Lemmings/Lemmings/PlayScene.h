@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
 #include "MaskedTexturedQuad.h"
+#include "Game.h"
+#include "Lemming.h"
 
 class PlayScene :
 	public Scene
@@ -28,5 +30,8 @@ private:
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	float currentTime;
 	glm::mat4 projection;
+	bool bExit, bMouseLeft, bMouseRight;
+
+	Lemming lemming;
 };
 
