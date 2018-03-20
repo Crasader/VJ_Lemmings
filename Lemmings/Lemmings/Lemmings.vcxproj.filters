@@ -30,6 +30,9 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="VariableTexture.cpp" />
+    <ClCompile Include="Credits.cpp" />
+    <ClCompile Include="InstructionsScene.cpp" />
+    <ClCompile Include="Lemming.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -63,6 +66,9 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="VariableTexture.h" />
+    <ClInclude Include="Credits.h" />
+    <ClInclude Include="InstructionsScene.h" />
+    <ClInclude Include="Lemming.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

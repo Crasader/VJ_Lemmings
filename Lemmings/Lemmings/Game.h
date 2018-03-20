@@ -38,6 +38,9 @@ public:
 	
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
+	bool getLeftMousePressed() const;
+	bool getRightMousePressed() const;
+	void getMousePosition(int& x, int& y) const;
 	void closeGame();
 
 private:

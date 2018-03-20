@@ -90,6 +90,22 @@ bool Game::getSpecialKey(int key) const
 	return specialKeys[key];
 }
 
+bool Game::getLeftMousePressed() const
+{
+	return bLeftMouse;
+}
+
+bool Game::getRightMousePressed() const
+{
+	return bRightMouse;
+}
+
+void Game::getMousePosition(int& x, int& y) const
+{
+	x = mouseX;
+	y = mouseY;
+}
+
 
 
 
