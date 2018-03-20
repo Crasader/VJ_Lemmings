@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _PLAYSCENE_INCLUDE
+#define _PLAYSCENE_INCLUDE
+
 #include "Scene.h"
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
@@ -30,8 +32,11 @@ private:
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	float currentTime;
 	glm::mat4 projection;
-	bool bExit, bMouseLeft, bMouseRight;
+	bool bExit, bMouseLeft, bMouseRight, bMoveCameraRight, bMoveCameraLeft;
+	float cameraX, cameraY;
 
 	Lemming lemming;
 };
+
+#endif
 
