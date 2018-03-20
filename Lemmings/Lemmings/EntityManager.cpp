@@ -1,10 +1,11 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorPosition, ShaderProgram &shaderProgram) {
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorPosition, ShaderProgram &shaderProgram,VariableTexture *mask) {
 	this->doorPosition = doorPosition;
 	this->shaderProgram = shaderProgram;
 	this->numLemmings = numLemmings;
+	this->mask = mask;
 	init();
 }
 
@@ -17,7 +18,7 @@ void EntityManager::update(int deltaTime){
 	sceneTime += deltaTime;
 	if (sceneTime - lastLemmingCreation > spawnTime) {
 		lemmings.push_back(Lemming());
-		lemmings[lemmings.size()-1].init(doorPosition, shaderProgram, spritesheet);
+		lemmings[lemmings.size()-1].init(doorPosition, shaderProgram, spritesheet,mask);
 	}
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].update(deltaTime);
@@ -38,7 +39,7 @@ void EntityManager::init() {
 	sceneTime = 0;
 	lastLemmingCreation = 0;
 	lemmings.push_back(Lemming());
-	lemmings[0].init(doorPosition, shaderProgram,spritesheet);
+	lemmings[0].init(doorPosition, shaderProgram,spritesheet,mask);
 	numLemmings--;
 	
 }

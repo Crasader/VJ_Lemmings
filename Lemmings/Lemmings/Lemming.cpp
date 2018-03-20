@@ -22,9 +22,9 @@ Lemming::Lemming()
 	
 }
 
-void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet)
+void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *mask)
 {
-	
+	setMapMask(mask);
 	state = FALLING_RIGHT_STATE;
 		sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.5), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(2);
@@ -117,7 +117,7 @@ int Lemming::collisionFloor(int maxFall)
 {
 	bool bContact = false;
 	int fall = 0;
-	glm::ivec2 posBase = sprite->position() + glm::vec2(120, 0); // Add the map displacement
+	glm::ivec2 posBase = sprite->position() + glm::vec2(0, 0); // Add the map displacement
 	
 	posBase += glm::ivec2(7, 16);
 	while((fall < maxFall) && !bContact)
@@ -133,7 +133,7 @@ int Lemming::collisionFloor(int maxFall)
 
 bool Lemming::collision()
 {
-	glm::ivec2 posBase = sprite->position() + glm::vec2(120, 0); // Add the map displacement
+	glm::ivec2 posBase = sprite->position() + glm::vec2(0, 0); // Add the map displacement
 	
 	posBase += glm::ivec2(7, 15);
 	if((mask->pixel(posBase.x, posBase.y) == 0) && (mask->pixel(posBase.x+1, posBase.y) == 0))

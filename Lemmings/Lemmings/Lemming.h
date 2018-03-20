@@ -16,7 +16,7 @@ class Lemming
 
 public:
 	Lemming();
-	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet);
+	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet,VariableTexture *mask);
 	void update(int deltaTime);
 	void render();
 	

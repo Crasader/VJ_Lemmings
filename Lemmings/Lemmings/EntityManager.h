@@ -4,12 +4,13 @@
 #include <stdio.h>
 #include "ShaderProgram.h"
 #include "Sprite.h"
+#include "VariableTexture.h"
 
 
 class EntityManager
 {
 public:
-	EntityManager(int numLemmings, glm::vec2 &doorPositonm, ShaderProgram &shaderProgram);
+	EntityManager(int numLemmings, glm::vec2 &doorPositonm, ShaderProgram &shaderProgram,VariableTexture *mask);
 	~EntityManager();
 	void update(int deltaTime);
 	void render();
