@@ -16,7 +16,9 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(int deltaTime){
 	sceneTime += deltaTime;
-	if (sceneTime - lastLemmingCreation > spawnTime) {
+	if (sceneTime - lastLemmingCreation > spawnTime && (numLemmings > 0)) {
+		lastLemmingCreation = sceneTime;
+		numLemmings--;
 		lemmings.push_back(Lemming());
 		lemmings[lemmings.size()-1].init(doorPosition, shaderProgram, spritesheet,mask);
 	}
