@@ -1,0 +1,19 @@
+{
+  "levelNum": 2,
+  "levelName": "LevelName",
+  "mapWidth": 512,
+  "mapHeight": 256,
+  "mapPath": "images/fun2.png",
+  "mapMaskPath": "images/fun2_mask.png",
+  "cameraXDisplacement": 120,
+  "cameraYDisplacement": 0,
+  "actionBlockerNum": 0,
+  "actionBasherNum": 0,
+  "actionDiggerNum": 0,
+  "actionClimberNum": 0,
+  "actionBuilderNum": 0,
+  "actionFloaterNum": 0,
+  "lemmingsToSpawn": 10,
+  "lemmingsToSave": 1,
+  "maxTime": 5
+}
