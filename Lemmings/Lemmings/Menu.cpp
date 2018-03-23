@@ -10,7 +10,6 @@
 
 
 
-
 Menu::Menu()
 {
 }
@@ -56,62 +55,7 @@ void Menu::init() {
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
 
-void Menu::initShaders() {
-	Shader vShader, fShader;
 
-	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");
-	if (!vShader.isCompiled())
-	{
-		cout << "Vertex Shader Error" << endl;
-		cout << "" << vShader.log() << endl << endl;
-	}
-	fShader.initFromFile(FRAGMENT_SHADER, "shaders/texture.frag");
-	if (!fShader.isCompiled())
-	{
-		cout << "Fragment Shader Error" << endl;
-		cout << "" << fShader.log() << endl << endl;
-	}
-	simpleTexProgram.init();
-	simpleTexProgram.addShader(vShader);
-	simpleTexProgram.addShader(fShader);
-	simpleTexProgram.link();
-	if (!simpleTexProgram.isLinked())
-	{
-		cout << "Shader Linking Error" << endl;
-		cout << "" << simpleTexProgram.log() << endl << endl;
-	}
-	simpleTexProgram.bindFragmentOutput("outColor");
-	vShader.free();
-	fShader.free();
-
-	vShader.initFromFile(VERTEX_SHADER, "shaders/maskedTexture.vert");
-	if (!vShader.isCompiled())
-	{
-		cout << "Vertex Shader Error" << endl;
-		cout << "" << vShader.log() << endl << endl;
-	}
-	fShader.initFromFile(FRAGMENT_SHADER, "shaders/maskedTexture.frag");
-	if (!fShader.isCompiled())
-	{
-		cout << "Fragment Shader Error" << endl;
-		cout << "" << fShader.log() << endl << endl;
-	}
-	maskedTexProgram.init();
-	maskedTexProgram.addShader(vShader);
-	maskedTexProgram.addShader(fShader);
-	maskedTexProgram.link();
-	if (!maskedTexProgram.isLinked())
-	{
-		cout << "Shader Linking Error" << endl;
-		cout << "" << maskedTexProgram.log() << endl << endl;
-	}
-	maskedTexProgram.bindFragmentOutput("outColor");
-	vShader.free();
-	fShader.free();
-
-
-
-}
 
 void Menu::render() {
 			glm::mat4 modelview;
@@ -182,6 +126,65 @@ Scene* Menu::changeState() {
 		return instructions;
 	}
 	return this;
+}
+
+
+
+void Menu::initShaders() {
+	Shader vShader, fShader;
+
+	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");
+	if (!vShader.isCompiled())
+	{
+		cout << "Vertex Shader Error" << endl;
+		cout << "" << vShader.log() << endl << endl;
+	}
+	fShader.initFromFile(FRAGMENT_SHADER, "shaders/texture.frag");
+	if (!fShader.isCompiled())
+	{
+		cout << "Fragment Shader Error" << endl;
+		cout << "" << fShader.log() << endl << endl;
+	}
+	simpleTexProgram.init();
+	simpleTexProgram.addShader(vShader);
+	simpleTexProgram.addShader(fShader);
+	simpleTexProgram.link();
+	if (!simpleTexProgram.isLinked())
+	{
+		cout << "Shader Linking Error" << endl;
+		cout << "" << simpleTexProgram.log() << endl << endl;
+	}
+	simpleTexProgram.bindFragmentOutput("outColor");
+	vShader.free();
+	fShader.free();
+
+	vShader.initFromFile(VERTEX_SHADER, "shaders/maskedTexture.vert");
+	if (!vShader.isCompiled())
+	{
+		cout << "Vertex Shader Error" << endl;
+		cout << "" << vShader.log() << endl << endl;
+	}
+	fShader.initFromFile(FRAGMENT_SHADER, "shaders/maskedTexture.frag");
+	if (!fShader.isCompiled())
+	{
+		cout << "Fragment Shader Error" << endl;
+		cout << "" << fShader.log() << endl << endl;
+	}
+	maskedTexProgram.init();
+	maskedTexProgram.addShader(vShader);
+	maskedTexProgram.addShader(fShader);
+	maskedTexProgram.link();
+	if (!maskedTexProgram.isLinked())
+	{
+		cout << "Shader Linking Error" << endl;
+		cout << "" << maskedTexProgram.log() << endl << endl;
+	}
+	maskedTexProgram.bindFragmentOutput("outColor");
+	vShader.free();
+	fShader.free();
+
+
+
 }
 
 

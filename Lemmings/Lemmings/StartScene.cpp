@@ -1,74 +1,65 @@
+#include "StartScene.h"
 #include <iostream>
+#include <GL/glew.h>
+#include <GL/glut.h>
 #include <cmath>
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
-#include "Game.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include "Credits.h"
 
 
-
-Credits::Credits()
-{
-}
+StartScene::StartScene() {}
 
 
-Credits::~Credits()
-{
-	
-}
+StartScene::~StartScene() {}
 
-void Credits::init(){
+void StartScene::init() {
 	initShaders();
-	exitToMenu = false;
+
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
-	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
-		&bgTexture, &simpleTexProgram);
+	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f), &bgTexture, &simpleTexProgram);
 	titleTexture.loadFromFile("images/logo2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	titleTexture.setMinFilter(GL_NEAREST);
 	titleTexture.setMagFilter(GL_NEAREST);
-	title = Sprite::createSprite(glm::vec2(float((446)*0.30f), float((154)*0.30f)), glm::vec2(1.f, 1.f),
-		&titleTexture, &simpleTexProgram);
-	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
+
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
 		cout << "Couldn't load font" << endl;
 	}
 }
 
-void Credits::render(){
+void StartScene::update(int deltaTime) {
+	currentTime += deltaTime;
+}
+
+void StartScene::render() {
 	glm::mat4 modelview;
+
 	simpleTexProgram.use();
 	simpleTexProgram.setUniformMatrix4f("projection", projection);
 	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
-	title->render();
-	simpleText.render("Replica of the Lemmings DOS game made by:", glm::vec2(446 * 0.15, textRPos ), 32, colorWhite);
-	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+64), 32, colorGreen);
-	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 96), 32, colorGreen);
 
-	simpleText.render("Press ESC to return to the main menu", glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT * 3 - 50), 32 ,colorWhite);
+	// Level Num
+	simpleText.render("Level x", glm::vec2(20, 20), 32, colorRed);
+	// Level Name
+	simpleText.render("Level name", glm::vec2(60, 20), 32, colorRed);
+	// Num Lemmings Spawn
+	simpleText.render("Num Lemmings Spawn", glm::vec2(80, 40), 24, colorGreen);
+	// Num Lemmings Save
+	simpleText.render("Num Lemmings Sav", glm::vec2(80, 64), 24, colorCian);
+	// Max Time
+	simpleText.render("Max Time", glm::vec2(80, 88), 24, colorMagenta);
+	// Click to continue
+	simpleText.render("Click to continue", glm::vec2(20, 110), 32, colorYellow);
 
 }
 
-void Credits::update(int deltaTime){
-	if (Game::instance().getKey(27)) exitToMenu = true;
-}
 
-Scene * Credits::changeState()
-{
-	if (exitToMenu) {
-		Scene* menu = new Menu();
-		menu->init();
-		return menu;
-	}
-	else return this;
-}
 
-void Credits::initShaders(){
+void StartScene::initShaders() {
 	Shader vShader, fShader;
 
 	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");
@@ -97,4 +88,3 @@ void Credits::initShaders(){
 	fShader.free();
 
 }
-

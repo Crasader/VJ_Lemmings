@@ -6,6 +6,12 @@
 #define CAMERA_HEIGHT 160
 #define colorGreen glm::vec4(0,1,0,1)
 #define colorWhite glm::vec4(1,1,1,1)
+#define colorBlack glm::vec4(0,0,0,1)
+#define colorRed glm::vec4(1,0,0,1)
+#define colorBlue glm::vec4(0,0,1,1)
+#define colorYellow glm::vec4(1,1,0,1)
+#define colorMagenta glm::vec4(1,0,1,1)
+#define colorCian glm::vec4(0,1,1,1)
 #define textRPos (CAMERA_HEIGHT * 3 / 2) - 32
 #define speed 12
 #define spawnTime 5000

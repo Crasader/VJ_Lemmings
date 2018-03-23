@@ -11,9 +11,8 @@
 #define FALL_STEP 4
 
 
-enum LemmingAnims
-{
-	WALKING_LEFT, WALKING_RIGHT
+enum LemmingAnims {
+	WALKING_LEFT, WALKING_RIGHT, FALLING_LEFT, FALLING_RIGHT
 };
 
 
@@ -26,18 +25,28 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 {
 	setMapMask(mask);
 	state = FALLING_RIGHT_STATE;
-		sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.5), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(2);
+
+	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.03125), &spritesheet, &shaderProgram);
+	sprite->setNumberAnimations(4);
 	
 		sprite->setAnimationSpeed(WALKING_RIGHT, speed);
 		for(int i=0; i<8; i++)
-			sprite->addKeyframe(WALKING_RIGHT, glm::vec2(float(i) / 8, 0.0f));
+			sprite->addKeyframe(WALKING_RIGHT, glm::vec2(float(i) / 8, 0));
 		
 		sprite->setAnimationSpeed(WALKING_LEFT, speed);
 		for(int i=0; i<8; i++)
-			sprite->addKeyframe(WALKING_LEFT, glm::vec2(float(i) / 8, 0.5f));
+			sprite->addKeyframe(WALKING_LEFT, glm::vec2(float(i) / 8, 1.f / 32));
+
+		sprite->setAnimationSpeed(FALLING_RIGHT, speed);
+		for (int i = 0; i<4; i++)
+			sprite->addKeyframe(FALLING_RIGHT, glm::vec2(float(i) / 8, 2.f / 32));
+
+		sprite->setAnimationSpeed(FALLING_LEFT, speed);
+		for (int i = 4; i<8; i++)
+			sprite->addKeyframe(FALLING_LEFT, glm::vec2(float(i) / 8, 2.f / 32));
+
 		
-	sprite->changeAnimation(WALKING_RIGHT);
+	sprite->changeAnimation(FALLING_RIGHT);
 	sprite->setPosition(initialPosition);
 }
 
@@ -48,58 +57,67 @@ void Lemming::update(int deltaTime)
 	if(sprite->update(deltaTime) == 0)
 		return;
 
-	switch(state)
-	{
-	case FALLING_LEFT_STATE:
-		fall = collisionFloor(2);
-		if(fall > 0)
-			sprite->position() += glm::vec2(0, fall);
-		else
-			state = WALKING_LEFT_STATE;
-		break;
-	case FALLING_RIGHT_STATE:
-		fall = collisionFloor(2);
-		if(fall > 0)
-			sprite->position() += glm::vec2(0, fall);
-		else
-			state = WALKING_RIGHT_STATE;
-		break;
-	case WALKING_LEFT_STATE:
-		sprite->position() += glm::vec2(-1, -1);
-		if(collision())
-		{
-			sprite->position() -= glm::vec2(-1, -1);
-			sprite->changeAnimation(WALKING_RIGHT);
-			state = WALKING_RIGHT_STATE;
-		}
-		else
-		{
-			fall = collisionFloor(3);
+	switch(state)	{
+		case FALLING_LEFT_STATE:
+			fall = collisionFloor(2);
 			if(fall > 0)
-				sprite->position() += glm::vec2(0, 1);
-			if(fall > 1)
-				sprite->position() += glm::vec2(0, 1);
-			if(fall > 2)
-				state = FALLING_LEFT_STATE;
-		}
-		break;
-	case WALKING_RIGHT_STATE:
-		sprite->position() += glm::vec2(1, -1);
-		if(collision())
-		{
-			sprite->position() -= glm::vec2(1, -1);
-			sprite->changeAnimation(WALKING_LEFT);
-			state = WALKING_LEFT_STATE;
-		}
-		else
-		{
-			fall = collisionFloor(3);
-			if(fall < 3)
 				sprite->position() += glm::vec2(0, fall);
+			else {
+				sprite->changeAnimation(WALKING_LEFT);
+				state = WALKING_LEFT_STATE;
+			}
+			break;
+
+		case FALLING_RIGHT_STATE:
+			fall = collisionFloor(2);
+			if(fall > 0)
+				sprite->position() += glm::vec2(0, fall);
+			else {
+				sprite->changeAnimation(WALKING_RIGHT);
+				state = WALKING_RIGHT_STATE;
+			}
+			break;
+
+		case WALKING_LEFT_STATE:
+			sprite->position() += glm::vec2(-1, -1);
+			if(collision()) {
+				sprite->position() -= glm::vec2(-1, -1);
+				sprite->changeAnimation(WALKING_RIGHT);
+				state = WALKING_RIGHT_STATE;
+			}
+			else {
+				fall = collisionFloor(3);
+				if(fall > 0)
+					sprite->position() += glm::vec2(0, 1);
+				if(fall > 1)
+					sprite->position() += glm::vec2(0, 1);
+				if (fall > 2) {
+					sprite->changeAnimation(FALLING_LEFT);
+					state = FALLING_LEFT_STATE;
+				}
+			}
+			break;
+
+		case WALKING_RIGHT_STATE:
+			sprite->position() += glm::vec2(1, -1);
+			if(collision())
+			{
+				sprite->position() -= glm::vec2(1, -1);
+				sprite->changeAnimation(WALKING_LEFT);
+				state = WALKING_LEFT_STATE;
+			}
 			else
-				state = FALLING_RIGHT_STATE;
-		}
-		break;
+			{
+				fall = collisionFloor(3);
+				if(fall < 3)
+					sprite->position() += glm::vec2(0, fall);
+				else {
+					sprite->changeAnimation(FALLING_RIGHT);
+					state = FALLING_RIGHT_STATE;
+				}
+					
+			}
+			break;
 	}
 }
 

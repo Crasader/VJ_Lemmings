@@ -46,7 +46,7 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(2, glm::vec2(400, 30), simpleTexProgram,&maskTexture);
+	manager = new EntityManager(4, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
 	//lemming.init(glm::vec2(cameraX+60, 30), simpleTexProgram);
 	//lemming.setMapMask(&maskTexture);
 
@@ -57,17 +57,20 @@ void PlayScene::init()
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
-	int x = 0, y = 0;
+	
 	manager->update(deltaTime);
-	Game::instance().getMousePosition(x, y);
+	
 
 
 	if (Game::instance().getKey(27)) bExit = true;
+	if (Game::instance().getKey('1')) bDigger = true;
 
 
-
+	int x = 0, y = 0;
+	Game::instance().getMousePosition(x, y);
 	if (x > 900) bMoveCameraRight = true;
 	if (x < 60) bMoveCameraLeft = true;
+
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
 	if (Game::instance().getRightMousePressed()) bMouseRight = true;
 
@@ -114,8 +117,8 @@ Scene * PlayScene::changeState()
 		bMouseRight = false;
 	}
 	if (bMoveCameraRight || bMoveCameraLeft) {
-		if (bMoveCameraRight) cameraX += 1;
-		else if (bMoveCameraLeft) cameraX -= 1;
+		if (bMoveCameraRight) cameraX += 2;
+		else if (bMoveCameraLeft) cameraX -= 2;
 		projection = glm::ortho(0.f+cameraX, float(CAMERA_WIDTH - 1)+cameraX, float(CAMERA_HEIGHT - 1), 0.f);
 		bMoveCameraRight = false;
 		bMoveCameraLeft = false;
