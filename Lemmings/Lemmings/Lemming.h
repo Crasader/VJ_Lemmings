@@ -20,19 +20,23 @@ public:
 	void update(int deltaTime);
 	void render();
 	
+	
+	void changeState(int x);
 	void setMapMask(VariableTexture *mapMask);
 	
 private:
 	int collisionFloor(int maxFall);
 	bool collision();
+
+	
 	
 private:
 	enum LemmingState
 	{
-		WALKING_LEFT_STATE, WALKING_RIGHT_STATE, FALLING_LEFT_STATE, FALLING_RIGHT_STATE
+		WALKING_LEFT_STATE, WALKING_RIGHT_STATE, FALLING_LEFT_STATE, FALLING_RIGHT_STATE, DIGGER_STATE, DIGGER_TRIGGERED
 	};
 
-	LemmingState state;
+	LemmingState state, oldState, nextState;
 	//Texture spritesheet1;
 	Sprite *sprite;
 	VariableTexture *mask;

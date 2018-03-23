@@ -14,6 +14,9 @@ public:
 	~EntityManager();
 	void update(int deltaTime);
 	void render();
+	void changeLemmingState(int x);
+
+
 private:
 	
 
@@ -23,6 +26,7 @@ private:
 	ShaderProgram shaderProgram;
 	glm::vec2 doorPosition;
 	void init();
+	
 	int numLemmings;
 	float sceneTime;
 	float lastLemmingCreation;

@@ -22,6 +22,7 @@ PlayScene::~PlayScene()
 void PlayScene::init()
 {
 	bExit = bMouseLeft = bMouseRight = bMoveCameraRight = bMoveCameraLeft = false;
+	bDigger = false;
 	cameraX = 120;
 	cameraY = 0;
 	initShaders();
@@ -36,10 +37,10 @@ void PlayScene::init()
 	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile("images/fun1.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile("images/fun2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile("images/fun1_mask.png", TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile("images/fun2_mask.png", TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
@@ -103,6 +104,10 @@ Scene * PlayScene::changeState()
 		Scene* menu = new Menu();
 		menu->init();
 		return menu;
+	}
+	if (bDigger) {
+		manager->changeLemmingState(1);
+		bDigger = false;
 	}
 	if (bMouseLeft) {
 		int x = 0, y = 0;

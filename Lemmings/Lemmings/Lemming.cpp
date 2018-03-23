@@ -12,7 +12,7 @@
 
 
 enum LemmingAnims {
-	WALKING_LEFT, WALKING_RIGHT, FALLING_LEFT, FALLING_RIGHT
+	WALKING_LEFT, WALKING_RIGHT, FALLING_LEFT, FALLING_RIGHT, DIGGER
 };
 
 
@@ -27,8 +27,14 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 	state = FALLING_RIGHT_STATE;
 
 	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.03125), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(4);
-	
+	sprite->setNumberAnimations(5);
+		
+		sprite->setAnimationSpeed(DIGGER, speed);
+		for (int i = 0; i<8; i++)
+			sprite->addKeyframe(DIGGER, glm::vec2(float(i) / 8, 5.f / 32));
+		for (int i = 0; i<8; i++)
+			sprite->addKeyframe(DIGGER, glm::vec2(float(i) / 8, 6.f / 32));
+
 		sprite->setAnimationSpeed(WALKING_RIGHT, speed);
 		for(int i=0; i<8; i++)
 			sprite->addKeyframe(WALKING_RIGHT, glm::vec2(float(i) / 8, 0));
@@ -44,7 +50,6 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 		sprite->setAnimationSpeed(FALLING_LEFT, speed);
 		for (int i = 4; i<8; i++)
 			sprite->addKeyframe(FALLING_LEFT, glm::vec2(float(i) / 8, 2.f / 32));
-
 		
 	sprite->changeAnimation(FALLING_RIGHT);
 	sprite->setPosition(initialPosition);
@@ -63,8 +68,14 @@ void Lemming::update(int deltaTime)
 			if(fall > 0)
 				sprite->position() += glm::vec2(0, fall);
 			else {
-				sprite->changeAnimation(WALKING_LEFT);
-				state = WALKING_LEFT_STATE;
+				if (nextState == DIGGER_TRIGGERED) {
+					oldState = state;
+					state = DIGGER_TRIGGERED;
+				}
+				else {
+					sprite->changeAnimation(WALKING_LEFT);
+					state = WALKING_LEFT_STATE;
+				}
 			}
 			break;
 
@@ -73,8 +84,14 @@ void Lemming::update(int deltaTime)
 			if(fall > 0)
 				sprite->position() += glm::vec2(0, fall);
 			else {
-				sprite->changeAnimation(WALKING_RIGHT);
-				state = WALKING_RIGHT_STATE;
+				if (nextState == DIGGER_TRIGGERED) {
+					oldState = state;
+					state = DIGGER_TRIGGERED;
+				}
+				else {
+					sprite->changeAnimation(WALKING_RIGHT);
+					state = WALKING_RIGHT_STATE;
+				}
 			}
 			break;
 
@@ -109,7 +126,7 @@ void Lemming::update(int deltaTime)
 			else
 			{
 				fall = collisionFloor(3);
-				if(fall < 3)
+				if (fall < 3) 
 					sprite->position() += glm::vec2(0, fall);
 				else {
 					sprite->changeAnimation(FALLING_RIGHT);
@@ -117,6 +134,47 @@ void Lemming::update(int deltaTime)
 				}
 					
 			}
+			break;
+
+		case DIGGER_TRIGGERED:
+			fall = collisionFloor(2);
+			if (fall > 0) {
+				if (oldState == FALLING_LEFT_STATE) {
+					state = FALLING_LEFT_STATE;
+					sprite->position() += glm::vec2(0, 1);
+				}
+				else {
+					state = FALLING_RIGHT_STATE;
+					sprite->position() += glm::vec2(0, 1);
+				}
+				nextState = DIGGER_TRIGGERED;
+			}
+			else {
+				sprite->position() += glm::vec2(0, 1);
+				sprite->changeAnimation(DIGGER);
+				state = DIGGER_STATE;
+			}
+			break;
+
+		case DIGGER_STATE:
+			fall = collisionFloor(2);
+			if (fall > 0) {
+				if (oldState == FALLING_LEFT_STATE) {
+					sprite->changeAnimation(FALLING_LEFT);
+					state = FALLING_LEFT_STATE;
+				}
+				else {
+					sprite->changeAnimation(FALLING_RIGHT);
+					state = FALLING_RIGHT_STATE;
+				}
+				sprite->position() += glm::vec2(0, 0.125);
+			}
+			else {
+				sprite->position() += glm::vec2(0, 0.125);
+			}
+			break;
+
+		default:
 			break;
 	}
 }
@@ -158,6 +216,14 @@ bool Lemming::collision()
 		return false;
 
 	return true;
+}
+
+void Lemming::changeState(int x) {
+	if (x == 1) {
+		oldState = state;
+		state = DIGGER_TRIGGERED;
+	}
+
 }
 
 

@@ -46,3 +46,18 @@ void EntityManager::init() {
 	
 }
 
+
+void EntityManager::changeLemmingState(int x) {
+	switch (x) {
+		case 1:	// digger
+			for (int i = 0; i < (int)lemmings.size(); ++i) {
+				lemmings[i].changeState(1);
+				x = 0;
+			}
+		default:
+			break;
+
+
+	}
+}
+
