@@ -22,7 +22,7 @@ Menu::~Menu()
 }
 
 void Menu::init() {
-	AudioEngine::instance().playMusic();
+	AudioEngine::instance().playMusic("Music/lemmings.wav");
 	bExit = false;
 	bPlay = false;
 	bCredits = false;

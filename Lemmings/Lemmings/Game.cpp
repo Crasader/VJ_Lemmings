@@ -2,6 +2,9 @@
 #include <GL/glut.h>
 #include "Game.h"
 #include <iostream>
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
+
 
 
 
@@ -13,7 +16,6 @@ void Game::init() {
 	scene->init();
 	cursor.init();
 	glutSetCursor(GLUT_CURSOR_NONE);
-	AudioEngine::instance().playMusic();
 	
 }
 
@@ -35,6 +37,9 @@ void Game::keyPressed(int key) {
 	keys[key] = true;
 }
 void Game::closeGame() {
+	
+	AudioEngine::instance().exitGameEffect();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	bPlay = false;
 }
 

@@ -62,6 +62,7 @@ Scene * Credits::changeState()
 {
 	if (exitToMenu) {
 		Scene* menu = new Menu();
+		AudioEngine::instance().buttonEffect();
 		menu->init();
 		return menu;
 	}

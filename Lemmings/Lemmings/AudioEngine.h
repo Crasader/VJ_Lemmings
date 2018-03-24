@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 class AudioEngine
 {
 public:
@@ -10,10 +11,11 @@ public:
 	}
 	AudioEngine();
 	~AudioEngine();
-	void playMusic();
-
+	void playMusic(char * url);
+	void exitGameEffect();
 	void buttonEffect();
 private:
+	
 	void init();
 	
 };

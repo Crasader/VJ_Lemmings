@@ -4,6 +4,15 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "Text.h"
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <glm/gtc/matrix_transform.hpp>
+#include "Game.h"
+#include <GL/glew.h>
+#include <GL/glut.h>
+#include "Credits.h"
+#include "AudioEngine.h"
 
 class InstructionsScene :	public Scene
 {

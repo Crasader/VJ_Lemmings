@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "Text.h"
+#include "AudioEngine.h"
 class Credits :	public Scene
 {
 public:

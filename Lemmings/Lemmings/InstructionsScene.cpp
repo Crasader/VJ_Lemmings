@@ -1,12 +1,5 @@
 #include "InstructionsScene.h"
-#include <iostream>
-#include <cmath>
-#include <algorithm>
-#include <glm/gtc/matrix_transform.hpp>
-#include "Game.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include "Credits.h"
+
 
 
 
@@ -55,6 +48,7 @@ void InstructionsScene::update(int deltaTime){
 Scene * InstructionsScene::changeState(){
 	if (exitToMenu) {
 		Scene* menu = new Menu();
+		AudioEngine::instance().buttonEffect();
 		menu->init();
 		return menu;
 	}
