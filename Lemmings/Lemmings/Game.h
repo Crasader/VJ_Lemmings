@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "ShaderProgram.h"
 #include "Cursor.h"
+#include "AudioEngine.h"
 
 
 // Game is a singleton (a class with a single instance) that represents our whole application

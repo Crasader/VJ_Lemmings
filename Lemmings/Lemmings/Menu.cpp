@@ -22,6 +22,7 @@ Menu::~Menu()
 }
 
 void Menu::init() {
+	AudioEngine::instance().playMusic();
 	bExit = false;
 	bPlay = false;
 	bCredits = false;

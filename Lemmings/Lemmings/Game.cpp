@@ -4,6 +4,7 @@
 #include <iostream>
 
 
+
 void Game::init() {
 	bPlay = true;
 	bLeftMouse = bRightMouse = false;
@@ -12,6 +13,7 @@ void Game::init() {
 	scene->init();
 	cursor.init();
 	glutSetCursor(GLUT_CURSOR_NONE);
+	AudioEngine::instance().playMusic();
 	
 }
 
