@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Credits.cpp" />
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Estado.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="common_defs.h" />
     <ClInclude Include="Credits.h" />
+    <ClInclude Include="Cursor.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Estado.h" />
     <ClInclude Include="Game.h" />

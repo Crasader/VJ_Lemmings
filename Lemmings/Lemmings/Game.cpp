@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Game.h"
+#include <iostream>
 
 
 void Game::init() {
@@ -9,17 +10,22 @@ void Game::init() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	scene = new Menu();
 	scene->init();
+	cursor.init();
+	glutSetCursor(GLUT_CURSOR_NONE);
+	
 }
 
 bool Game::update(int deltaTime) {
 	scene->update(deltaTime);
 	scene = scene->changeState();
+	cursor.update(mouseX/3 -8 , mouseY/3 -8);
 	return bPlay;
 }
 
 void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	scene->render();
+	cursor.render();
 
 }
 
@@ -82,6 +88,8 @@ void Game::getMousePosition(int& x, int& y) const {
 	x = mouseX;
 	y = mouseY;
 }
+
+
 
 
 

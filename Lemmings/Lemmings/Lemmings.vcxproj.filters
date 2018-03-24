@@ -46,12 +46,19 @@
     <ClCompile Include="InstructionsScene.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Estado.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="Credits.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Estado.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="StartScene.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -105,12 +112,19 @@
     <ClInclude Include="VariableTexture.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Estado.h" />
-    <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="StartScene.h" />
     <ClInclude Include="Credits.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Estado.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StartScene.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
