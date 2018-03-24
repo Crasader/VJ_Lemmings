@@ -9,6 +9,7 @@ using namespace irrklang;
 
 ISoundEngine* engineMusic;
 ISoundEngine* engineEffects;
+ISound* music;
 
 AudioEngine::AudioEngine()
 {
@@ -23,9 +24,11 @@ AudioEngine::~AudioEngine()
 
 void AudioEngine::playMusic()
 {
+	if (!music){
+		music = engineMusic->play2D("Music/lemmings.wav", true, false, true);
+		music->setVolume(0.5);
+	}
 	
-	ISound* music = engineMusic->play2D("Music/lemmings.wav", true,false,true);
-	music->setVolume(0.5);
 	
 }	
 void AudioEngine::buttonEffect() {
