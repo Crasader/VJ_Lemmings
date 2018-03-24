@@ -2,8 +2,8 @@
 #include <Windows.h>
 #include <mmsystem.h>
 #include <iostream>
-#include <fstream>
-#include <conio.h>
+#include <irrKlang.h>
+using namespace irrklang;
 
 
 
@@ -20,7 +20,8 @@ AudioEngine::~AudioEngine()
 
 void AudioEngine::playMusic()
 {
-	
-	PlaySound(TEXT("Music/lemmings.wav"), NULL, SND_ASYNC);
+	ISoundEngine* engine = createIrrKlangDevice();
+	engine->play2D("Music/lemmings.wav", true);
+
 
 }
