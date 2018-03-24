@@ -67,6 +67,7 @@ void EntityManager::clickManager(int mouseX, int mouseY, int state)
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
 		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
 			lemmings[i].changeState(state);
+			break;
 		}
 	}
 }
