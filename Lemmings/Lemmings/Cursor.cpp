@@ -37,7 +37,7 @@ void Cursor::render(){
 
 void Cursor::update(int x, int y)
 {
-	cursor->setPosition(glm::vec2(x, y));
+	cursor->setPosition(glm::vec2(x-8, y-12));
 }
 void Cursor::initShader() {
 	Shader vShader, fShader;

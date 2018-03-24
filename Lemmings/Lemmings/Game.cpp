@@ -18,7 +18,7 @@ void Game::init() {
 bool Game::update(int deltaTime) {
 	scene->update(deltaTime);
 	scene = scene->changeState();
-	cursor.update(mouseX/3 -8 , mouseY/3 -8);
+	cursor.update(mouseX/3 , mouseY/3);
 	return bPlay;
 }
 
