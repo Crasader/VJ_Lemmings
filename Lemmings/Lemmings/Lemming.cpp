@@ -429,7 +429,7 @@ int Lemming::collisionRight(int maxWall) {
 	bool bContact = false;
 	int wall = 0;
 	glm::ivec2 posBase = sprite->position();
-	posBase += glm::ivec2(7, 15);
+	posBase += glm::ivec2(7, 13);
 
 	while ((wall < maxWall) && !bContact)
 	{
@@ -446,7 +446,7 @@ int Lemming::collisionLeft(int maxWall) {
 	bool bContact = false;
 	int wall = 0;
 	glm::ivec2 posBase = sprite->position();
-	posBase += glm::ivec2(7, 15);
+	posBase += glm::ivec2(7, 13);
 
 	while ((wall < maxWall) && !bContact)
 	{
