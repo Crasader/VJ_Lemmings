@@ -310,7 +310,7 @@ void Lemming::update(int deltaTime) {
 				state = FALLING_LEFT_STATE;
 			}
 			// no falling no wall
-			else if (collisionRight(11) > 10) {
+			else if (collisionRight(14) > 13) {
 				sprite->changeAnimation(WALKING_RIGHT);
 				state = WALKING_RIGHT_STATE;
 			}
@@ -327,6 +327,7 @@ void Lemming::update(int deltaTime) {
 				}
 				// no action triggered -> continue bashing
 				else {
+					nextState = oldState;
 					basher_time++;
 					if (basher_time % 16 > 10 && basher_time % 16 <= 15) {
 						move(1.f, 0.f);
@@ -346,7 +347,7 @@ void Lemming::update(int deltaTime) {
 				state = FALLING_LEFT_STATE;
 			}
 			// no falling no wall
-			else if (collisionLeft(11) > 10) {
+			else if (collisionLeft(14) > 13) {
 				sprite->changeAnimation(WALKING_LEFT);
 				state = WALKING_LEFT_STATE;
 			}
@@ -363,6 +364,7 @@ void Lemming::update(int deltaTime) {
 				}
 				// no action triggered -> continue bashing
 				else {
+					nextState = oldState;
 					basher_time++;
 					if (basher_time % 16 > 10 && basher_time % 16 <= 15) {
 						move(-1.f, 0.f);
