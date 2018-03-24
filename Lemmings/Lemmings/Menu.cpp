@@ -48,8 +48,7 @@ void Menu::init() {
 		&bgTexture, &simpleTexProgram);
 
 	//inicializar texto
-	if (!playText.init("fonts/Cartoon_Regular.ttf") || !exitText.init("fonts/Cartoon_Regular.ttf") 
-		|| !instructionsText.init("fonts/Cartoon_Regular.ttf") || !creditsText.init("fonts/Cartoon_Regular.ttf"))
+	if (!playText.init("fonts/Cartoon_Regular.ttf"))
 		cout << "Could not load font!!!" << endl;
 
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
@@ -73,14 +72,14 @@ void Menu::render() {
 				playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorGreen);
 			else playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorWhite);
 			if (selected == 1)
-				instructionsText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64 ), 46, colorGreen);
+				playText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64 ), 46, colorGreen);
 			else playText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64), 46, colorWhite);
 			if (selected == 2)
-				creditsText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorGreen);
-			else creditsText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorWhite);
+				playText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorGreen);
+			else playText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorWhite);
 			if (selected == 3)
-				exitText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorGreen);
-			else exitText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorWhite);
+				playText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorGreen);
+			else playText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorWhite);
 			
 			
 }

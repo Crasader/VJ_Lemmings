@@ -25,7 +25,7 @@ private:
 	Sprite* title;
 	Sprite* background;
 	glm::mat4 projection;
-	Text playText, exitText, instructionsText, creditsText;
+	Text playText;
 	int selected;
 	void initShaders();
 };
