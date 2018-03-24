@@ -22,6 +22,7 @@ Menu::~Menu()
 }
 
 void Menu::init() {
+	EffectsPlayer::instance().playSound();
 	bExit = false;
 	bPlay = false;
 	bCredits = false;

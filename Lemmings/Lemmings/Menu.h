@@ -6,6 +6,7 @@
 #include "Text.h"
 #include "PlayScene.h"
 #include "InstructionsScene.h"
+#include "EffectsPlayer.h"
 
 class Menu :
 	public Scene

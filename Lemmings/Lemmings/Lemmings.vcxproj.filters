@@ -61,6 +61,7 @@
     <ClCompile Include="Cursor.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="EffectsPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -129,6 +130,7 @@
     <ClInclude Include="Cursor.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="EffectsPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
