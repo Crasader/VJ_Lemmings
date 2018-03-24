@@ -48,21 +48,14 @@ void EntityManager::init() {
 
 
 void EntityManager::changeLemmingState(int x) {
-	switch (x) {
-		case 1:	// digger
-			for (int i = 0; i < (int)lemmings.size(); ++i) {
-				lemmings[i].changeState(1);
-				x = 0;
-			}
-		default:
-			break;
-
-
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		lemmings[i].changeState(x);
 	}
+	x = 0;
+
 }
 
-void EntityManager::clickManager(int mouseX, int mouseY, int state)
-{
+void EntityManager::clickManager(int mouseX, int mouseY, int state) {
 
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
 		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {

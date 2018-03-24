@@ -26,12 +26,21 @@ public:
 	void setMapMask(VariableTexture *mapMask);
 	
 	glm::vec2 getPosition();
+
 	
 private:
 	int collisionFloor(int maxFall);
+	int collisionRight(int maxWall);
+	int collisionLeft(int maxWall);
+
 	bool collision();
 
+
 	void move(float x, float y);
+
+	void dig();
+	void bashLeft(int q);
+	void bashRight(int q);
 
 	
 
@@ -44,9 +53,29 @@ public:
 	
 private:
 	enum LemmingState {
-		WALKING_LEFT_STATE, WALKING_RIGHT_STATE,
-		FALLING_LEFT_STATE, FALLING_RIGHT_STATE, 
-		DIGGER_STATE, DIGGER_TRIGGERED
+		WALKING_RIGHT_STATE, WALKING_LEFT_STATE,
+
+		FALLING_RIGHT_STATE, FALLING_LEFT_STATE,
+
+		BLOCKER_STATE, BLOCKER_TRIGGERED,
+
+		DIGGER_STATE, DIGGER_TRIGGERED,
+
+		BASHER_RIGHT_STATE, BASHER_LEFT_STATE,
+		BASHER_TRIGGERED,
+
+		CLIMBER_RIGHT_STATE, CLIMBER_LEFT_STATE,
+		CLIMBER_TRIGGERED,
+		CLIMBER_TOP_STATE,
+
+		BUILDER_RIGHT_STATE, BUILDER_LEFT_STATE,
+		BUILDER_TRIGGERED,
+
+		EXITING_STATE,
+
+		DYING_EXPLOSION_STATE, DYING_EXPLOSION_TRIGGERED,
+
+		DYING_FALL_STATE
 	};
 
 	enum LemmingAnims {		// 19 ANIMATIONS
@@ -59,7 +88,7 @@ private:
 		CLIMBER_TOP_RIGHT, CLIMBER_TOP_LEFT,
 		BUILDER_RIGHT, BUILDER_LEFT,
 		BUILDER_STOP_RIGHT, BUILDER_STOP_LEFT,
-		EXIT,
+		EXITING,
 		DIE_EXPLOSION,
 		DIE_FALL
 	};
@@ -68,6 +97,8 @@ private:
 	//Texture spritesheet1;
 	Sprite *sprite;
 	VariableTexture *mask;
+
+	int basher_time, dig_time;
 
 };
 

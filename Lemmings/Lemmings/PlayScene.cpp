@@ -22,7 +22,7 @@ PlayScene::~PlayScene()
 void PlayScene::init()
 {
 	bExit = bMouseLeft = bMouseRight = bMoveCameraRight = bMoveCameraLeft = false;
-	bDigger = false;
+	bDigger = bBasher = bBlocker = false;
 	cameraX = 120;
 	cameraY = 0;
 	initShaders();
@@ -37,17 +37,17 @@ void PlayScene::init()
 	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile("images/fun2.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile("images/fun1.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile("images/fun2_mask.png", TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile("images/fun1_mask.png", TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(4, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
+	manager = new EntityManager(1, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
 	//lemming.init(glm::vec2(cameraX+60, 30), simpleTexProgram);
 	//lemming.setMapMask(&maskTexture);
 
@@ -65,6 +65,8 @@ void PlayScene::update(int deltaTime)
 
 	if (Game::instance().getKey(27)) bExit = true;
 	if (Game::instance().getKey('1')) bDigger = true;
+	if (Game::instance().getKey('2')) bBlocker = true;
+	if (Game::instance().getKey('3')) bBasher = true;
 
 
 	int x = 0, y = 0;
@@ -108,6 +110,14 @@ Scene * PlayScene::changeState()
 	if (bDigger) {
 		manager->changeLemmingState(1);
 		bDigger = false;
+	}
+	else if (bBlocker) {
+		manager->changeLemmingState(2);
+		bBlocker = false;
+	}
+	else if (bBasher) {
+		manager->changeLemmingState(3);
+		bBasher = false;
 	}
 	if (bMouseLeft) {
 		int x = 0, y = 0;
