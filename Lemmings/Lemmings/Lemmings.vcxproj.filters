@@ -58,7 +58,9 @@
     <ClCompile Include="StartScene.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -124,7 +126,9 @@
     <ClInclude Include="StartScene.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Cursor.h" />
+    <ClInclude Include="Cursor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

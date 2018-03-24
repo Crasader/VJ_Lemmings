@@ -112,13 +112,15 @@ Scene * PlayScene::changeState()
 	if (bMouseLeft) {
 		int x = 0, y = 0;
 		Game::instance().getMousePosition(x, y);
-		eraseMask(x, y);
+		//eraseMask(x, y);
+		effectForLemming(x, y, 1);
 		bMouseLeft = false;
 	}
 	if (bMouseRight) {
 		int x = 0, y = 0;
 		Game::instance().getMousePosition(x, y);
-		applyMask(x, y);
+		//applyMask(x, y);
+		
 		bMouseRight = false;
 	}
 	if (bMoveCameraRight || bMoveCameraLeft) {
@@ -160,6 +162,12 @@ void PlayScene::applyMask(int mouseX, int mouseY)
 	for (int y = max(0, posY - 3); y <= min(maskTexture.height() - 1, posY + 3); y++)
 		for (int x = max(0, posX - 3); x <= min(maskTexture.width() - 1, posX + 3); x++)
 			maskTexture.setPixel(x, y, 255);
+}
+
+void PlayScene::effectForLemming(int mouseX, int mouseY, int effect)
+{
+
+	manager->clickManager(mouseX/3-8 + int(cameraX), mouseY/3-12, effect);
 }
 
 void PlayScene::initShaders()

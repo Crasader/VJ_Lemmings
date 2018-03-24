@@ -24,6 +24,7 @@ private:
 	void initShaders();
 	void eraseMask(int mouseX, int mouseY);
 	void applyMask(int mouseX, int mouseY);
+	void effectForLemming(int mouseX, int mouseY, int effect);
 
 
 private:

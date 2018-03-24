@@ -15,6 +15,9 @@ public:
 	void update(int deltaTime);
 	void render();
 	void changeLemmingState(int x);
+	void clickManager(int mouseX, int mouseY, int state);
+
+	bool checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY);
 
 
 private:

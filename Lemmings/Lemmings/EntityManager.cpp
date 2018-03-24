@@ -61,3 +61,20 @@ void EntityManager::changeLemmingState(int x) {
 	}
 }
 
+void EntityManager::clickManager(int mouseX, int mouseY, int state)
+{
+
+	for (int i = lemmings.size() - 1; i >= 0; i--) {
+		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
+			lemmings[i].changeState(state);
+		}
+	}
+}
+
+bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY) {
+
+	if (mouseX >= lemmingTopLeftPos.x -9 && mouseX <= (lemmingTopLeftPos.x + 25) && mouseY >= lemmingTopLeftPos.y-9 && mouseY <= (lemmingTopLeftPos.y + 25)) return true;
+	else return false;
+
+}
+
