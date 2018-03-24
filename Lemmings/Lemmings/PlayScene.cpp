@@ -47,7 +47,7 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(1, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
+	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
 	//lemming.init(glm::vec2(cameraX+60, 30), simpleTexProgram);
 	//lemming.setMapMask(&maskTexture);
 

@@ -310,7 +310,7 @@ void Lemming::update(int deltaTime) {
 				state = FALLING_LEFT_STATE;
 			}
 			// no falling no wall
-			else if (collisionRight(10) > 9) {
+			else if (collisionRight(11) > 10) {
 				sprite->changeAnimation(WALKING_RIGHT);
 				state = WALKING_RIGHT_STATE;
 			}
@@ -346,7 +346,7 @@ void Lemming::update(int deltaTime) {
 				state = FALLING_LEFT_STATE;
 			}
 			// no falling no wall
-			else if (collisionLeft(10) > 9) {
+			else if (collisionLeft(11) > 10) {
 				sprite->changeAnimation(WALKING_LEFT);
 				state = WALKING_LEFT_STATE;
 			}
