@@ -111,17 +111,20 @@ void Menu::update(int deltaTime){
 Scene* Menu::changeState() {
 	if (bPlay) {
 		Scene* scene = new PlayScene();
+		AudioEngine::instance().buttonEffect();
 		scene->init();
 		return scene;
 	}
 	else if (bExit) Game::instance().closeGame();
 	else if (bCredits) {
 		Scene* credits = new Credits();
+		AudioEngine::instance().buttonEffect();
 		credits->init();
 		return credits;
 	}
 	else if (bInstructions) {
 		Scene* instructions = new InstructionsScene();
+		AudioEngine::instance().buttonEffect();
 		instructions->init();
 		return instructions;
 	}

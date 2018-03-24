@@ -7,21 +7,31 @@ using namespace irrklang;
 
 
 
-
+ISoundEngine* engineMusic;
+ISoundEngine* engineEffects;
 
 AudioEngine::AudioEngine()
 {
+	init();
 }
 
 
 AudioEngine::~AudioEngine()
 {
+	
 }
 
 void AudioEngine::playMusic()
 {
-	ISoundEngine* engine = createIrrKlangDevice();
-	engine->play2D("Music/lemmings.wav", true);
-
-
+	
+	ISound* music = engineMusic->play2D("Music/lemmings.wav", true,false,true);
+	music->setVolume(0.5);
+	
+}	
+void AudioEngine::buttonEffect() {
+	engineEffects->play2D("Music/button.wav", false);
+}
+void AudioEngine::init() {
+	engineMusic = createIrrKlangDevice();
+	engineEffects = createIrrKlangDevice();
 }

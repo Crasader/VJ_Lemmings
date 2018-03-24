@@ -11,6 +11,10 @@ public:
 	AudioEngine();
 	~AudioEngine();
 	void playMusic();
+
+	void buttonEffect();
+private:
+	void init();
 	
 };
 
