@@ -14,6 +14,8 @@ public:
 	void playMusic(char * url);
 	void exitGameEffect();
 	void buttonEffect();
+	void diggEffect();
+	void stopEffect();
 private:
 	
 	void init();
