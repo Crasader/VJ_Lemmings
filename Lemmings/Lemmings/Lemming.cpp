@@ -335,6 +335,7 @@ void Lemming::update(int deltaTime) {
 					else if (basher_time % 16 > 0 && basher_time % 16 <= 6) {
 						bashRight(basher_time % 16 + 2);
 					}
+					if (basher_time % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
 			break;
@@ -372,6 +373,7 @@ void Lemming::update(int deltaTime) {
 					else if (basher_time % 16 > 0 && basher_time % 16 <= 6) {
 						bashLeft(basher_time%16 + 1);
 					}
+					if (basher_time % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
 			break;

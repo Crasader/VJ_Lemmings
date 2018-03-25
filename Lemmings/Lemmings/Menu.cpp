@@ -110,6 +110,7 @@ Scene* Menu::changeState() {
 	if (bPlay) {
 		Scene* scene = new PlayScene();
 		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().yippee();
 		AudioEngine::instance().playMusic("Music/lemmings.wav");
 		scene->init();
 		return scene;

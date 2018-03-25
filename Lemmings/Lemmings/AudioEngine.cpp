@@ -46,7 +46,7 @@ void AudioEngine::diggEffect()
 }
 
 void AudioEngine::yippee() {
-	effect = engineEffects->play2D("YIPPEE.wav", false, false, true);
+	effect = engineEffects->play2D("Music/YIPPEE.wav", false, false, true);
 	effect->setVolume(0.2);
 }
 
