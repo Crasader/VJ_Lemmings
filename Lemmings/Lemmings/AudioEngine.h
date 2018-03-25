@@ -15,6 +15,7 @@ public:
 	void exitGameEffect();
 	void buttonEffect();
 	void diggEffect();
+	void yippee();
 	void stopEffect();
 private:
 	

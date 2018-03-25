@@ -3,6 +3,7 @@
 #include <mmsystem.h>
 #include <iostream>
 #include <irrKlang.h>
+#include <vector>
 using namespace irrklang;
 
 
@@ -28,10 +29,9 @@ AudioEngine::~AudioEngine()
 
 void AudioEngine::playMusic(char *url)
 {
-	if (!music){
-		music = engineMusic->play2D(url, true, false, true);
-		music->setVolume(0.1);
-	}
+	engineMusic->stopAllSounds();
+	music = engineMusic->play2D(url, true, false, true);
+	music->setVolume(0.1);
 }	
 void AudioEngine::buttonEffect() {
 	effect = engineEffects->play2D("Music/button.wav", false, false, true);
@@ -40,7 +40,13 @@ void AudioEngine::buttonEffect() {
 
 void AudioEngine::diggEffect()
 {
-	effect = engineEffects->play2D("Music/dig.mp3", true, false, true);
+
+	effect = engineEffects->play2D("Music/dig.mp3",false,false,true);
+	effect->setVolume(0.15);
+}
+
+void AudioEngine::yippee() {
+	effect = engineEffects->play2D("YIPPEE.wav", false, false, true);
 	effect->setVolume(0.2);
 }
 

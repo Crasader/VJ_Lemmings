@@ -469,14 +469,12 @@ bool Lemming::collision() {
 	return true;
 }
 
-
-
-
 void Lemming::move(float x, float y) {
 	sprite->position() += glm::vec2(x, y);
 }
 
 void Lemming::dig() {
+	AudioEngine::instance().diggEffect();
 	glm::vec2 posBase = sprite->position() + glm::vec2(7, 16);
 	for (int x = max(0, int(posBase.x - 3)); x <= min(mask->width(), int(posBase.x + 3)); x++)
 		mask->setPixel(x, posBase.y - 2.f, 0);
@@ -551,6 +549,7 @@ void Lemming::setAnimations() {
 			sprite->addKeyframe(DIGGER, glm::vec2(float(i) / 8, 5.f / 32));
 		for (int i = 0; i<8; i++)
 			sprite->addKeyframe(DIGGER, glm::vec2(float(i) / 8, 6.f / 32));
+		
 
 	/* Bashing */
 		sprite->setAnimationSpeed(BASHER_RIGHT, speed);

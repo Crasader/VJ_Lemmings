@@ -104,6 +104,8 @@ Scene * PlayScene::changeState()
 {
 	if (bExit) {
 		Scene* menu = new Menu();
+		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().stopEffect();
 		menu->init();
 		return menu;
 	}

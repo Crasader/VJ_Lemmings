@@ -22,7 +22,7 @@ Menu::~Menu()
 }
 
 void Menu::init() {
-	AudioEngine::instance().playMusic("Music/lemmings.wav");
+	AudioEngine::instance().playMusic("Music/menu.mp3");
 	bExit = false;
 	bPlay = false;
 	bCredits = false;
@@ -66,8 +66,6 @@ void Menu::render() {
 			simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 			background->render();
 			title->render();
-			
-
 			simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
 			if (selected == 0)
 				playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorGreen);
@@ -112,6 +110,7 @@ Scene* Menu::changeState() {
 	if (bPlay) {
 		Scene* scene = new PlayScene();
 		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().playMusic("Music/lemmings.wav");
 		scene->init();
 		return scene;
 	}
