@@ -65,6 +65,7 @@ void Lemming::update(int deltaTime) {
 				}
 				else if (nextState == DIGGER_TRIGGERED) {
 					dig_time = 0;
+					move(0, 2);
 					sprite->changeAnimation(DIGGER);
 					oldState = WALKING_RIGHT_STATE;
 					state = DIGGER_STATE;
@@ -101,6 +102,7 @@ void Lemming::update(int deltaTime) {
 				}
 				else if (nextState == DIGGER_TRIGGERED) {
 					dig_time = 0;
+					move(0, 2);
 					sprite->changeAnimation(DIGGER);
 					oldState = WALKING_LEFT_STATE;
 					state = DIGGER_STATE;
@@ -162,7 +164,7 @@ void Lemming::update(int deltaTime) {
 					}
 					else if (nextState == DIGGER_TRIGGERED) {
 						dig_time = 0;
-						move(0, 1);
+						move(0, 2);
 						sprite->changeAnimation(DIGGER);
 						oldState = WALKING_RIGHT_STATE;
 						state = DIGGER_STATE;
@@ -188,8 +190,9 @@ void Lemming::update(int deltaTime) {
 		case WALKING_LEFT_STATE:
 			move(-1, -1);
 			// wall
-			if (collisionLeft(4) < 4 && nextState == BASHER_TRIGGERED) {
+			if (collisionLeft(3) < 3 && nextState == BASHER_TRIGGERED) {
 				basher_time = 0;
+				move(0, 1);
 				sprite->changeAnimation(BASHER_LEFT);
 				oldState = WALKING_LEFT_STATE;
 				state = BASHER_LEFT_STATE;
@@ -226,7 +229,7 @@ void Lemming::update(int deltaTime) {
 					}
 					else if (nextState == DIGGER_TRIGGERED) {
 						dig_time = 0;
-						move(0, 1);
+						move(0, 2);
 						sprite->changeAnimation(DIGGER);
 						oldState = WALKING_LEFT_STATE;
 						state = DIGGER_STATE;
@@ -250,11 +253,13 @@ void Lemming::update(int deltaTime) {
 
 		/* Digging */
 		case DIGGER_STATE:
-			fall = collisionFloor(2);
+			fall = collisionFloor(4);
 			// falling
-			if (fall > 1) {
+			if (fall > 3) {
 				// left
 				dig();
+				move(0, 1);
+				
 				if (oldState == WALKING_LEFT_STATE) {
 					sprite->changeAnimation(FALLING_LEFT);
 					state = FALLING_LEFT_STATE;
@@ -264,8 +269,7 @@ void Lemming::update(int deltaTime) {
 					sprite->changeAnimation(FALLING_RIGHT);
 					state = FALLING_RIGHT_STATE;
 				}
-				move(0, 1);
-				dig();
+				
 			}
 			// no falling
 			else {
@@ -274,6 +278,10 @@ void Lemming::update(int deltaTime) {
 					nextState == CLIMBER_TRIGGERED ||
 					nextState == BUILDER_TRIGGERED ||
 					nextState == BLOCKER_TRIGGERED) {
+					dig();
+					move(0, 1);
+					dig();
+					move(0, -1);
 					if (oldState == WALKING_LEFT_STATE) {
 						sprite->changeAnimation(WALKING_LEFT);
 						state = WALKING_LEFT_STATE;
@@ -348,7 +356,7 @@ void Lemming::update(int deltaTime) {
 				state = FALLING_LEFT_STATE;
 			}
 			// no falling no wall
-			else if (collisionLeft(14) > 13) {
+			else if (collisionLeft(13) > 12) {
 				sprite->changeAnimation(WALKING_LEFT);
 				state = WALKING_LEFT_STATE;
 			}
@@ -412,7 +420,7 @@ glm::vec2 Lemming::getPosition() {
 
 int Lemming::collisionFloor(int maxFall) {
 	bool bContact = false;
-	int fall = 0;
+	int fall = -1;
 	glm::ivec2 posBase = sprite->position();
 	
 	posBase += glm::ivec2(7, 16);
@@ -452,7 +460,7 @@ int Lemming::collisionLeft(int maxWall) {
 
 	while ((wall < maxWall) && !bContact)
 	{
-		if ((mask->pixel(posBase.x - wall, posBase.y) == 0) && (mask->pixel(posBase.x - wall, posBase.y - 1) == 0))
+		if ((mask->pixel(posBase.x - wall, posBase.y) == 0))
 			wall += 1;
 		else
 			bContact = true;
