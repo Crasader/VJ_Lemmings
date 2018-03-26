@@ -22,7 +22,7 @@ PlayScene::~PlayScene()
 void PlayScene::init()
 {
 	bExit = bMouseLeft = bMouseRight = bMoveCameraRight = bMoveCameraLeft = false;
-	bDigger = bBasher = bBlocker = false;
+	bDigger = bBasher = bBlocker = bClimber = false;
 	cameraX = 120;
 	cameraY = 0;
 	initShaders();
@@ -37,10 +37,10 @@ void PlayScene::init()
 	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile("images/fun1.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile("images/fun4.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile("images/fun1_mask.png", TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile("images/fun4_mask.png", TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
@@ -67,6 +67,7 @@ void PlayScene::update(int deltaTime)
 	if (Game::instance().getKey('1')) bDigger = true;
 	if (Game::instance().getKey('2')) bBlocker = true;
 	if (Game::instance().getKey('3')) bBasher = true;
+	if (Game::instance().getKey('4')) bClimber = true;
 
 
 	int x = 0, y = 0;
@@ -120,6 +121,10 @@ Scene * PlayScene::changeState()
 	else if (bBasher) {
 		manager->changeLemmingState(3);
 		bBasher = false;
+	}
+	else if (bClimber) {
+		manager->changeLemmingState(4);
+		bClimber = false;
 	}
 	if (bMouseLeft) {
 		int x = 0, y = 0;

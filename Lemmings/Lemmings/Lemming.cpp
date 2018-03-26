@@ -25,7 +25,7 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 	setMapMask(mask);
 	state = FALLING_RIGHT_STATE;
 	oldState = nextState = WALKING_RIGHT_STATE;
-	dig_time = basher_time = 0;
+	dig_time = climb_time = bash_time = 0;
 
 	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.03125), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(19);
@@ -127,16 +127,17 @@ void Lemming::update(int deltaTime) {
 			move(1, -1);
 			// wall
 			if (collisionRight(4) < 4 && nextState == BASHER_TRIGGERED) {
-				basher_time = 0;
+				bash_time = 0;
 				move(0, 1);
 				sprite->changeAnimation(BASHER_RIGHT);
 				oldState = WALKING_RIGHT_STATE;
 				state = BASHER_RIGHT_STATE;
 				nextState = WALKING_RIGHT_STATE;
 			}
-			else if (collision()) {
+			else if (collisionWalk()) {
 				// action triggered
 				if (nextState == CLIMBER_TRIGGERED) {
+					climb_time = 0;
 					sprite->changeAnimation(CLIMBER_RIGHT);
 					oldState = WALKING_RIGHT_STATE;
 					state = CLIMBER_RIGHT_STATE;
@@ -144,6 +145,7 @@ void Lemming::update(int deltaTime) {
 				}
 				// no action triggered
 				else {
+					move(-1, 1);
 					sprite->changeAnimation(WALKING_LEFT);
 					state = WALKING_LEFT_STATE;
 				}
@@ -191,16 +193,17 @@ void Lemming::update(int deltaTime) {
 			move(-1, -1);
 			// wall
 			if (collisionLeft(3) < 3 && nextState == BASHER_TRIGGERED) {
-				basher_time = 0;
+				bash_time = 0;
 				move(0, 1);
 				sprite->changeAnimation(BASHER_LEFT);
 				oldState = WALKING_LEFT_STATE;
 				state = BASHER_LEFT_STATE;
 				nextState = WALKING_LEFT_STATE;
 			}
-			else if(collision()) {
+			else if(collisionWalk()) {
 				// action triggered
 				if (nextState == CLIMBER_TRIGGERED) {
+					climb_time = 0;
 					sprite->changeAnimation(CLIMBER_LEFT);
 					oldState = WALKING_LEFT_STATE;
 					state = CLIMBER_LEFT_STATE;
@@ -336,14 +339,14 @@ void Lemming::update(int deltaTime) {
 				// no action triggered -> continue bashing
 				else {
 					nextState = oldState;
-					basher_time++;
-					if (basher_time % 16 > 10 && basher_time % 16 <= 15) {
+					bash_time++;
+					if (bash_time % 16 > 10 && bash_time % 16 <= 15) {
 						move(1.f, 0.f);
 					}
-					else if (basher_time % 16 > 0 && basher_time % 16 <= 6) {
-						bashRight(basher_time % 16 + 2);
+					else if (bash_time % 16 > 0 && bash_time % 16 <= 6) {
+						bashRight(bash_time % 16 + 2);
 					}
-					if (basher_time % 16 == 1) AudioEngine::instance().diggEffect();
+					if (bash_time % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
 			break;
@@ -374,24 +377,66 @@ void Lemming::update(int deltaTime) {
 				// no action triggered -> continue bashing
 				else {
 					nextState = oldState;
-					basher_time++;
-					if (basher_time % 16 > 10 && basher_time % 16 <= 15) {
+					bash_time++;
+					if (bash_time % 16 > 10 && bash_time % 16 <= 15) {
 						move(-1.f, 0.f);
 					}
-					else if (basher_time % 16 > 0 && basher_time % 16 <= 6) {
-						bashLeft(basher_time%16 + 1);
+					else if (bash_time % 16 > 0 && bash_time % 16 <= 6) {
+						bashLeft(bash_time%16 + 1);
 					}
-					if (basher_time % 16 == 1) AudioEngine::instance().diggEffect();
+					if (bash_time % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
 			break;
 
 		/* Climbing */
 		case CLIMBER_RIGHT_STATE:
+			climb_time++;
+			// no wall
+			if (!collisionFullWall()) { //fixme collision climber (half height)
+				climb_time = 0;
+				sprite->changeAnimation(CLIMBER_TOP_RIGHT);
+				state = CLIMBER_TOP_STATE;
+			}
+			// fixme missing head collision
+			// wall
+			else {
+				if (climb_time % 8 > 4)
+					move(0, -1);
+			}
 			break;
 
 		case CLIMBER_LEFT_STATE:
+			climb_time++;
+			// no wall
+			if (!collisionFullWall()) { //fixme collision climber (half height)
+				climb_time = 0;
+				sprite->changeAnimation(CLIMBER_TOP_LEFT);
+				state = CLIMBER_TOP_STATE;
+			}
+			// fixme missing head collision
+			// wall
+			else {
+				if (climb_time % 8 > 4)
+					move(0, -1);
+			}
 			break;
+
+		case CLIMBER_TOP_STATE:
+			climb_time++;
+			if (climb_time == 8) {
+				if (oldState == WALKING_RIGHT_STATE) {
+					sprite->changeAnimation(WALKING_RIGHT);
+					state = WALKING_RIGHT_STATE;
+				}
+				else {
+					sprite->changeAnimation(WALKING_LEFT);
+					state = WALKING_LEFT_STATE;
+				}
+				move(0, -7);
+			}
+			break;
+
 
 		/* Building */
 		case BUILDER_RIGHT_STATE:
@@ -399,6 +444,7 @@ void Lemming::update(int deltaTime) {
 
 		case BUILDER_LEFT_STATE:
 			break;
+
 
 
 		default:
@@ -424,8 +470,7 @@ int Lemming::collisionFloor(int maxFall) {
 	glm::ivec2 posBase = sprite->position();
 	
 	posBase += glm::ivec2(7, 16);
-	while((fall < maxFall) && !bContact)
-	{
+	while((fall < maxFall) && !bContact) {
 		if((mask->pixel(posBase.x, posBase.y+fall) == 0) && (mask->pixel(posBase.x+1, posBase.y+fall) == 0))
 			fall += 1;
 		else
@@ -469,12 +514,26 @@ int Lemming::collisionLeft(int maxWall) {
 	return wall;
 }
 
-bool Lemming::collision() {
+bool Lemming::collisionWalk() {
 	glm::ivec2 posBase = sprite->position(); // Add the map displacement
 	
-	posBase += glm::ivec2(7, 15);
-	if((mask->pixel(posBase.x, posBase.y) == 0) && (mask->pixel(posBase.x+1, posBase.y) == 0))
-		return false;
+	posBase += glm::ivec2(7, 14);
+	for (int y = posBase.y; y < posBase.y + 1; y++) {
+		if ((mask->pixel(posBase.x, y) == 0) && (mask->pixel(posBase.x + 1, y) == 0))
+			return false;
+	}
+
+	return true;
+}
+
+bool Lemming::collisionFullWall() {
+	glm::ivec2 posBase = sprite->position(); // Add the map displacement
+
+	posBase += glm::ivec2(7, 7);
+	for (int y = posBase.y; y < posBase.y + 7; y++) {
+		if ((mask->pixel(posBase.x, y) == 0) && (mask->pixel(posBase.x + 1, y) == 0))
+			return false;
+	}
 
 	return true;
 }

@@ -33,7 +33,8 @@ private:
 	int collisionRight(int maxWall);
 	int collisionLeft(int maxWall);
 
-	bool collision();
+	bool collisionWalk();
+	bool collisionFullWall();
 
 
 	void move(float x, float y);
@@ -98,7 +99,7 @@ private:
 	Sprite *sprite;
 	VariableTexture *mask;
 
-	int basher_time, dig_time;
+	int bash_time, dig_time, climb_time;
 
 };
 
