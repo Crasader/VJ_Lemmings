@@ -16,6 +16,7 @@ class Lemming
 
 public:
 	Lemming();
+	~Lemming();
 	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet,VariableTexture *mask);
 	void setAnimations();
 	void update(int deltaTime);
@@ -35,6 +36,8 @@ private:
 
 	bool collisionWalk();
 	bool collisionFullWall();
+	bool collisionHeadRight();
+	bool collisionHeadLeft();
 
 
 	void move(float x, float y);

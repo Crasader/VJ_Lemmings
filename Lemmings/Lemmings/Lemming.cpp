@@ -15,13 +15,14 @@
 
 
 
-Lemming::Lemming()
-{
+Lemming::Lemming() {
 	
 }
 
-void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *mask)
-{
+Lemming::~Lemming() {
+}
+
+void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *mask) {
 	setMapMask(mask);
 	state = FALLING_RIGHT_STATE;
 	oldState = nextState = WALKING_RIGHT_STATE;
@@ -47,7 +48,6 @@ void Lemming::update(int deltaTime) {
 	switch(state)	{
 
 		/* FALLING */
-
 		case FALLING_RIGHT_STATE:
 			fall = collisionFloor(2);
 			// more falling
@@ -141,7 +141,7 @@ void Lemming::update(int deltaTime) {
 					sprite->changeAnimation(CLIMBER_RIGHT);
 					oldState = WALKING_RIGHT_STATE;
 					state = CLIMBER_RIGHT_STATE;
-					nextState = WALKING_RIGHT_STATE;
+					nextState = CLIMBER_TRIGGERED;
 				}
 				// no action triggered
 				else {
@@ -207,7 +207,7 @@ void Lemming::update(int deltaTime) {
 					sprite->changeAnimation(CLIMBER_LEFT);
 					oldState = WALKING_LEFT_STATE;
 					state = CLIMBER_LEFT_STATE;
-					nextState = WALKING_LEFT_STATE;
+					nextState = CLIMBER_TRIGGERED;
 				}
 				// no action triggered
 				else {									
@@ -393,12 +393,15 @@ void Lemming::update(int deltaTime) {
 		case CLIMBER_RIGHT_STATE:
 			climb_time++;
 			// no wall
-			if (!collisionFullWall()) { //fixme collision climber (half height)
+			if (!collisionFullWall()) { 
 				climb_time = 0;
 				sprite->changeAnimation(CLIMBER_TOP_RIGHT);
 				state = CLIMBER_TOP_STATE;
 			}
-			// fixme missing head collision
+			else if (collisionHeadRight()) {
+				sprite->changeAnimation(FALLING_LEFT);
+				state = FALLING_LEFT_STATE;
+			}
 			// wall
 			else {
 				if (climb_time % 8 > 4)
@@ -409,12 +412,16 @@ void Lemming::update(int deltaTime) {
 		case CLIMBER_LEFT_STATE:
 			climb_time++;
 			// no wall
-			if (!collisionFullWall()) { //fixme collision climber (half height)
+			if (!collisionFullWall()) { 
 				climb_time = 0;
 				sprite->changeAnimation(CLIMBER_TOP_LEFT);
 				state = CLIMBER_TOP_STATE;
 			}
-			// fixme missing head collision
+			// head collision
+			else if (collisionHeadLeft()) {
+				sprite->changeAnimation(FALLING_RIGHT);
+				state = FALLING_RIGHT_STATE;
+			}
 			// wall
 			else {
 				if (climb_time % 8 > 4)
@@ -535,6 +542,22 @@ bool Lemming::collisionFullWall() {
 			return false;
 	}
 
+	return true;
+}
+
+bool Lemming::collisionHeadRight() {
+	glm::ivec2 posBase = sprite->position();
+	posBase += glm::ivec2(7, 4);
+	if ((mask->pixel(posBase.x, posBase.y) == 0))
+		return false;
+	return true;
+}
+
+bool Lemming::collisionHeadLeft() {
+	glm::ivec2 posBase = sprite->position();
+	posBase += glm::ivec2(7, 4);
+	if ((mask->pixel(posBase.x + 1, posBase.y) == 0))
+		return false;
 	return true;
 }
 
