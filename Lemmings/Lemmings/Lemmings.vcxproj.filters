@@ -64,7 +64,12 @@
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -136,7 +141,12 @@
     <ClInclude Include="AudioEngine.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h" />
+    <ClInclude Include="Button.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

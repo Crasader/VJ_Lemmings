@@ -37,8 +37,6 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 	sprite->setPosition(initialPosition);
 }
 
-
-
 void Lemming::update(int deltaTime) {
 	int fall;
 
@@ -585,7 +583,6 @@ void Lemming::bashRight(int q) {
 	for (int y = max(0, int(posBase.y-1)); y <= min(mask->width(), int(posBase.y + 8)); y++)
 		mask->setPixel(posBase.x + q, y, 0);
 }
-
 
 void Lemming::changeState(int x) {
 	switch (x) {

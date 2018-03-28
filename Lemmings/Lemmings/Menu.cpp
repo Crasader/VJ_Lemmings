@@ -131,8 +131,6 @@ Scene* Menu::changeState() {
 	return this;
 }
 
-
-
 void Menu::initShaders() {
 	Shader vShader, fShader;
 

@@ -12,7 +12,6 @@ PlayScene::PlayScene()
 	map = NULL;
 }
 
-
 PlayScene::~PlayScene()
 {
 	if (map != NULL) {
@@ -49,8 +48,8 @@ void PlayScene::init()
 	currentTime = 0.0f;
 
 	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
-	//lemming.init(glm::vec2(cameraX+60, 30), simpleTexProgram);
-	//lemming.setMapMask(&maskTexture);
+	button = new Button(glm::ivec2(32/1.5, 48/1.5), glm::vec2(0, CAMERA_HEIGHT - 48/1.5), "images/GUI/Button_Basher.png");
+
 
 
 
@@ -105,8 +104,8 @@ void PlayScene::render()
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	manager->render();
+	button->render();
 }
-
 
 Scene * PlayScene::changeState()
 {
@@ -158,7 +157,6 @@ Scene * PlayScene::changeState()
 	
 	return this;
 }
-
 
 void PlayScene::eraseMask(int mouseX, int mouseY)
 {

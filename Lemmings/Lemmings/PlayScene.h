@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "Lemming.h"
 #include "EntityManager.h"
+#include "Button.h"
 
 class PlayScene :
 	public Scene
@@ -37,8 +38,8 @@ private:
 	bool bExit, bMouseLeft, bMouseRight, bMoveCameraRight, bMoveCameraLeft;
 	bool bBasher, bBlocker, bDigger, bBuilder, bClimber;
 	float cameraX, cameraY;
-
 	EntityManager* manager;
+	Button* button;
 };
 
 #endif
