@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _BUTTON_INCLUDE
+#define _BUTTON_INCLUDE
+
 #include "Shader.h"
 #include <glm/glm.hpp>
 #include <GL/glew.h>
@@ -20,8 +22,8 @@ public:
 	void select();
 	void deselect();
 private:
-	Sprite * button;
-	Sprite * selectedButton;
+	Sprite* button;
+	Sprite* selectedButton;
 	Texture image;
 	Texture selected;
 	ShaderProgram shaderProgram;
@@ -33,4 +35,6 @@ private:
 	void initShader();
 	glm::vec2 size;
 };
+
+#endif
 

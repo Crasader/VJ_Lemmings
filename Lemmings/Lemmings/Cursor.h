@@ -1,5 +1,6 @@
 #ifndef _CURSOR_INCLUDE
 #define _CURSOR_INCLUDE
+
 #include "Texture.h"
 #include "ShaderProgram.h"
 #include "Sprite.h"

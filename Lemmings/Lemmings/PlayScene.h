@@ -9,6 +9,9 @@
 #include "Lemming.h"
 #include "EntityManager.h"
 #include "InterfazUsuario.h"
+#include "Cursor.h"
+
+class InterfazUsuario;
 
 class PlayScene :
 	public Scene
@@ -16,7 +19,7 @@ class PlayScene :
 public:
 	PlayScene();
 	~PlayScene();
-	void init() ;
+	void init();
 	void render();
 	void update(int deltaTime);
 	Scene* changeState();
@@ -30,8 +33,8 @@ private:
 
 private:
 	Texture colorTexture;
-	MaskedTexturedQuad * map;
-	InterfazUsuario * gui;
+	MaskedTexturedQuad* map;
+	InterfazUsuario* gui;
 	VariableTexture maskTexture;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	float currentTime;

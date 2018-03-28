@@ -10,6 +10,7 @@ InterfazUsuario::InterfazUsuario()
 InterfazUsuario::~InterfazUsuario()
 {
 }
+
 void InterfazUsuario::init()
 {
 	out = 0;

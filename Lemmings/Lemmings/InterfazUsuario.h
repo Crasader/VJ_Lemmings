@@ -11,6 +11,10 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "Game.h"
+#include <vector>
+#include <glm/glm.hpp>
+#include "AnimKeyframes.h"
+
 class InterfazUsuario
 {
 public:
@@ -38,7 +42,7 @@ private:
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;
-	vector<Button *> buttons;
+	vector<Button*> buttons;
 	void placeButtons();
 	void renderButtons();
 	void initShader();
