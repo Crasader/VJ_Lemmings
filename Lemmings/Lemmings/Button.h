@@ -33,7 +33,7 @@ private:
 	glm::vec2 position;
 	bool pressed;
 	void initShader();
-	glm::vec2 size;
+	glm::ivec2 size;
 };
 
 #endif

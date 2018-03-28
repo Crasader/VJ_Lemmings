@@ -80,7 +80,7 @@ void PlayScene::update(int deltaTime)
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
 	if (Game::instance().getRightMousePressed()) bMouseRight = true;
-	gui->update(cameraX + x, cameraY + y);
+	gui->update( x/3,  y/3);
 
 }
 
