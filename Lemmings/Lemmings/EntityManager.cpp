@@ -77,7 +77,7 @@ bool EntityManager::lemmingInCursor(int mouseX, int mouseY) {
 
 bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY) {
 
-	if (mouseX >= lemmingTopLeftPos.x -9 && mouseX <= (lemmingTopLeftPos.x + 25) && mouseY >= lemmingTopLeftPos.y-9 && mouseY <= (lemmingTopLeftPos.y + 25)) return true;
+	if (mouseX >= lemmingTopLeftPos.x  && mouseX <= (lemmingTopLeftPos.x + 16) && mouseY >= lemmingTopLeftPos.y && mouseY <= (lemmingTopLeftPos.y + 16)) return true;
 	else return false;
 
 }

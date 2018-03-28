@@ -74,11 +74,9 @@ void PlayScene::update(int deltaTime)
 	int x = 0, y = 0;
 	Game::instance().getMousePosition(x, y);
 	if (manager->lemmingInCursor(cameraX + x/3, cameraY + y/3)) {
-		cout << "changing cursor" << endl;
 		Cursor::instance().lemmingInside(true);
 	}
 	else {
-		cout << "changing cursor 2" << endl;
 		Cursor::instance().lemmingInside(false);
 	}
 	if (x > 900) bMoveCameraRight = true;
@@ -192,8 +190,9 @@ void PlayScene::applyMask(int mouseX, int mouseY)
 
 void PlayScene::effectForLemming(int mouseX, int mouseY, int effect)
 {
-
-	manager->clickManager(mouseX/3-8 + int(cameraX), mouseY/3-12, effect);
+	int x, y;
+	Game::instance().getMousePosition(x, y);
+	manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
 }
 
 void PlayScene::initShaders()
