@@ -5,6 +5,7 @@
 #include "ShaderProgram.h"
 #include "Sprite.h"
 #include "VariableTexture.h"
+#include "Cursor.h"
 
 
 class EntityManager
@@ -16,6 +17,8 @@ public:
 	void render();
 	void changeLemmingState(int x);
 	void clickManager(int mouseX, int mouseY, int state);
+
+	bool lemmingInCursor(int mouseX, int mouseY);
 
 	bool checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY);
 

@@ -28,6 +28,7 @@ void EntityManager::update(int deltaTime){
 
 
 }
+
 void EntityManager::render() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].render();
@@ -56,13 +57,22 @@ void EntityManager::changeLemmingState(int x) {
 }
 
 void EntityManager::clickManager(int mouseX, int mouseY, int state) {
-
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
 		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
 			lemmings[i].changeState(state);
 			break;
 		}
 	}
+
+}
+
+bool EntityManager::lemmingInCursor(int mouseX, int mouseY) {
+	for (int i = lemmings.size() - 1; i >= 0; i--) {
+		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY) {

@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Cursor.h"
 
 
 
@@ -72,6 +73,14 @@ void PlayScene::update(int deltaTime)
 
 	int x = 0, y = 0;
 	Game::instance().getMousePosition(x, y);
+	if (manager->lemmingInCursor(x, y)) {
+		cout << "changing cursor" << endl;
+		Cursor::instance().lemmingInside(true);
+	}
+	else {
+		cout << "changing cursor 2" << endl;
+		Cursor::instance().lemmingInside(true);
+	}
 	if (x > 900) bMoveCameraRight = true;
 	if (x < 60) bMoveCameraLeft = true;
 

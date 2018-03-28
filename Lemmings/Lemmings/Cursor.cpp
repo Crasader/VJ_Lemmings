@@ -17,15 +17,16 @@ Cursor::~Cursor()
 void Cursor::init()
 {
 	initShader();
-	spritesheet.loadFromFile("images/lemmings_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.loadFromFile("images/cursor.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheet.setMinFilter(GL_NEAREST);
 	spritesheet.setMagFilter(GL_NEAREST);
-	cursor = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.03125), &spritesheet, &simpleTexProgram);
+	cursor = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.5,0.5), &spritesheet, &simpleTexProgram);
+	setCursor();
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	changeCursor(false);
 }
 
 void Cursor::render(){
-
 	glm::mat4 modelview;
 	simpleTexProgram.use();
 	simpleTexProgram.setUniformMatrix4f("projection", projection);
@@ -36,9 +37,10 @@ void Cursor::render(){
 }
 
 void Cursor::update(int x, int y)
-{
+{	
 	cursor->setPosition(glm::vec2(x-8, y-12));
 }
+
 void Cursor::initShader() {
 	Shader vShader, fShader;
 
@@ -66,4 +68,28 @@ void Cursor::initShader() {
 	simpleTexProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+void Cursor::setCursor()
+{
+	cursor->setNumberAnimations(2);
+	cursor->setAnimationSpeed(0, 0);
+	cursor->addKeyframe(0, glm::vec2(0, 0));
+	cursor->setAnimationSpeed(1, 0);
+	cursor->addKeyframe(1, glm::vec2(0.5, 0));
+}
+
+void Cursor::changeCursor(bool overLemming) {
+	if (overLemming ) {
+		cursor->changeAnimation(0);
+		currentCursorType = 0;
+	}
+	else if(!overLemming){
+		cursor->changeAnimation(1);
+		currentCursorType = 1;
+	}
+}
+
+void Cursor::lemmingInside(bool overLemming) {
+	changeCursor(overLemming);
 }
