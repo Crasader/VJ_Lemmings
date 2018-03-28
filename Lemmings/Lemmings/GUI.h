@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Sprite.h"
+#include "Button.h"
 class GUI :
 	public Scene
 {
@@ -35,10 +36,9 @@ private:
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;
-	Sprite* buttonDigger;
-	Sprite* buttonBasher;
-	Sprite* buttonClimber;
-	Sprite* buttonPlusSpawn;
-	Sprite* buttonMinusSpawn;
+	vector<Button *> buttons;
+	void placeButtons();
+	void renderButtons();
+	void updateButtons();
 };
 

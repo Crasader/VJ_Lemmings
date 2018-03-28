@@ -9,17 +9,26 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Sprite.h"
 #include "ShaderProgram.h"
+#include "Text.h"
 class Button
 {
 public:
-	Button(glm::ivec2 size, glm::vec2 position, string texture);
+	Button(glm::ivec2 size, glm::vec2 position, string texture, string number);
 	~Button();
 	void render();
+	void update(string number, bool pressed);
+	void update();
 private:
 	Sprite * button;
+	Sprite * selectedButton;
 	Texture image;
+	Texture selected;
 	ShaderProgram shaderProgram;
 	glm::mat4 projection;
+	string number;
+	Text buttonText;
+	glm::vec2 position;
+	bool pressed;
 	void initShader();
 };
 

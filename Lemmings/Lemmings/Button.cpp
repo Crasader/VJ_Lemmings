@@ -1,17 +1,28 @@
 #include "Button.h"
 #include <iostream>
+#include "Game.h"
 
 
 
-Button::Button(glm::ivec2 size, glm::vec2 position, string texture)
+Button::Button(glm::ivec2 size, glm::vec2 position, string texture,string number)
 {
+	pressed = false;
+	this->number = number;
+	this->position = position;
 	image.loadFromFile(texture, TEXTURE_PIXEL_FORMAT_RGBA);
 	image.setMinFilter(GL_NEAREST);
 	image.setMagFilter(GL_NEAREST);
+	selected.loadFromFile("images/GUI/Button_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	selected.setMinFilter(GL_NEAREST);
+	selected.setMagFilter(GL_NEAREST);
 	initShader();
 	button = Sprite::createSprite(size, glm::vec2(1, 1), &image, &shaderProgram);
 	button->setPosition(position);
+	selectedButton = Sprite::createSprite(size, glm::vec2(1, 1), &selected, &shaderProgram);
+	selectedButton->setPosition(position);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	if (!buttonText.init("fonts/Cartoon_Regular.ttf"))
+		cout << "Could not load font!!!" << endl;
 	
 }
 
@@ -27,6 +38,9 @@ void Button::render() {
 	modelview = glm::mat4(1.0f);
 	shaderProgram.setUniformMatrix4f("modelview", modelview);
 	button->render();
+	if (pressed) selectedButton->render();
+	buttonText.render(number, glm::vec2(position.x*3 + 15, position.y*3 + 30), 20, colorRed);
+	
 }
 
 void Button::initShader()
@@ -58,4 +72,16 @@ void Button::initShader()
 	vShader.free();
 	fShader.free();
 
+}
+
+void Button::update(string number, bool pressed) {
+	this->number = number;
+	this->pressed = pressed;
+}
+
+void Button::update()
+{
+	if (Game::instance().getRightMousePressed()) {
+		pressed = true;
+	}
 }

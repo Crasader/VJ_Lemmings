@@ -48,11 +48,8 @@ void PlayScene::init()
 	currentTime = 0.0f;
 
 	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
-	button = new Button(glm::ivec2(32/1.5, 48/1.5), glm::vec2(0, CAMERA_HEIGHT - 48/1.5), "images/GUI/Button_Basher.png");
-
-
-
-
+	gui = new GUI();
+	gui->init();
 }
 
 void PlayScene::update(int deltaTime)
@@ -84,6 +81,7 @@ void PlayScene::update(int deltaTime)
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
 	if (Game::instance().getRightMousePressed()) bMouseRight = true;
 
+	gui->update(deltaTime);
 
 }
 
@@ -104,7 +102,7 @@ void PlayScene::render()
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	manager->render();
-	button->render();
+	gui->render();
 }
 
 Scene * PlayScene::changeState()
@@ -247,5 +245,6 @@ void PlayScene::initShaders()
 	vShader.free();
 	fShader.free();
 }
+
 
 

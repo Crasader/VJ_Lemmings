@@ -19,14 +19,17 @@ void GUI::init()
 	if(info.init("fonts/Cartoon_Regular.ttf"))
 		cout << "Could not load font!!!" << endl;
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	placeButtons();
 }
 
 void GUI::render()
 {
+	renderButtons();
 }
 
 void GUI::update(int deltaTime)
 {
+	updateButtons();
 }
 
 Scene * GUI::changeState()
@@ -82,4 +85,39 @@ void GUI::initShader()
 	simpleTexProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+void GUI::placeButtons()
+{
+	int i = 0;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Basher.png", "5"));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Blocker.png", "5"));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Climber.png", "5"));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Digger.png", "5"));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Decrease_Release_Rate.png", "50"));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Increase_Release_Rate.png", "50"));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Speed.png", ""));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Pause.png", ""));
+
+}
+
+void GUI::renderButtons()
+{
+
+	for (int i = 0; i < (int)buttons.size(); ++i) {
+		buttons[i]->render();
+	}
+}
+
+void GUI::updateButtons() {
+	for (int i = 0; i < (int)buttons.size(); ++i) {
+		buttons[i]->update();
+	}
 }
