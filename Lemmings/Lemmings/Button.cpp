@@ -76,15 +76,16 @@ void Button::initShader()
 }
 
 void Button::update(string number, bool pressed) {
-	this->number = number;
-	this->pressed = pressed;
+	//this->number = number;
+	//this->pressed = pressed;
 }
 
-bool Button::checkColision()
+bool Button::checkColision(int mouseX, int mouseY)
 {	
-	int x, y;
-	Game::instance().getMousePosition(x, y);
-	if (x >= position.x && x <= position.x + size.x && y >= position.y && y <= position.y + size.y) return true;
+	
+	if (mouseX >= position.x && mouseX <= position.x + size.x && mouseY >= position.y && mouseY <= position.y + size.y) {
+		return true;
+	}
 	else return false;
 }
 

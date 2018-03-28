@@ -47,7 +47,6 @@ void EntityManager::init() {
 	
 }
 
-
 void EntityManager::changeLemmingState(int x) {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].changeState(x);

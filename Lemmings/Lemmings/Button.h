@@ -17,7 +17,7 @@ public:
 	~Button();
 	void render();
 	void update(string number, bool pressed);
-	bool checkColision();
+	bool checkColision(int mouseX, int mouseY);
 	void select();
 	void deselect();
 private:

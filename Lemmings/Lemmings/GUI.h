@@ -1,5 +1,4 @@
 #pragma once
-#include "Scene.h"
 #include <iostream>
 #include "Shader.h"
 #include "ShaderProgram.h"
@@ -10,16 +9,14 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "Game.h"
-class GUI :
-	public Scene
+class GUI
 {
 public:
 	GUI();
 	~GUI();
 	void init();
 	void render();
-	void update(int deltaTime);
-	Scene* changeState();
+	void update(int mouseX, int mouseY);
 	void setTime(int time);
 	void setDiggers(int digger);
 	void setClimbers(int climber);
@@ -34,6 +31,8 @@ private:
 	int climber;
 	int spawnRate;
 	int buttonSelected;
+	int mouseX;
+	int mouseY;
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;

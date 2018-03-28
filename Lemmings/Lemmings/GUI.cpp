@@ -6,7 +6,6 @@ GUI::GUI()
 {
 }
 
-
 GUI::~GUI()
 {
 }
@@ -28,13 +27,13 @@ void GUI::render()
 	renderButtons();
 }
 
-void GUI::update(int deltaTime)
+void GUI::update(int mouseX,int mouseY)
 {
 	if (Game::instance().getLeftMousePressed()) {
 		for (int i = 0; i < (int)buttons.size(); ++i) {
-			if (buttons[i]->checkColision()) {
+			if (buttons[i]->checkColision(mouseX,mouseY)) {
 				if (buttonSelected != i) {
-					buttons[buttonSelected]->deselect();
+					if(buttonSelected >= 0) buttons[buttonSelected]->deselect();
 					buttonSelected = i;
 					buttons[buttonSelected]->select();
 				}
@@ -42,11 +41,6 @@ void GUI::update(int deltaTime)
 			}
 		}
 	}
-}
-
-Scene * GUI::changeState()
-{
-	return nullptr;
 }
 
 void GUI::setTime(int time)
