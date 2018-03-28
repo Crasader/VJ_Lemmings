@@ -7,6 +7,7 @@
 Button::Button(glm::ivec2 size, glm::vec2 position, string texture,string number)
 {
 	pressed = false;
+	this->size = size;
 	this->number = number;
 	this->position = position;
 	image.loadFromFile(texture, TEXTURE_PIXEL_FORMAT_RGBA);
@@ -79,9 +80,21 @@ void Button::update(string number, bool pressed) {
 	this->pressed = pressed;
 }
 
-void Button::update()
-{
-	if (Game::instance().getRightMousePressed()) {
-		pressed = true;
-	}
+bool Button::checkColision()
+{	
+	int x, y;
+	Game::instance().getMousePosition(x, y);
+	if (x >= position.x && x <= position.x + size.x && y >= position.y && y <= position.y + size.y) return true;
+	else return false;
 }
+
+void Button::select()
+{
+	pressed = true;
+}
+
+void Button::deselect()
+{
+	pressed = false;
+}
+

@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Sprite.h"
 #include "Button.h"
+#include "Game.h"
 class GUI :
 	public Scene
 {
@@ -24,7 +25,6 @@ public:
 	void setClimbers(int climber);
 	void setSpawnRate(int spawnrate);
 private:
-	void initShader();
 	
 	int time;
 	int out;
@@ -33,12 +33,14 @@ private:
 	int basher;
 	int climber;
 	int spawnRate;
+	int buttonSelected;
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;
 	vector<Button *> buttons;
 	void placeButtons();
 	void renderButtons();
-	void updateButtons();
+	void initShader();
+	
 };
 

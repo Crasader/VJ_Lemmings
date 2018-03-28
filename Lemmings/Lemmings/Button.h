@@ -17,7 +17,9 @@ public:
 	~Button();
 	void render();
 	void update(string number, bool pressed);
-	void update();
+	bool checkColision();
+	void select();
+	void deselect();
 private:
 	Sprite * button;
 	Sprite * selectedButton;
@@ -30,5 +32,6 @@ private:
 	glm::vec2 position;
 	bool pressed;
 	void initShader();
+	glm::vec2 size;
 };
 

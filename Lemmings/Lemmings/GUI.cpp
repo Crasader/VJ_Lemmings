@@ -15,6 +15,7 @@ void GUI::init()
 {
 	out = 0;
 	in = 0;
+	buttonSelected = -1;
 	initShader();
 	if(info.init("fonts/Cartoon_Regular.ttf"))
 		cout << "Could not load font!!!" << endl;
@@ -29,7 +30,18 @@ void GUI::render()
 
 void GUI::update(int deltaTime)
 {
-	updateButtons();
+	if (Game::instance().getLeftMousePressed()) {
+		for (int i = 0; i < (int)buttons.size(); ++i) {
+			if (buttons[i]->checkColision()) {
+				if (buttonSelected != i) {
+					buttons[buttonSelected]->deselect();
+					buttonSelected = i;
+					buttons[buttonSelected]->select();
+				}
+				break;
+			}
+		}
+	}
 }
 
 Scene * GUI::changeState()
@@ -113,11 +125,5 @@ void GUI::renderButtons()
 
 	for (int i = 0; i < (int)buttons.size(); ++i) {
 		buttons[i]->render();
-	}
-}
-
-void GUI::updateButtons() {
-	for (int i = 0; i < (int)buttons.size(); ++i) {
-		buttons[i]->update();
 	}
 }
