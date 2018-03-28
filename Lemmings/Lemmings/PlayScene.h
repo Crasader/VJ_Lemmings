@@ -39,7 +39,8 @@ private:
 	bool bBasher, bBlocker, bDigger, bBuilder, bClimber;
 	float cameraX, cameraY;
 	EntityManager* manager;
-	GUI * gui;
+
+	Scene * gui;
 	
 };
 
