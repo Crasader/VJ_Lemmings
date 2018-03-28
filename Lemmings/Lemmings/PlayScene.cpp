@@ -48,7 +48,7 @@ void PlayScene::init()
 	currentTime = 0.0f;
 
 	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
-	gui = new GUI();
+	gui = new InterfazUsuario();
 	gui->init();
 }
 

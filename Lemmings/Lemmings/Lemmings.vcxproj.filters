@@ -67,9 +67,7 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
+    <ClCompile Include="InterfazUsuario.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -144,9 +142,7 @@
     <ClInclude Include="Button.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
+    <ClInclude Include="InterfazUsuario.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

@@ -8,7 +8,7 @@
 #include "Game.h"
 #include "Lemming.h"
 #include "EntityManager.h"
-#include "GUI.h"
+#include "InterfazUsuario.h"
 
 class PlayScene :
 	public Scene
@@ -31,6 +31,7 @@ private:
 private:
 	Texture colorTexture;
 	MaskedTexturedQuad * map;
+	InterfazUsuario * gui;
 	VariableTexture maskTexture;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	float currentTime;
@@ -39,7 +40,7 @@ private:
 	bool bBasher, bBlocker, bDigger, bBuilder, bClimber;
 	float cameraX, cameraY;
 	EntityManager* manager;
-	GUI* gui;
+	
 	
 };
 

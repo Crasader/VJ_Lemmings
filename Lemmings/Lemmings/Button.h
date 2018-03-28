@@ -1,5 +1,4 @@
 #pragma once
-#include "Scene.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
 #include <GL/glew.h>

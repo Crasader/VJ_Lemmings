@@ -18,7 +18,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Estado.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="InterfazUsuario.cpp" />
     <ClCompile Include="InstructionsScene.cpp" />
     <ClCompile Include="Lemming.cpp" />
     <ClCompile Include="main.cpp" />
@@ -45,7 +45,7 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Estado.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GUI.h" />
+    <ClInclude Include="InterfazUsuario.h" />
     <ClInclude Include="InstructionsScene.h" />
     <ClInclude Include="Lemming.h" />
     <ClInclude Include="MaskedTexturedQuad.h" />

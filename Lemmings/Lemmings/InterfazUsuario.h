@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _INTERFAZUSUARIO_INCLUDE
+#define _INTERFAZUSUARIO_INCLUDE
+
 #include <iostream>
 #include "Shader.h"
 #include "ShaderProgram.h"
@@ -9,11 +11,11 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "Game.h"
-class GUI
+class InterfazUsuario
 {
 public:
-	GUI();
-	~GUI();
+	InterfazUsuario();
+	~InterfazUsuario();
 	void init();
 	void render();
 	void update(int mouseX, int mouseY);
@@ -22,7 +24,7 @@ public:
 	void setClimbers(int climber);
 	void setSpawnRate(int spawnrate);
 private:
-	
+
 	int time;
 	int out;
 	int in;
@@ -40,6 +42,6 @@ private:
 	void placeButtons();
 	void renderButtons();
 	void initShader();
-	
 };
+#endif
 

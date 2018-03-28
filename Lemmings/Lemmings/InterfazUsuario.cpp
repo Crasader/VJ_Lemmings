@@ -1,39 +1,39 @@
-#include "GUI.h"
+#include "InterfazUsuario.h"
 
 
 
-GUI::GUI()
+InterfazUsuario::InterfazUsuario()
 {
 }
 
-GUI::~GUI()
+
+InterfazUsuario::~InterfazUsuario()
 {
 }
-
-void GUI::init()
+void InterfazUsuario::init()
 {
 	out = 0;
 	in = 0;
 	buttonSelected = -1;
 	initShader();
-	if(info.init("fonts/Cartoon_Regular.ttf"))
+	if (info.init("fonts/Cartoon_Regular.ttf"))
 		cout << "Could not load font!!!" << endl;
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	placeButtons();
 }
 
-void GUI::render()
+void InterfazUsuario::render()
 {
 	renderButtons();
 }
 
-void GUI::update(int mouseX,int mouseY)
+void InterfazUsuario::update(int mouseX, int mouseY)
 {
 	if (Game::instance().getLeftMousePressed()) {
 		for (int i = 0; i < (int)buttons.size(); ++i) {
-			if (buttons[i]->checkColision(mouseX,mouseY)) {
+			if (buttons[i]->checkColision(mouseX, mouseY)) {
 				if (buttonSelected != i) {
-					if(buttonSelected >= 0) buttons[buttonSelected]->deselect();
+					if (buttonSelected >= 0) buttons[buttonSelected]->deselect();
 					buttonSelected = i;
 					buttons[buttonSelected]->select();
 				}
@@ -43,27 +43,27 @@ void GUI::update(int mouseX,int mouseY)
 	}
 }
 
-void GUI::setTime(int time)
+void InterfazUsuario::setTime(int time)
 {
 	this->time = time;
 }
 
-void GUI::setDiggers(int digger)
+void InterfazUsuario::setDiggers(int digger)
 {
 	this->digger = digger;
 }
 
-void GUI::setClimbers(int climber)
+void InterfazUsuario::setClimbers(int climber)
 {
 	this->climber = climber;
 }
 
-void GUI::setSpawnRate(int spawnrate)
+void InterfazUsuario::setSpawnRate(int spawnrate)
 {
 	this->spawnRate = spawnRate;
 }
 
-void GUI::initShader()
+void InterfazUsuario::initShader()
 {
 	Shader vShader, fShader;
 
@@ -93,7 +93,7 @@ void GUI::initShader()
 	fShader.free();
 }
 
-void GUI::placeButtons()
+void InterfazUsuario::placeButtons()
 {
 	int i = 0;
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Basher.png", "5"));
@@ -114,11 +114,10 @@ void GUI::placeButtons()
 
 }
 
-void GUI::renderButtons()
+void InterfazUsuario::renderButtons()
 {
 
 	for (int i = 0; i < (int)buttons.size(); ++i) {
 		buttons[i]->render();
 	}
 }
-
