@@ -7,8 +7,8 @@
 #include "Sprite.h"
 #include "Texture.h"
 #include "ShaderProgram.h"
-#include "Cursor.h"
 #include "AudioEngine.h"
+#include "Cursor.h"
 
 
 // Game is a singleton (a class with a single instance) that represents our whole application
@@ -56,7 +56,7 @@ private:
 	bool bLeftMouse, bRightMouse;     // Mouse button states
 	bool menu;
 	Scene* scene;
-	Cursor cursor;
+	static Cursor cursor;
 	
 
 };

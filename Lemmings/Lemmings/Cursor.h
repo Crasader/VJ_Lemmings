@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _CURSOR_INCLUDE
+#define _CURSOR_INCLUDE
 #include "Texture.h"
 #include "ShaderProgram.h"
 #include "Sprite.h"
@@ -6,7 +7,8 @@
 class Cursor
 {
 public:
-	Cursor();
+	Cursor() {}
+
 	static Cursor &instance()
 	{
 		static Cursor G;
@@ -29,5 +31,12 @@ private:
 	ShaderProgram simpleTexProgram;
 	Sprite* cursor;
 	int currentCursorType;
+
+	enum CursorAnimations {
+		NORMAL,
+		SELECTED
+	};
 };
+
+#endif
 

@@ -45,6 +45,8 @@ void Lemming::update(int deltaTime) {
 	if(sprite->update(deltaTime) == 0)
 		return;
 
+	// control live, exit or bombs?
+
 	switch(state)	{
 
 		/* FALLING */

@@ -5,22 +5,19 @@
 
 
 
-Cursor::Cursor()
-{
-}
 
 
 Cursor::~Cursor()
 {
 }
 
-void Cursor::init()
-{
+void Cursor::init() {
 	initShader();
 	spritesheet.loadFromFile("images/cursor.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheet.setMinFilter(GL_NEAREST);
 	spritesheet.setMagFilter(GL_NEAREST);
 	cursor = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.5,0.5), &spritesheet, &simpleTexProgram);
+	cursor->setNumberAnimations(2);
 	setCursor();
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	changeCursor(false);
@@ -70,23 +67,21 @@ void Cursor::initShader() {
 	fShader.free();
 }
 
-void Cursor::setCursor()
-{
-	cursor->setNumberAnimations(2);
-	cursor->setAnimationSpeed(0, 0);
-	cursor->addKeyframe(0, glm::vec2(0, 0));
-	cursor->setAnimationSpeed(1, 0);
-	cursor->addKeyframe(1, glm::vec2(0.5, 0));
+void Cursor::setCursor() {
+	cursor->setAnimationSpeed(SELECTED, 0);
+	cursor->addKeyframe(SELECTED, glm::vec2(0, 0));
+	cursor->setAnimationSpeed(NORMAL, 0);
+	cursor->addKeyframe(NORMAL, glm::vec2(0.5, 0));
 }
 
 void Cursor::changeCursor(bool overLemming) {
-	if (overLemming ) {
-		cursor->changeAnimation(0);
-		currentCursorType = 0;
+	if (overLemming) {
+		cursor->changeAnimation(SELECTED);
+		//currentCursorType = 0;
 	}
-	else if(!overLemming){
-		cursor->changeAnimation(1);
-		currentCursorType = 1;
+	else {
+		cursor->changeAnimation(NORMAL);
+		//currentCursorType = 1;
 	}
 }
 

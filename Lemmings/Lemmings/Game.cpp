@@ -14,7 +14,7 @@ void Game::init() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	scene = new Menu();
 	scene->init();
-	cursor.init();
+	Cursor::instance().init();
 	glutSetCursor(GLUT_CURSOR_NONE);
 	
 }
@@ -22,14 +22,14 @@ void Game::init() {
 bool Game::update(int deltaTime) {
 	scene->update(deltaTime);
 	scene = scene->changeState();
-	cursor.update(mouseX/3 , mouseY/3);
+	Cursor::instance().update(mouseX/3 , mouseY/3);
 	return bPlay;
 }
 
 void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	scene->render();
-	cursor.render();
+	Cursor::instance().render();
 
 }
 
