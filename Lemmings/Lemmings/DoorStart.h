@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DOORSTART_INCLUDE
+#define _DOORSTART_INCLUDE
 
 #include "Sprite.h"
 #include "VariableTexture.h"
@@ -32,11 +33,12 @@ private:
 		OPEN
 	};
 
-	float ySpriteSheet;
-	glm::mat4 projection;
-	ShaderProgram shaderProgram;
+	float xSpriteSheet;
+
 
 
 	void setAnimations();
 };
+
+#endif
 

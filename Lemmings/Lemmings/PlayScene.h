@@ -14,6 +14,8 @@
 #include "DoorStart.h"
 
 class InterfazUsuario;
+class DoorEnd;
+class DoorStart;
 
 class PlayScene :
 	public Scene

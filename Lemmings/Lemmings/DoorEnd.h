@@ -1,4 +1,7 @@
-#pragma once
+#ifndef _DOOREND_INCLUDE
+#define _DOOREND_INCLUDE
+
+
 #include "Sprite.h"
 #include "VariableTexture.h"
 #include "Texture.h"
@@ -24,6 +27,8 @@ public:
 private:
 	Sprite * sprite;
 
-	float ySpriteSheet;
+	float xSpriteSheet;
 };
+
+#endif
 

@@ -55,13 +55,13 @@ void PlayScene::init()
 	spritesheetStart.setMinFilter(GL_NEAREST);
 	spritesheetStart.setMagFilter(GL_NEAREST);
 	doorStart = new DoorStart(DoorStart::BROWN);
-	doorStart->init(glm::vec2(60, 10), simpleTexProgram, spritesheetStart);
+	doorStart->init(glm::vec2(180, 30), simpleTexProgram, spritesheetStart);
 
-	spritesheetStart.loadFromFile("images/end_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetStart.setMinFilter(GL_NEAREST);
-	spritesheetStart.setMagFilter(GL_NEAREST);
+	spritesheetEnd.loadFromFile("images/end_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetEnd.setMinFilter(GL_NEAREST);
+	spritesheetEnd.setMagFilter(GL_NEAREST);
 	doorEnd = new DoorEnd(DoorEnd::BLACK);
-	doorEnd->init(glm::vec2(0, 0), simpleTexProgram, spritesheetEnd);
+	doorEnd->init(glm::vec2(260, 30), simpleTexProgram, spritesheetEnd);
 }
 
 void PlayScene::update(int deltaTime)
@@ -69,6 +69,8 @@ void PlayScene::update(int deltaTime)
 	currentTime += deltaTime;
 	buttonPressed = gui->getButtonPressed();
 	manager->update(deltaTime);
+	doorStart->update(deltaTime);
+	doorEnd->update(deltaTime);
 	
 
 
@@ -92,7 +94,7 @@ void PlayScene::update(int deltaTime)
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
 	if (Game::instance().getRightMousePressed()) bMouseRight = true;
-	gui->update( x/3,  y/3);
+	gui->update(x/3,  y/3);
 
 }
 
@@ -112,9 +114,12 @@ void PlayScene::render()
 	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
-	manager->render();
+
 	doorStart->render();
 	doorEnd->render();
+
+	manager->render();
+	
 	gui->render();
 	
 }

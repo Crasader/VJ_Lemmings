@@ -3,17 +3,17 @@
 
 
 DoorEnd::DoorEnd(int color) {
-	if (BLACK) {
-		ySpriteSheet = 0.f;
+	if (color == BLACK) {
+		xSpriteSheet = 0.f;
 	}
-	else if (BROWN) {
-		ySpriteSheet = 0.25f;
+	else if (color == BROWN) {
+		xSpriteSheet = 0.25f;
 	}
-	else if (PINK) {
-		ySpriteSheet = 0.5f;
+	else if (color == PINK) {
+		xSpriteSheet = 0.5f;
 	}
 	else {
-		ySpriteSheet = 0.75f;
+		xSpriteSheet = 0.75f;
 	}
 }
 
@@ -21,19 +21,25 @@ DoorEnd::DoorEnd(int color) {
 DoorEnd::~DoorEnd() {
 }
 
-void DoorEnd::init(const glm::vec2 & initialPosition, ShaderProgram & shaderProgram, Texture & spritesheet) {
-	sprite = Sprite::createSprite(glm::ivec2(42, 32), glm::vec2(1/6, 0.25), &spritesheet, &shaderProgram);
+void DoorEnd::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet) {
+
+
+	sprite = Sprite::createSprite(glm::ivec2(42, 32), glm::vec2(0.25f, 0.125f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(1);
 
 	sprite->setAnimationSpeed(0, speed);
 	for (int i = 0; i<6; i++)
-		sprite->addKeyframe(0, glm::vec2((float(i) / 6), ySpriteSheet));
+		sprite->addKeyframe(0, glm::vec2(xSpriteSheet, float(i) / 8));
 
 	sprite->changeAnimation(0);
 	sprite->setPosition(initialPosition);
 }
 
 void DoorEnd::update(int deltaTime) {
+
+	if (sprite->update(deltaTime) == 0)
+		return;
+
 }
 
 void DoorEnd::render() {
