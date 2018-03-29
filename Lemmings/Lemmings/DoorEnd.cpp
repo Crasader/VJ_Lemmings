@@ -27,7 +27,7 @@ void DoorEnd::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 	sprite = Sprite::createSprite(glm::ivec2(42, 32), glm::vec2(0.25f, 0.125f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(1);
 
-	sprite->setAnimationSpeed(0, speed);
+	sprite->setAnimationSpeed(0, speedDoorEnd);
 	for (int i = 0; i<6; i++)
 		sprite->addKeyframe(0, glm::vec2(xSpriteSheet, float(i) / 8));
 

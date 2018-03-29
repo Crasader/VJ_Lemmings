@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 class DoorStart {
 
@@ -18,6 +19,8 @@ public:
 	void update(int deltaTime);
 	void render();
 	glm::vec2 getPosition();
+
+	
 
 	enum StartColors {
 		BROWN,
@@ -33,10 +36,11 @@ private:
 		OPEN
 	};
 
-	float xSpriteSheet;
+	
+	float xSpriteSheet, currentTime;
 
 
-
+	void open();
 	void setAnimations();
 };
 

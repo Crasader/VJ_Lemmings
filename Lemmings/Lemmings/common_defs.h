@@ -14,6 +14,8 @@
 #define colorCian glm::vec4(0,1,1,1)
 #define textRPos (CAMERA_HEIGHT * 3 / 2) - 32
 #define speed 12
+#define speedDoorStart 8
+#define speedDoorEnd 8
 #define spawnTime 5000
 
 enum PixelFormat {TEXTURE_PIXEL_FORMAT_RGB, TEXTURE_PIXEL_FORMAT_RGBA, TEXTURE_PIXEL_FORMAT_L};
