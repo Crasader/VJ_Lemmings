@@ -3,7 +3,7 @@
 
 
 #define CAMERA_WIDTH 320
-#define CAMERA_HEIGHT 160
+#define CAMERA_HEIGHT 210
 #define colorGreen glm::vec4(0,1,0,1)
 #define colorWhite glm::vec4(1,1,1,1)
 #define colorBlack glm::vec4(0,0,0,1)
