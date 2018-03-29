@@ -35,7 +35,7 @@ void AudioEngine::playMusic(char *url)
 }	
 void AudioEngine::buttonEffect() {
 	effect = engineEffects->play2D("Music/button.wav", false, false, true);
-	effect->setVolume(0.2);
+	effect->setVolume(0.5);
 }
 
 void AudioEngine::diggEffect()

@@ -14,6 +14,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "AnimKeyframes.h"
+#include "AudioEngine.h"
 
 class InterfazUsuario
 {

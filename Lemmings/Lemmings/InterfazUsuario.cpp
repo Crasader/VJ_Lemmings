@@ -44,6 +44,7 @@ void InterfazUsuario::update(int mouseX, int mouseY)
 				if (buttonSelected != i) {
 					if (buttonSelected >= 0) buttons[buttonSelected]->deselect();
 					buttonSelected = i;
+					AudioEngine::instance().buttonEffect();
 					buttons[buttonSelected]->select();
 				}
 				break;
