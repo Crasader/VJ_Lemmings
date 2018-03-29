@@ -30,8 +30,6 @@ void DoorStart::init(const glm::vec2 & initialPosition, ShaderProgram & shaderPr
 void DoorStart::update(int deltaTime) {
 	currentTime++;
 
-	cout << currentTime << endl;
-
 	if (currentTime == 12.f) open();
 	else if (currentTime == 41.f) sprite->changeAnimation(OPEN);
 
