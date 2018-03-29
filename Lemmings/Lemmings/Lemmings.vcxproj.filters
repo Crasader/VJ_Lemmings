@@ -68,6 +68,8 @@
       <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="InterfazUsuario.cpp" />
+    <ClCompile Include="DoorStart.cpp" />
+    <ClCompile Include="DoorEnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -143,6 +145,8 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="InterfazUsuario.h" />
+    <ClInclude Include="DoorStart.h" />
+    <ClInclude Include="DoorEnd.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

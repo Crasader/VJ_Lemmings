@@ -7,8 +7,7 @@
 
 
 
-PlayScene::PlayScene()
-{
+PlayScene::PlayScene() {
 	map = NULL;
 }
 
@@ -50,6 +49,19 @@ void PlayScene::init()
 	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
 	gui = new InterfazUsuario();
 	gui->init();
+
+
+	spritesheetStart.loadFromFile("images/start_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetStart.setMinFilter(GL_NEAREST);
+	spritesheetStart.setMagFilter(GL_NEAREST);
+	doorStart = new DoorStart(DoorStart::BROWN);
+	doorStart->init(glm::vec2(60, 10), simpleTexProgram, spritesheetStart);
+
+	spritesheetStart.loadFromFile("images/end_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetStart.setMinFilter(GL_NEAREST);
+	spritesheetStart.setMagFilter(GL_NEAREST);
+	doorEnd = new DoorEnd(DoorEnd::BLACK);
+	doorEnd->init(glm::vec2(0, 0), simpleTexProgram, spritesheetEnd);
 }
 
 void PlayScene::update(int deltaTime)
@@ -102,6 +114,8 @@ void PlayScene::render()
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	manager->render();
 	gui->render();
+	doorStart->render();
+	doorEnd->render();
 }
 
 Scene * PlayScene::changeState()

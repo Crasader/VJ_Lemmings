@@ -10,6 +10,8 @@
 #include "EntityManager.h"
 #include "InterfazUsuario.h"
 #include "Cursor.h"
+#include "DoorEnd.h"
+#include "DoorStart.h"
 
 class InterfazUsuario;
 
@@ -43,6 +45,11 @@ private:
 	bool bBasher, bBlocker, bDigger, bBuilder, bClimber;
 	float cameraX, cameraY;
 	EntityManager* manager;
+	DoorEnd* doorEnd;
+	DoorStart* doorStart;
+
+	Texture spritesheetStart;
+	Texture spritesheetEnd;
 	
 	
 };

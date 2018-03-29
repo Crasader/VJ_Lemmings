@@ -15,6 +15,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Credits.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="DoorEnd.cpp" />
+    <ClCompile Include="DoorStart.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Estado.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -42,6 +44,8 @@
     <ClInclude Include="common_defs.h" />
     <ClInclude Include="Credits.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="DoorEnd.h" />
+    <ClInclude Include="DoorStart.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Estado.h" />
     <ClInclude Include="Game.h" />
