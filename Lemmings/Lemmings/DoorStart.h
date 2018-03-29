@@ -3,6 +3,10 @@
 #include "Sprite.h"
 #include "VariableTexture.h"
 #include "Texture.h"
+#include <glm/glm.hpp>
+#include <GL/glew.h>
+#include <GL/glut.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 class DoorStart {
 
@@ -29,6 +33,8 @@ private:
 	};
 
 	float ySpriteSheet;
+	glm::mat4 projection;
+	ShaderProgram shaderProgram;
 
 
 	void setAnimations();

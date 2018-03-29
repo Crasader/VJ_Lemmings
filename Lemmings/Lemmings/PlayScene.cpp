@@ -113,9 +113,10 @@ void PlayScene::render()
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	manager->render();
-	gui->render();
 	doorStart->render();
 	doorEnd->render();
+	gui->render();
+	
 }
 
 Scene * PlayScene::changeState()

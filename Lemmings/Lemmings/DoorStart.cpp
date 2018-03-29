@@ -16,6 +16,7 @@ DoorStart::~DoorStart() {
 }
 
 void DoorStart::init(const glm::vec2 & initialPosition, ShaderProgram & shaderProgram, Texture & spritesheet) {
+	this->shaderProgram = shaderProgram;
 
 	sprite = Sprite::createSprite(glm::ivec2(48, 30), glm::vec2(0.1, 0.5), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(3);
@@ -23,12 +24,19 @@ void DoorStart::init(const glm::vec2 & initialPosition, ShaderProgram & shaderPr
 
 	sprite->changeAnimation(CLOSED);
 	sprite->setPosition(initialPosition);
+	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
 
 void DoorStart::update(int deltaTime) {
 }
 
 void DoorStart::render() {
+	glm::mat4 modelview;
+	shaderProgram.use();
+	shaderProgram.setUniformMatrix4f("projection", projection);
+	shaderProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	shaderProgram.setUniformMatrix4f("modelview", modelview);
 	sprite->render();
 }
 

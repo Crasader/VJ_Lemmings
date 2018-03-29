@@ -67,9 +67,15 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="InterfazUsuario.cpp" />
-    <ClCompile Include="DoorStart.cpp" />
-    <ClCompile Include="DoorEnd.cpp" />
+    <ClCompile Include="DoorEnd.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="DoorStart.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfazUsuario.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -144,9 +150,15 @@
     <ClInclude Include="Button.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="InterfazUsuario.h" />
-    <ClInclude Include="DoorStart.h" />
-    <ClInclude Include="DoorEnd.h" />
+    <ClInclude Include="DoorEnd.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorStart.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfazUsuario.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
