@@ -47,7 +47,7 @@ private:
 	EntityManager* manager;
 	DoorEnd* doorEnd;
 	DoorStart* doorStart;
-
+	int buttonPressed;
 	Texture spritesheetStart;
 	Texture spritesheetEnd;
 	

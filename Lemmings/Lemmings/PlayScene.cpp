@@ -67,7 +67,7 @@ void PlayScene::init()
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
-	
+	buttonPressed = gui->getButtonPressed();
 	manager->update(deltaTime);
 	
 
@@ -148,7 +148,12 @@ Scene * PlayScene::changeState()
 		int x = 0, y = 0;
 		Game::instance().getMousePosition(x, y);
 		//eraseMask(x, y);
-		effectForLemming(x, y, 1);
+		int effect = -1;
+		if (buttonPressed == 0) effect = 3;
+		else if (buttonPressed == 1) effect = 2;
+		else if (buttonPressed == 2) effect = 4;
+		else if (buttonPressed == 3) effect = 1;
+		if(effect != -1)effectForLemming(x, y, effect);
 		bMouseLeft = false;
 	}
 	if (bMouseRight) {

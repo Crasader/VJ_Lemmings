@@ -26,6 +26,7 @@ void EntityManager::update(int deltaTime){
 		lemmings[i].update(deltaTime);
 	}
 
+	this->buttonPressed = buttonPressed;
 
 }
 

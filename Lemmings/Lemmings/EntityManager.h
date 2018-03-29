@@ -31,10 +31,10 @@ private:
 	VariableTexture *mask;
 	ShaderProgram shaderProgram;
 	glm::vec2 doorPosition;
-	void init();
-	
 	int numLemmings;
 	float sceneTime;
 	float lastLemmingCreation;
+	int buttonPressed;
+	void init();	
 };
 

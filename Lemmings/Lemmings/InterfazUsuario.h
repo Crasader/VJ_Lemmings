@@ -27,6 +27,11 @@ public:
 	void setDiggers(int digger);
 	void setClimbers(int climber);
 	void setSpawnRate(int spawnrate);
+	void setBlockers(int bloker);
+	void setBashers(int basher);
+	void setLemmingsOut(int out);
+	void setLemmingsIn(int in);
+	int getButtonPressed();
 private:
 
 	int time;
@@ -39,6 +44,7 @@ private:
 	int buttonSelected;
 	int mouseX;
 	int mouseY;
+	int blocker;
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;

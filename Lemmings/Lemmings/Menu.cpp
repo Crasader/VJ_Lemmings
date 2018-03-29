@@ -55,8 +55,6 @@ void Menu::init() {
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
 
-
-
 void Menu::render() {
 			glm::mat4 modelview;
 			simpleTexProgram.use();
