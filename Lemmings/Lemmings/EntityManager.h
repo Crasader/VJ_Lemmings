@@ -17,15 +17,17 @@ public:
 	void render();
 	void changeLemmingState(int x);
 	void clickManager(int mouseX, int mouseY, int state);
-
 	bool lemmingInCursor(int mouseX, int mouseY);
-
 	bool checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY);
+	void doubleSpeedAnimation();
+	void resetNormalSpeed();
+	void pause();
 
 
 private:
 	
-
+	bool doubleSpeed;
+	bool paused;
 	vector<Lemming> lemmings;
 	Texture spritesheet;
 	VariableTexture *mask;

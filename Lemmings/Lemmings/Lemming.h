@@ -25,6 +25,9 @@ public:
 	
 	void changeState(int x);
 	void setMapMask(VariableTexture *mapMask);
+	void doubleSpeed();
+	void resetSpeed();
+	void pause();
 	
 	glm::vec2 getPosition();
 

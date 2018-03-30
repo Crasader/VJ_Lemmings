@@ -21,6 +21,8 @@ void EntityManager::update(int deltaTime){
 		numLemmings--;
 		lemmings.push_back(Lemming());
 		lemmings[lemmings.size()-1].init(doorPosition, shaderProgram, spritesheet,mask);
+		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
+		else if (paused) lemmings[lemmings.size() - 1].pause();
 	}
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].update(deltaTime);
@@ -45,6 +47,9 @@ void EntityManager::init() {
 	lemmings.push_back(Lemming());
 	lemmings[0].init(doorPosition, shaderProgram,spritesheet,mask);
 	numLemmings--;
+
+	doubleSpeed = false;
+	paused = false;
 	
 }
 
@@ -82,3 +87,26 @@ bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int 
 
 }
 
+void EntityManager::doubleSpeedAnimation()
+{
+	doubleSpeed = true;
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		lemmings[i].doubleSpeed();
+	}
+}
+
+void EntityManager::resetNormalSpeed()
+{
+	doubleSpeed = false;
+	paused = false;
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		lemmings[i].resetSpeed();
+	}
+}
+
+void EntityManager::pause() {
+	paused = true;
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		lemmings[i].pause();
+	}
+}

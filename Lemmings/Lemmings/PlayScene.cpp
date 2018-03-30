@@ -70,6 +70,7 @@ void PlayScene::update(int deltaTime)
 	int buttonAnt = buttonPressed;
 	buttonPressed = gui->getButtonPressed();
 	if (buttonPressed != 7 && buttonAnt == 7) decreaseSceneSpeed();
+	else if (buttonPressed != 8 && buttonAnt == 8) manager->resetNormalSpeed();
 	manager->update(deltaTime);
 	doorStart->update(deltaTime);
 	doorEnd->update(deltaTime);
@@ -162,9 +163,11 @@ Scene * PlayScene::changeState()
 		else if (buttonPressed == 3) effect = 1;
 		// implementar cuando este el floater
 		//else if (buttonPressed == 4) effect = -1;
+		else if (buttonPressed == 7) doubleSceneSpeed();
+		else if (buttonPressed == 8) manager->pause();
 		if(effect != -1)effectForLemming(x, y, effect);
 
-		if (buttonPressed == 7) doubleSceneSpeed();
+		
 		bMouseLeft = false;
 	}
 	if (bMouseRight) {
@@ -277,10 +280,10 @@ void PlayScene::initShaders()
 }
 
 void PlayScene::doubleSceneSpeed() {
-	
+	manager->doubleSpeedAnimation();
 }
 
 void PlayScene::decreaseSceneSpeed() {
-
+	manager->resetNormalSpeed();
 }
 
