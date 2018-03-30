@@ -52,6 +52,9 @@ private:
 	int buttonPressed;
 	Texture spritesheetStart;
 	Texture spritesheetEnd;
+
+	void doubleSceneSpeed();
+	void decreaseSceneSpeed();
 	
 	
 };

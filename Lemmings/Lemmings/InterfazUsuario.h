@@ -41,6 +41,7 @@ private:
 	int digger;
 	int basher;
 	int climber;
+	int floater;
 	int spawnRate;
 	int buttonSelected;
 	int mouseX;

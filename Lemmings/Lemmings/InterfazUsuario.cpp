@@ -22,6 +22,7 @@ void InterfazUsuario::init()
 	blocker = 0;
 	basher = 0;
 	digger = 0;
+	floater = 0;
 
 	initShader();
 	if (info.init("fonts/upheavtt.ttf"))
@@ -121,6 +122,8 @@ void InterfazUsuario::placeButtons()
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Climber.png", to_string(climber)));
 	++i;
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Digger.png", to_string(digger)));
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Floater.png", to_string(floater)));
 	++i;
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Decrease_Release_Rate.png", to_string(50 - spawnRate)));
 	++i;
