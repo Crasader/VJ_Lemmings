@@ -142,10 +142,10 @@ void EntityManager::pause() {
 }
 
 void EntityManager::increaseSpawnTime(){
-	spawnFrequency += 150;
+	if(spawnFrequency < 4250)spawnFrequency += 85;
 }
 
 void EntityManager::decreaseSpawnTime(){
-	spawnFrequency -= 150;
+	if (spawnFrequency > -4250) spawnFrequency -= 85;
 }
 
