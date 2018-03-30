@@ -27,7 +27,7 @@ void InterfazUsuario::init()
 	floater = 0;
 
 	initShader();
-	if (info.init("fonts/upheavtt.ttf"))
+	if (!info.init("fonts/upheavtt.ttf"))
 		cout << "Could not load font!!!" << endl;
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	placeButtons();
