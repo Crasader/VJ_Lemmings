@@ -135,6 +135,7 @@ Scene * PlayScene::changeState()
 		bClimber = false;
 	}
 	if (bMouseLeft) {
+		buttonPressed = gui->getButtonPressed();
 		int x = 0, y = 0;
 		//eraseMask(x, y);
 		int effect = -1;
