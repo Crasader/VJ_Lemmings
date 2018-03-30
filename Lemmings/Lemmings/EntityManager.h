@@ -13,7 +13,7 @@
 class EntityManager
 {
 public:
-	EntityManager(int numLemmings, glm::vec2 &doorPositonm, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
+	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm::vec2 &doorEndPositon, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();
 	void update(int deltaTime);
 	void render();
@@ -34,7 +34,8 @@ private:
 	Texture spritesheet;
 	VariableTexture *mask;
 	ShaderProgram shaderProgram;
-	glm::vec2 doorPosition;
+	glm::vec2 doorStartPosition;
+	glm::vec2 doorEndPosition;
 	int numLemmings;
 	float sceneTime;
 	float lastLemmingCreation;

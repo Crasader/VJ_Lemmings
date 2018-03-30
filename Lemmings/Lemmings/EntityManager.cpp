@@ -1,8 +1,9 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorPosition, ShaderProgram &shaderProgram,VariableTexture *mask, string dorIni, string dorEnd) {
-	this->doorPosition = doorPosition;
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm::vec2 &doorEndPosition, ShaderProgram &shaderProgram,VariableTexture *mask, string dorIni, string dorEnd) {
+	this->doorStartPosition = doorStartPosition;
+	this->doorEndPosition = doorEndPosition;
 	this->shaderProgram = shaderProgram;
 	this->numLemmings = numLemmings;
 	this->mask = mask;
@@ -22,7 +23,7 @@ void EntityManager::update(int deltaTime){
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
-		lemmings[lemmings.size()-1].init(doorPosition, shaderProgram, spritesheet,mask);
+		lemmings[lemmings.size()-1].init(doorStartPosition, shaderProgram, spritesheet,mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 		else if (paused) lemmings[lemmings.size() - 1].pause();
 	}
@@ -51,7 +52,7 @@ void EntityManager::init() {
 	sceneTime = 0;
 	lastLemmingCreation = 0;
 	lemmings.push_back(Lemming());
-	lemmings[0].init(doorPosition, shaderProgram,spritesheet,mask);
+	lemmings[0].init(doorStartPosition, shaderProgram,spritesheet,mask);
 	numLemmings--;
 
 	doubleSpeed = false;
@@ -62,7 +63,7 @@ void EntityManager::init() {
 	spritesheetStart.setMinFilter(GL_NEAREST);
 	spritesheetStart.setMagFilter(GL_NEAREST);
 	doorStart = new DoorStart(DoorStart::BROWN);
-	doorStart->init(glm::vec2(180, 30), shaderProgram, spritesheetStart);
+	doorStart->init(doorStartPosition, shaderProgram, spritesheetStart);
 
 	spritesheetEnd.loadFromFile(dorEnd, TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetEnd.setMinFilter(GL_NEAREST);

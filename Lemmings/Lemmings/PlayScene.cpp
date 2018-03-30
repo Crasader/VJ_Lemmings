@@ -46,7 +46,7 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
+	manager = new EntityManager(2, glm::vec2(180, 30),glm::vec2(180,60), simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	gui->init();
 }
