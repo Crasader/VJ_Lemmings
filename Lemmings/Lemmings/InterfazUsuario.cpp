@@ -1,4 +1,6 @@
 #include "InterfazUsuario.h"
+#include <thread>         
+#include <chrono> 
 
 
 
@@ -42,11 +44,14 @@ void InterfazUsuario::update(int mouseX, int mouseY)
 	if (Game::instance().getLeftMousePressed()) {
 		for (int i = 0; i < (int)buttons.size(); ++i) {
 			if (buttons[i]->checkColision(mouseX, mouseY)) {
-				if (buttonSelected != i) {
+				if (buttonSelected != i || buttonSelected == 5 || buttonSelected == 6) {
 					if (buttonSelected >= 0) buttons[buttonSelected]->deselect();
 					buttonSelected = i;
-					AudioEngine::instance().buttonEffect();
-					buttons[buttonSelected]->select();
+					if (buttonSelected != 5 && buttonSelected != 6) {
+						buttons[buttonSelected]->select();
+						AudioEngine::instance().buttonEffect();
+					}
+					
 				}
 				break;
 			}
@@ -69,9 +74,17 @@ void InterfazUsuario::setClimbers(int climber)
 	this->climber = climber;
 }
 
-void InterfazUsuario::setSpawnRate(int spawnrate)
+void InterfazUsuario::increaseSpawnRate()
 {
-	this->spawnRate = spawnRate;
+	this->spawnRate++;
+	buttons[6]->increaseText();
+	buttons[5]->decreaseText();
+}
+
+void InterfazUsuario::decreaseSpawnRate() {
+	this->spawnRate--;
+	buttons[5]->increaseText();
+	buttons[6]->decreaseText();
 }
 
 void InterfazUsuario::setBlockers(int bloker) {

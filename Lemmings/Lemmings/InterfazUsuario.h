@@ -27,7 +27,8 @@ public:
 	void setTime(int time);
 	void setDiggers(int digger);
 	void setClimbers(int climber);
-	void setSpawnRate(int spawnrate);
+	void decreaseSpawnRate();
+	void increaseSpawnRate();
 	void setBlockers(int bloker);
 	void setBashers(int basher);
 	void setLemmingsOut(int out);

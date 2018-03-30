@@ -1,6 +1,7 @@
 #include "Button.h"
 #include <iostream>
 #include "Game.h"
+#include <string>
 
 
 
@@ -97,5 +98,23 @@ void Button::select()
 void Button::deselect()
 {
 	pressed = false;
+}
+
+void Button::increaseText()
+{
+	int num;
+	std::string::size_type sz;
+	num = std::stoi(number,&sz);
+	if (num < 99)num++;
+	number = to_string(num);
+}
+
+void Button::decreaseText()
+{
+	int num;
+	std::string::size_type sz;
+	num = std::stoi(number, &sz);
+	if(num > 1) num--;
+	number = to_string(num);
 }
 

@@ -24,12 +24,15 @@ public:
 	void doubleSpeedAnimation();
 	void resetNormalSpeed();
 	void pause();
+	void increaseSpawnTime();
+	void decreaseSpawnTime();
 
 
 private:
 	
 	bool doubleSpeed;
 	bool paused;
+	int spawnFrequency;
 	vector<Lemming> lemmings;
 	Texture spritesheet;
 	VariableTexture *mask;

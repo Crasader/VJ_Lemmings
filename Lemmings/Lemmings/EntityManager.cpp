@@ -19,7 +19,7 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(int deltaTime){
 	sceneTime += deltaTime;
-	if ((sceneTime - lastLemmingCreation > spawnTime && (numLemmings > 0)) && !paused) {
+	if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
@@ -57,6 +57,7 @@ void EntityManager::init() {
 
 	doubleSpeed = false;
 	paused = false;
+	spawnFrequency = 0;
 
 
 	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
@@ -138,5 +139,13 @@ void EntityManager::pause() {
 
 	doorStart->pause();
 	doorEnd->pause();
+}
+
+void EntityManager::increaseSpawnTime(){
+	spawnFrequency += 150;
+}
+
+void EntityManager::decreaseSpawnTime(){
+	spawnFrequency -= 150;
 }
 

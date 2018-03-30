@@ -21,6 +21,8 @@ public:
 	bool checkColision(int mouseX, int mouseY);
 	void select();
 	void deselect();
+	void increaseText();
+	void decreaseText();
 private:
 	Sprite* button;
 	Sprite* selectedButton;

@@ -46,7 +46,7 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(2, glm::vec2(180, 30),glm::vec2(180,60), simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
+	manager = new EntityManager(30, glm::vec2(180, 30),glm::vec2(180,60), simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	gui->init();
 }
@@ -136,7 +136,6 @@ Scene * PlayScene::changeState()
 	}
 	if (bMouseLeft) {
 		int x = 0, y = 0;
-		Game::instance().getMousePosition(x, y);
 		//eraseMask(x, y);
 		int effect = -1;
 		if (buttonPressed == 0) effect = 3;
@@ -145,6 +144,14 @@ Scene * PlayScene::changeState()
 		else if (buttonPressed == 3) effect = 1;
 		// implementar cuando este el floater
 		//else if (buttonPressed == 4) effect = -1;
+		else if (buttonPressed == 5) {
+			manager->increaseSpawnTime();
+			gui->decreaseSpawnRate();
+		}
+		else if (buttonPressed == 6) {
+			gui->increaseSpawnRate();
+			manager->decreaseSpawnTime();
+		}
 		else if (buttonPressed == 7) doubleSceneSpeed();
 		else if (buttonPressed == 8) manager->pause();
 		if(effect != -1)effectForLemming(x, y, effect);
