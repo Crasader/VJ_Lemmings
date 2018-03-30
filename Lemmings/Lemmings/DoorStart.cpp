@@ -11,7 +11,6 @@ DoorStart::DoorStart(int color) {
 	}
 }
 
-
 DoorStart::~DoorStart() {
 }
 
@@ -61,6 +60,20 @@ void DoorStart::setAnimations() {
 	sprite->addKeyframe(OPEN, glm::vec2(xSpriteSheet, 0.9f));
 }
 
+void DoorStart::doubleSpeed()
+{
+	sprite->setAnimationSpeed(OPENING, speedDoorStart*2);
+}
+
+void DoorStart::pause()
+{
+	sprite->setAnimationSpeed(OPENING, 0);
+}
+
+void DoorStart::resetSpeed()
+{
+	sprite->setAnimationSpeed(OPENING, speedDoorStart);
+}
 
 glm::vec2 DoorStart::getPosition() {
 	return sprite->position();

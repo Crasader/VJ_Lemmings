@@ -19,6 +19,9 @@ public:
 	void update(int deltaTime);
 	void render();
 	glm::vec2 getPosition();
+	void doubleSpeed();
+	void pause();
+	void resetSpeed();
 
 	
 
@@ -38,7 +41,6 @@ private:
 
 	
 	float xSpriteSheet, currentTime;
-
 
 	void open();
 	void setAnimations();

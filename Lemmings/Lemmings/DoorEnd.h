@@ -15,6 +15,9 @@ public:
 	void update(int deltaTime);
 	void render();
 	glm::vec2 getPosition();
+	void doubleSpeed();
+	void pause();
+	void resetSpeed();
 
 	enum EndColors {
 		BLACK,

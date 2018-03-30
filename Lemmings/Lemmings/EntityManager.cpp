@@ -1,11 +1,13 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorPosition, ShaderProgram &shaderProgram,VariableTexture *mask) {
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorPosition, ShaderProgram &shaderProgram,VariableTexture *mask, string dorIni, string dorEnd) {
 	this->doorPosition = doorPosition;
 	this->shaderProgram = shaderProgram;
 	this->numLemmings = numLemmings;
 	this->mask = mask;
+	this->dorIni = dorIni;
+	this->dorEnd = dorEnd;
 	init();
 }
 
@@ -16,7 +18,7 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(int deltaTime){
 	sceneTime += deltaTime;
-	if (sceneTime - lastLemmingCreation > spawnTime && (numLemmings > 0)) {
+	if ((sceneTime - lastLemmingCreation > spawnTime && (numLemmings > 0)) && !paused) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
@@ -29,10 +31,14 @@ void EntityManager::update(int deltaTime){
 	}
 
 	this->buttonPressed = buttonPressed;
+	doorStart->update(deltaTime);
+	doorEnd->update(deltaTime);
 
 }
 
 void EntityManager::render() {
+	doorStart->render();
+	doorEnd->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].render();
 	}
@@ -50,6 +56,19 @@ void EntityManager::init() {
 
 	doubleSpeed = false;
 	paused = false;
+
+
+	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetStart.setMinFilter(GL_NEAREST);
+	spritesheetStart.setMagFilter(GL_NEAREST);
+	doorStart = new DoorStart(DoorStart::BROWN);
+	doorStart->init(glm::vec2(180, 30), shaderProgram, spritesheetStart);
+
+	spritesheetEnd.loadFromFile(dorEnd, TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetEnd.setMinFilter(GL_NEAREST);
+	spritesheetEnd.setMagFilter(GL_NEAREST);
+	doorEnd = new DoorEnd(DoorEnd::BLACK);
+	doorEnd->init(glm::vec2(260, 30), shaderProgram, spritesheetEnd);
 	
 }
 
@@ -93,6 +112,9 @@ void EntityManager::doubleSpeedAnimation()
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].doubleSpeed();
 	}
+
+	doorStart->doubleSpeed();
+	doorEnd->doubleSpeed();
 }
 
 void EntityManager::resetNormalSpeed()
@@ -102,6 +124,9 @@ void EntityManager::resetNormalSpeed()
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].resetSpeed();
 	}
+
+	doorStart->resetSpeed();
+	doorEnd->resetSpeed();
 }
 
 void EntityManager::pause() {
@@ -109,4 +134,8 @@ void EntityManager::pause() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].pause();
 	}
+
+	doorStart->pause();
+	doorEnd->pause();
 }
+

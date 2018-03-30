@@ -46,22 +46,9 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram,&maskTexture);
+	manager = new EntityManager(2, glm::vec2(180, 30), simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	gui->init();
-
-
-	spritesheetStart.loadFromFile("images/start_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetStart.setMinFilter(GL_NEAREST);
-	spritesheetStart.setMagFilter(GL_NEAREST);
-	doorStart = new DoorStart(DoorStart::BROWN);
-	doorStart->init(glm::vec2(180, 30), simpleTexProgram, spritesheetStart);
-
-	spritesheetEnd.loadFromFile("images/end_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetEnd.setMinFilter(GL_NEAREST);
-	spritesheetEnd.setMagFilter(GL_NEAREST);
-	doorEnd = new DoorEnd(DoorEnd::BLACK);
-	doorEnd->init(glm::vec2(260, 30), simpleTexProgram, spritesheetEnd);
 }
 
 void PlayScene::update(int deltaTime)
@@ -72,8 +59,6 @@ void PlayScene::update(int deltaTime)
 	if (buttonPressed != 7 && buttonAnt == 7) decreaseSceneSpeed();
 	else if (buttonPressed != 8 && buttonAnt == 8) manager->resetNormalSpeed();
 	manager->update(deltaTime);
-	doorStart->update(deltaTime);
-	doorEnd->update(deltaTime);
 	
 
 
@@ -117,9 +102,6 @@ void PlayScene::render()
 	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
-
-	doorStart->render();
-	doorEnd->render();
 
 	manager->render();
 	

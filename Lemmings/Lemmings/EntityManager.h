@@ -6,12 +6,14 @@
 #include "Sprite.h"
 #include "VariableTexture.h"
 #include "Cursor.h"
+#include "DoorEnd.h"
+#include "DoorStart.h"
 
 
 class EntityManager
 {
 public:
-	EntityManager(int numLemmings, glm::vec2 &doorPositonm, ShaderProgram &shaderProgram,VariableTexture *mask);
+	EntityManager(int numLemmings, glm::vec2 &doorPositonm, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();
 	void update(int deltaTime);
 	void render();
@@ -37,6 +39,12 @@ private:
 	float sceneTime;
 	float lastLemmingCreation;
 	int buttonPressed;
+	DoorEnd* doorEnd;
+	DoorStart* doorStart;
+	Texture spritesheetStart;
+	Texture spritesheetEnd;
+	string dorIni;
+	string dorEnd;
 	void init();	
 };
 
