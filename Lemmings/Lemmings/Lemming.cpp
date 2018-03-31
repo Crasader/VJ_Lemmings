@@ -46,336 +46,207 @@ void Lemming::update(int deltaTime) {
 
 	// control live, exit or bombs?
 
+	actionTime++;
+
+	// die triggered
+	if (nextState == DYING_EXPLOSION_TRIGGERED)
+		goDieExplosion();
+
+
 	switch(state)	{
 
 		/* FALLING */
 		case FALLING_RIGHT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				actionTime++;
-				fall = collisionFloor(2);
-				// more falling
-				if (fall > 0) {
-					// floater triggered
-					if (actionTime > 8 && nextState == FLOATER_TRIGGERED) {
-						actionTime = 0;
-						sprite->changeAnimation(OPENING_UMBRELLA_RIGHT);
-						oldState = WALKING_RIGHT_STATE;
-						state = FLOATER_RIGHT_STATE;
-						nextState = WALKING_RIGHT_STATE;
-						move(0, 1);
-					}
-					// no floater
-					else {
-						move(0, fall);
-					}
-				}
-				// no more falling
-				else {
-					// too high no floater -> die
-					if (actionTime > 32) {
-						actionTime = 0;
-						sprite->changeAnimation(DIE_FALL);
-						state = DYING_FALL_STATE;
-					}
-					// not too high and action triggered
-					else if (nextState == BLOCKER_TRIGGERED) {
-						sprite->changeAnimation(BLOCKER);
-						oldState = BLOCKER_STATE;
-						state = BLOCKER_STATE;
-						nextState = BLOCKER_STATE;
-					}
-					else if (nextState == DIGGER_TRIGGERED) {
-						actionTime = 0;
-						move(0, 2);
-						sprite->changeAnimation(DIGGER);
-						oldState = WALKING_RIGHT_STATE;
-						state = DIGGER_STATE;
-						nextState = WALKING_RIGHT_STATE;
-					}
-					else if (nextState == BUILDER_TRIGGERED) {
-						sprite->changeAnimation(BUILDER_RIGHT);
-						oldState = WALKING_RIGHT_STATE;
-						state = BUILDER_RIGHT_STATE;
-						nextState = WALKING_RIGHT_STATE;
-					}
-					// no action triggered
-					else {
-						sprite->changeAnimation(WALKING_RIGHT);
-						state = WALKING_RIGHT_STATE;
+			fall = collisionFloor(2);
+			// more falling
+			if (fall > 0) {
+				// floater triggered
+				if (actionTime > 8 && nextState == FLOATER_TRIGGERED) 
+					goFloaterRight();
 
-					}
-				}
+				// no floater
+				else 
+					move(0, fall);
+			}
+			// no more falling
+			else {
+				// too high no floater -> die
+				if (actionTime > 32) 
+					goDieFall();
+					
+				// not too high and action triggered
+				else if (nextState == BLOCKER_TRIGGERED) 
+					goBlocker();
+					
+				else if (nextState == DIGGER_TRIGGERED) 
+					goDigger(WALKING_RIGHT_STATE);
+					
+				else if (nextState == BUILDER_TRIGGERED) 
+					goBuilderRight();
+					
+				// no action triggered
+				else 
+					goWalkRight();
 			}
 			break;
 
 		case FALLING_LEFT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
+			fall = collisionFloor(2);
+			// more falling
+			if (fall > 0) {
+				// floater triggered
+				if (actionTime > 8 && nextState == FLOATER_TRIGGERED) 
+					goFloaterLeft();
+					
+				// no floater
+				else 
+					move(0, fall);	
 			}
+			// no more falling
 			else {
-				actionTime++;
-				fall = collisionFloor(2);
-				// more falling
-				if (fall > 0) {
-					// floater triggered
-					if (actionTime > 8 && nextState == FLOATER_TRIGGERED) {
-						actionTime = 0;
-						sprite->changeAnimation(OPENING_UMBRELLA_LEFT);
-						oldState = WALKING_LEFT_STATE;
-						state = FLOATER_LEFT_STATE;
-						nextState = WALKING_LEFT_STATE;
-						move(0, 1);
-					}
-					// no floater
-					else {
-						move(0, fall);
-					}
-				}
-				// no more falling
-				else {
-					// too high no floater -> die
-					if (actionTime > 32) {
-						actionTime = 0;
-						sprite->changeAnimation(DIE_FALL);
-						state = DYING_FALL_STATE;
-					}
-					// not too high and action triggered
-					else if (nextState == BLOCKER_TRIGGERED) {
-						sprite->changeAnimation(BLOCKER);
-						oldState = BLOCKER_STATE;
-						state = BLOCKER_STATE;
-						nextState = BLOCKER_STATE;
-					}
-					else if (nextState == DIGGER_TRIGGERED) {
-						actionTime = 0;
-						move(0, 2);
-						sprite->changeAnimation(DIGGER);
-						oldState = WALKING_LEFT_STATE;
-						state = DIGGER_STATE;
-						nextState = WALKING_LEFT_STATE;
-					}
-					else if (nextState == BUILDER_TRIGGERED) {
-						sprite->changeAnimation(BUILDER_LEFT);
-						oldState = WALKING_LEFT_STATE;
-						state = BUILDER_LEFT_STATE;
-						nextState = WALKING_LEFT_STATE;
-					}
-					// no action triggered
-					else {
-						sprite->changeAnimation(WALKING_LEFT);
-						state = WALKING_LEFT_STATE;
-					}
-				}
+				// too high no floater -> die
+				if (actionTime > 32) 
+					goDieFall();
+					
+				// not too high and action triggered
+				else if (nextState == BLOCKER_TRIGGERED) 
+					goBlocker();
+					
+				else if (nextState == DIGGER_TRIGGERED) 
+					goDigger(WALKING_LEFT_STATE);
+					
+				else if (nextState == BUILDER_TRIGGERED) 
+					goBuilderLeft();
+					
+				// no action triggered
+				else 
+					goWalkLeft();
 			}
 			break;
 
 		/* WALKING */
 		case WALKING_RIGHT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				move(1, -1);
-				// wall
-				if (collisionRight(4) < 4 && nextState == BASHER_TRIGGERED) {
-					actionTime = 0;
-					move(0, 1);
-					sprite->changeAnimation(BASHER_RIGHT);
-					oldState = WALKING_RIGHT_STATE;
-					state = BASHER_RIGHT_STATE;
-					nextState = WALKING_RIGHT_STATE;
-				}
-				else if (collisionWalk()) {
-					// action triggered
-					if (nextState == CLIMBER_TRIGGERED) {
-						actionTime = 0;
-						sprite->changeAnimation(CLIMBER_RIGHT);
-						oldState = WALKING_RIGHT_STATE;
-						state = CLIMBER_RIGHT_STATE;
-						nextState = CLIMBER_TRIGGERED;
-					}
-					// no action triggered
-					else {
-						move(-1, 1);
-						sprite->changeAnimation(WALKING_LEFT);
-						state = WALKING_LEFT_STATE;
-					}
-				}
-				// no wall
+			move(1, -1);
+			// wall
+			if (collisionRight(4) < 4 && nextState == BASHER_TRIGGERED) 
+				goBasherRight();
+				
+			else if (collisionWalk()) {
+				// action triggered
+				if (nextState == CLIMBER_TRIGGERED) 
+					goClimberRight();
+					
+				// no action triggered
 				else {
-					fall = collisionFloor(3);
-					// no falling
-					if (fall < 3) {
-						move(0, fall);
-						//action triggered
-						if (nextState == BLOCKER_TRIGGERED) {
-							sprite->changeAnimation(BLOCKER);
-							oldState = BLOCKER_STATE;
-							state = BLOCKER_STATE;
-							nextState = BLOCKER_STATE;
-							// TODO print on mask to stop lemmings ?
-						}
-						else if (nextState == DIGGER_TRIGGERED) {
-							actionTime = 0;
-							move(0, 2);
-							sprite->changeAnimation(DIGGER);
-							oldState = WALKING_RIGHT_STATE;
-							state = DIGGER_STATE;
-							nextState = WALKING_RIGHT_STATE;
-						}
-						else if (nextState == BUILDER_TRIGGERED) {
-							sprite->changeAnimation(BUILDER_RIGHT);
-							oldState = WALKING_RIGHT_STATE;
-							state = BUILDER_RIGHT_STATE;
-							nextState = WALKING_RIGHT_STATE;
-						}
-						// no action triggered -> continue walking
-					}
-					// falling
-					else {
-						actionTime = 0;
-						sprite->changeAnimation(FALLING_RIGHT);
-						state = FALLING_RIGHT_STATE;
-					}
-
+					move(-1, 1);
+					goWalkLeft();
 				}
+			}
+			// no wall
+			else {
+				fall = collisionFloor(3);
+				// no falling
+				if (fall < 3) {
+					move(0, fall);
+					//action triggered
+					if (nextState == BLOCKER_TRIGGERED) 
+						goBlocker();
+							
+					else if (nextState == DIGGER_TRIGGERED) 
+						goDigger(WALKING_RIGHT_STATE);
+						
+					else if (nextState == BUILDER_TRIGGERED) 
+						goBuilderRight();
+						
+					// no action triggered -> continue walking
+				}
+				// falling
+				else 
+					goFallRight();
+					
 			}
 			break;
 
 		case WALKING_LEFT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				move(-1, -1);
-				// wall
-				if (collisionLeft(3) < 3 && nextState == BASHER_TRIGGERED) {
-					actionTime = 0;
-					move(0, 1);
-					sprite->changeAnimation(BASHER_LEFT);
-					oldState = WALKING_LEFT_STATE;
-					state = BASHER_LEFT_STATE;
-					nextState = WALKING_LEFT_STATE;
-				}
-				else if (collisionWalk()) {
-					// action triggered
-					if (nextState == CLIMBER_TRIGGERED) {
-						actionTime = 0;
-						sprite->changeAnimation(CLIMBER_LEFT);
-						oldState = WALKING_LEFT_STATE;
-						state = CLIMBER_LEFT_STATE;
-						nextState = CLIMBER_TRIGGERED;
-					}
-					// no action triggered
-					else {
-						move(1, 1);
-						sprite->changeAnimation(WALKING_RIGHT);
-						state = WALKING_RIGHT_STATE;
-					}
-				}
-				// no wall
+			move(-1, -1);
+			// wall
+			if (collisionLeft(3) < 3 && nextState == BASHER_TRIGGERED) 
+				goBasherLeft();
+				
+			else if (collisionWalk()) {
+				// action triggered
+				if (nextState == CLIMBER_TRIGGERED) 
+					goClimberLeft();
+					
+				// no action triggered
 				else {
-					fall = collisionFloor(3);
-					// no falling
-					if (fall < 3) {
-						move(0, fall);
-						//action triggered
-						if (nextState == BLOCKER_TRIGGERED) {
-							sprite->changeAnimation(BLOCKER);
-							oldState = BLOCKER_STATE;
-							state = BLOCKER_STATE;
-							nextState = BLOCKER_STATE;
-							// TODO print on mask to stop lemmings ?
-						}
-						else if (nextState == DIGGER_TRIGGERED) {
-							actionTime = 0;
-							move(0, 2);
-							sprite->changeAnimation(DIGGER);
-							oldState = WALKING_LEFT_STATE;
-							state = DIGGER_STATE;
-							nextState = WALKING_LEFT_STATE;
-						}
-						else if (nextState == BUILDER_TRIGGERED) {
-							sprite->changeAnimation(BUILDER_LEFT);
-							oldState = WALKING_LEFT_STATE;
-							state = BUILDER_LEFT_STATE;
-							nextState = WALKING_LEFT_STATE;
-						}
-						// no action triggered -> continue walking
-					}
-					// falling
-					else {
-						actionTime = 0;
-						sprite->changeAnimation(FALLING_LEFT);
-						state = FALLING_LEFT_STATE;
-					}
+					move(1, 1);
+					goWalkRight();
 				}
+			}
+			// no wall
+			else {
+				fall = collisionFloor(3);
+				// no falling
+				if (fall < 3) {
+					move(0, fall);
+					//action triggered
+					if (nextState == BLOCKER_TRIGGERED) 
+						goBlocker();
+						
+					else if (nextState == DIGGER_TRIGGERED) 
+						goDigger(WALKING_LEFT_STATE);
+						
+					else if (nextState == BUILDER_TRIGGERED) 
+						goBuilderLeft();
+						
+					// no action triggered -> continue walking
+				}
+				// falling
+				else 
+					goFallLeft();
 			}
 			break;
 
 		/* Digging */
 		case DIGGER_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
+			fall = collisionFloor(4);
+			// falling
+			if (fall > 3) {
+				dig();
+				move(0, 1);
+
+				// left
+				if (oldState == WALKING_LEFT_STATE) 
+					goFallLeft();
+					
+				// right
+				else 
+					goFallRight();
 			}
+			// no falling
 			else {
-				fall = collisionFloor(4);
-				// falling
-				if (fall > 3) {
-					// left
+				//action triggered -> stop, walk and trigger again
+				if (nextState == BASHER_TRIGGERED || 
+					nextState == CLIMBER_TRIGGERED ||
+					nextState == BUILDER_TRIGGERED ||
+					nextState == BLOCKER_TRIGGERED) {
 					dig();
 					move(0, 1);
+					dig();
+					move(0, -1);
+					if (oldState == WALKING_LEFT_STATE)
+						goWalkLeft();
 
-					if (oldState == WALKING_LEFT_STATE) {
-						actionTime = 0;
-						sprite->changeAnimation(FALLING_LEFT);
-						state = FALLING_LEFT_STATE;
-					}
-					// right
-					else {
-						actionTime = 0;
-						sprite->changeAnimation(FALLING_RIGHT);
-						state = FALLING_RIGHT_STATE;
-					}
-
+					else
+						goWalkRight();
 				}
-				// no falling
+				// no action triggered -> continue digging
 				else {
-					//action triggered -> stop, walk and trigger again
-					if (nextState == BASHER_TRIGGERED ||
-						nextState == CLIMBER_TRIGGERED ||
-						nextState == BUILDER_TRIGGERED ||
-						nextState == BLOCKER_TRIGGERED) {
+					nextState = oldState;
+					if (actionTime % 8 == 4) {
 						dig();
 						move(0, 1);
-						dig();
-						move(0, -1);
-						if (oldState == WALKING_LEFT_STATE) {
-							sprite->changeAnimation(WALKING_LEFT);
-							state = WALKING_LEFT_STATE;
-						}
-						else {
-							sprite->changeAnimation(WALKING_RIGHT);
-							state = WALKING_RIGHT_STATE;
-						}
-
-					}
-					// no action triggered -> continue digging
-					else {
-						nextState = oldState;
-						actionTime++;
-						if (actionTime % 8 == 4) {
-							dig();
-							move(0, 1);
-						}
 					}
 				}
 			}
@@ -383,180 +254,123 @@ void Lemming::update(int deltaTime) {
 
 		/* Blocking */
 		case BLOCKER_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				// ? nothing to do ?
-			}
+			// ? nothing to do ?
 			break;
 		
 		/* Bashing */
 		case BASHER_RIGHT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
+			fall = collisionFloor(2);
+			// falling
+			if (fall > 0) 
+				goFallRight();
+				
+			// no falling no wall
+			else if (collisionRight(14) > 13) 
+				goWalkRight();
+				
+			// no falling wall -> continue bashing
 			else {
-				fall = collisionFloor(2);
-				// falling
-				if (fall > 0) {
-					actionTime = 0;
-					sprite->changeAnimation(FALLING_LEFT);
-					state = FALLING_LEFT_STATE;
-				}
-				// no falling no wall
-				else if (collisionRight(14) > 13) {
-					sprite->changeAnimation(WALKING_RIGHT);
-					state = WALKING_RIGHT_STATE;
-				}
-				// no falling wall -> continue bashing
-				else {
-					//action triggered -> stop, walk and trigger again
-					if (nextState == CLIMBER_TRIGGERED ||
-						nextState == BUILDER_TRIGGERED ||
-						nextState == DIGGER_TRIGGERED ||
-						nextState == BLOCKER_TRIGGERED) {
-						sprite->changeAnimation(WALKING_RIGHT);
-						state = WALKING_RIGHT_STATE;
+				//action triggered -> stop, walk and trigger again
+				if (nextState == CLIMBER_TRIGGERED ||
+					nextState == BUILDER_TRIGGERED ||
+					nextState == DIGGER_TRIGGERED ||
+					nextState == BLOCKER_TRIGGERED) 
+					goWalkRight();
 
+				// no action triggered -> continue bashing
+				else {
+					nextState = oldState;
+					if (actionTime % 16 > 10 && actionTime % 16 <= 15) {
+						move(1, 0);
 					}
-					// no action triggered -> continue bashing
-					else {
-						nextState = oldState;
-						actionTime++;
-						if (actionTime % 16 > 10 && actionTime % 16 <= 15) {
-							move(1, 0);
-						}
-						else if (actionTime % 16 > 0 && actionTime % 16 <= 6) {
-							bashRight(actionTime % 16 + 2);
-						}
-						if (actionTime % 16 == 1) AudioEngine::instance().diggEffect();
+					else if (actionTime % 16 > 0 && actionTime % 16 <= 6) {
+						bashRight(actionTime % 16 + 2);
 					}
+					if (actionTime % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
 			break;
 
 		case BASHER_LEFT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
+			fall = collisionFloor(2);
+			// falling
+			if (fall > 0)
+				goFallLeft();
+				
+			// no falling no wall
+			else if (collisionLeft(13) > 12) 
+				goWalkLeft();
+				
+			// no falling no wall -> continue bashing
 			else {
-				fall = collisionFloor(2);
-				// falling
-				if (fall > 0) {
-					actionTime = 0;
-					sprite->changeAnimation(FALLING_LEFT);
-					state = FALLING_LEFT_STATE;
-				}
-				// no falling no wall
-				else if (collisionLeft(13) > 12) {
-					sprite->changeAnimation(WALKING_LEFT);
-					state = WALKING_LEFT_STATE;
-				}
-				// no falling no wall -> continue bashing
-				else {
-					//action triggered -> stop, walk and trigger again
-					if (nextState == CLIMBER_TRIGGERED ||
-						nextState == BUILDER_TRIGGERED ||
-						nextState == DIGGER_TRIGGERED ||
-						nextState == BLOCKER_TRIGGERED) {
-						sprite->changeAnimation(WALKING_LEFT);
-						state = WALKING_LEFT_STATE;
+				//action triggered -> stop, walk and trigger again
+				if (nextState == CLIMBER_TRIGGERED ||
+					nextState == BUILDER_TRIGGERED ||
+					nextState == DIGGER_TRIGGERED ||
+					nextState == BLOCKER_TRIGGERED) 
+					goWalkLeft();
 
+				// no action triggered -> continue bashing
+				else {
+					nextState = oldState;
+					if (actionTime % 16 > 10 && actionTime % 16 <= 15) {
+						move(-1, 0);
 					}
-					// no action triggered -> continue bashing
-					else {
-						nextState = oldState;
-						actionTime++;
-						if (actionTime % 16 > 10 && actionTime % 16 <= 15) {
-							move(-1, 0);
-						}
-						else if (actionTime % 16 > 0 && actionTime % 16 <= 6) {
-							bashLeft(actionTime % 16 + 1);
-						}
-						if (actionTime % 16 == 1) AudioEngine::instance().diggEffect();
+					else if (actionTime % 16 > 0 && actionTime % 16 <= 6) {
+						bashLeft(actionTime % 16 + 1);
 					}
+					if (actionTime % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
 			break;
 
 		/* Climbing */
 		case CLIMBER_RIGHT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
+			// no wall
+			if (!collisionFullWall()) {
+				resetActionTime();
+				sprite->changeAnimation(CLIMBER_TOP_RIGHT);
+				state = CLIMBER_TOP_STATE;
 			}
+			else if (collisionHeadRight()) {
+				goFallLeft();
+				move(-1, 0);
+			}
+			// wall
 			else {
-				actionTime++;
-				// no wall
-				if (!collisionFullWall()) {
-					actionTime = 0;
-					sprite->changeAnimation(CLIMBER_TOP_RIGHT);
-					state = CLIMBER_TOP_STATE;
-				}
-				else if (collisionHeadRight()) {
-					actionTime = 0;
-					sprite->changeAnimation(FALLING_LEFT);
-					state = FALLING_LEFT_STATE;
-					move(-1, 0);
-				}
-				// wall
-				else {
-					if (actionTime % 8 > 4)
-						move(0, -1);
-				}
+				if (actionTime % 8 > 4)
+					move(0, -1);
 			}
 			break;
 
 		case CLIMBER_LEFT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
+			// no wall
+			if (!collisionFullWall()) {
+				resetActionTime();
+				sprite->changeAnimation(CLIMBER_TOP_LEFT);
+				state = CLIMBER_TOP_STATE;
 			}
+			// head collision
+			else if (collisionHeadLeft()) {
+				goFallRight();
+				move(1, 0);
+			}
+			// wall
 			else {
-				actionTime++;
-				// no wall
-				if (!collisionFullWall()) {
-					actionTime = 0;
-					sprite->changeAnimation(CLIMBER_TOP_LEFT);
-					state = CLIMBER_TOP_STATE;
-				}
-				// head collision
-				else if (collisionHeadLeft()) {
-					actionTime = 0;
-					sprite->changeAnimation(FALLING_RIGHT);
-					state = FALLING_RIGHT_STATE;
-					move(1, 0);
-				}
-				// wall
-				else {
-					if (actionTime % 8 > 4)
-						move(0, -1);
-				}
+				if (actionTime % 8 > 4)
+					move(0, -1);
 			}
 			break;
 
 		case CLIMBER_TOP_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				actionTime++;
-				if (actionTime == 8) {
-					if (oldState == WALKING_RIGHT_STATE) {
-						sprite->changeAnimation(WALKING_RIGHT);
-						state = WALKING_RIGHT_STATE;
-					}
-					else {
-						sprite->changeAnimation(WALKING_LEFT);
-						state = WALKING_LEFT_STATE;
-					}
-					move(0, -7);
-				}
+			if (actionTime == 8) {
+				if (oldState == WALKING_RIGHT_STATE) 
+					goWalkRight();
+					
+				else
+					goWalkLeft();
+					
+				move(0, -7);
 			}
 			break;
 
@@ -571,66 +385,161 @@ void Lemming::update(int deltaTime) {
 
 		/* Floating */
 		case FLOATER_RIGHT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				actionTime++;
-				fall = collisionFloor(2);
-				if (actionTime == 4) sprite->changeAnimation(FLOATER_RIGHT);
-				// more falling
-				if (fall > 0) {
-					move(0, fall);
-				}
-				// no more falling
-				else {
-					sprite->changeAnimation(WALKING_RIGHT);
-					state = WALKING_RIGHT_STATE;
-				}
-			}
+			fall = collisionFloor(2);
+			if (actionTime == 4) sprite->changeAnimation(FLOATER_RIGHT);
+
+			// more falling
+			if (fall > 0) 
+				move(0, fall);
+				
+			// no more falling
+			else 
+				goWalkRight();
 			break;
 
 		case FLOATER_LEFT_STATE:
-			// die triggered
-			if (nextState == DYING_EXPLOSION_TRIGGERED) {
-				goDieExplosion();
-			}
-			else {
-				actionTime++;
-				fall = collisionFloor(2);
-				if (actionTime == 4) sprite->changeAnimation(FLOATER_LEFT);
-				// more falling
-				if (fall > 0) {
-					move(0, fall);
-				}
-				// no more falling
-				else {
-					sprite->changeAnimation(WALKING_LEFT);
-					state = WALKING_LEFT_STATE;
-				}
-			}
+			fall = collisionFloor(2);
+			if (actionTime == 4) sprite->changeAnimation(FLOATER_LEFT);
+
+			// more falling
+			if (fall > 0) 
+				move(0, fall);
+
+			// no more falling
+			else
+				goWalkLeft();
 			break;
 
 		case DYING_FALL_STATE:
-			actionTime++;
 			if (actionTime > 8) status = DEAD_STATUS;
 			break;
 
 		case DYING_EXPLOSION_STATE:
-			actionTime++;
 			if (actionTime > 16) status = DEAD_STATUS;
 			break;
 
 		default:
 			break;
 	}
+
+	
 }
 
 void Lemming::goDieExplosion() {
-	actionTime = 0;
+	resetActionTime();
 	sprite->changeAnimation(DIE_EXPLOSION);
 	state = DYING_EXPLOSION_STATE;
+	nextState = DYING_EXPLOSION_STATE;
+}
+
+void Lemming::goDieFall() {
+	resetActionTime();
+	sprite->changeAnimation(DIE_FALL);
+	state = DYING_FALL_STATE;
+}
+
+void Lemming::goBlocker() {
+	sprite->changeAnimation(BLOCKER);
+	oldState = BLOCKER_STATE;
+	state = BLOCKER_STATE;
+	nextState = BLOCKER_STATE;
+	// TODO print on mask to stop lemmings ?
+}
+
+void Lemming::goDigger(LemmingState oldNewState) {
+	resetActionTime();
+	move(0, 2);
+	sprite->changeAnimation(DIGGER);
+	oldState = nextState = oldNewState;
+	state = DIGGER_STATE;
+}
+
+void Lemming::goFloaterRight() {
+	resetActionTime();
+	move(0, 1);
+	sprite->changeAnimation(OPENING_UMBRELLA_RIGHT);
+	oldState = nextState = WALKING_RIGHT_STATE;
+	state = FLOATER_RIGHT_STATE;
+	
+}
+
+void Lemming::goFloaterLeft() {
+	resetActionTime();
+	move(0, 1);
+	sprite->changeAnimation(OPENING_UMBRELLA_LEFT);
+	nextState = oldState = WALKING_LEFT_STATE;
+	state = FLOATER_LEFT_STATE;
+
+}
+
+void Lemming::goBasherRight() {
+	resetActionTime();
+	move(0, 1);
+	sprite->changeAnimation(BASHER_RIGHT);
+	oldState = nextState = WALKING_RIGHT_STATE;
+	state = BASHER_RIGHT_STATE;
+}
+
+void Lemming::goBasherLeft() {
+	resetActionTime();
+	move(0, 1);
+	sprite->changeAnimation(BASHER_LEFT);
+	oldState = nextState = WALKING_LEFT_STATE;
+	state = BASHER_LEFT_STATE;
+}
+
+void Lemming::goBuilderRight() {
+	sprite->changeAnimation(BUILDER_RIGHT);
+	oldState = nextState = WALKING_RIGHT_STATE;
+	state = BUILDER_RIGHT_STATE;
+}
+
+void Lemming::goBuilderLeft() {
+	sprite->changeAnimation(BUILDER_LEFT);
+	oldState = nextState = WALKING_LEFT_STATE;
+	state = BUILDER_LEFT_STATE;
+}
+
+void Lemming::goClimberRight() {
+	resetActionTime();
+	sprite->changeAnimation(CLIMBER_RIGHT);
+	oldState = WALKING_RIGHT_STATE;
+	state = CLIMBER_RIGHT_STATE;
+	nextState = CLIMBER_TRIGGERED;
+}
+
+void Lemming::goClimberLeft() {
+	resetActionTime();
+	sprite->changeAnimation(CLIMBER_LEFT);
+	oldState = WALKING_LEFT_STATE;
+	state = CLIMBER_LEFT_STATE;
+	nextState = CLIMBER_TRIGGERED;
+}
+
+void Lemming::goWalkLeft() {
+	sprite->changeAnimation(WALKING_LEFT);
+	state = WALKING_LEFT_STATE;
+}
+
+void Lemming::goWalkRight() {
+	sprite->changeAnimation(WALKING_RIGHT);
+	state = WALKING_RIGHT_STATE;
+}
+
+void Lemming::goFallLeft() {
+	resetActionTime();
+	sprite->changeAnimation(FALLING_LEFT);
+	state = FALLING_LEFT_STATE;
+}
+
+void Lemming::goFallRight() {
+	resetActionTime();
+	sprite->changeAnimation(FALLING_RIGHT);
+	state = FALLING_RIGHT_STATE;
+}
+
+void Lemming::resetActionTime() {
+	actionTime = 0;
 }
 
 void Lemming::render() {
@@ -642,8 +551,7 @@ void Lemming::setMapMask(VariableTexture *mapMask) {
 }
 
 // TODO añadir todas las animaciones
-void Lemming::doubleSpeed()
-{
+void Lemming::doubleSpeed() {
 	sprite->setAnimationSpeed(WALKING_RIGHT, speed*2);
 	sprite->setAnimationSpeed(WALKING_LEFT, speed * 2);
 	sprite->setAnimationSpeed(FALLING_RIGHT, speed * 2);
@@ -660,13 +568,15 @@ void Lemming::doubleSpeed()
 	sprite->setAnimationSpeed(BUILDER_LEFT, speed * 2);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed * 2);
 	sprite->setAnimationSpeed(EXITING, speed * 2);
-	sprite->setAnimationSpeed(FLOATER_RIGHT, speed*2);
-	sprite->setAnimationSpeed(FLOATER_LEFT, speed*2);
-	sprite->setAnimationSpeed(DYING_FALL_STATE, speed * 2);
+	sprite->setAnimationSpeed(DIE_FALL, speed * 2);
+	sprite->setAnimationSpeed(DIE_EXPLOSION, 20);
+	sprite->setAnimationSpeed(FLOATER_RIGHT, speed);
+	sprite->setAnimationSpeed(FLOATER_LEFT, speed);
+	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, speed * 2);
+	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, speed * 2);
 }
 
-void Lemming::resetSpeed()
-{
+void Lemming::resetSpeed() {
 	sprite->setAnimationSpeed(WALKING_RIGHT, speed);
 	sprite->setAnimationSpeed(WALKING_LEFT, speed);
 	sprite->setAnimationSpeed(FALLING_RIGHT, speed);
@@ -683,13 +593,15 @@ void Lemming::resetSpeed()
 	sprite->setAnimationSpeed(BUILDER_LEFT, speed);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed);
 	sprite->setAnimationSpeed(EXITING, speed);
-	sprite->setAnimationSpeed(FLOATER_RIGHT, speed);
-	sprite->setAnimationSpeed(FLOATER_LEFT, speed);
-	sprite->setAnimationSpeed(DYING_FALL_STATE, speed);
+	sprite->setAnimationSpeed(DIE_EXPLOSION, 10);
+	sprite->setAnimationSpeed(FLOATER_RIGHT, speed/2);
+	sprite->setAnimationSpeed(FLOATER_LEFT, speed/2);
+	sprite->setAnimationSpeed(DIE_FALL, speed);
+	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, speed);
+	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, speed);
 }
 
-void Lemming::pause()
-{
+void Lemming::pause() {
 	sprite->setAnimationSpeed(WALKING_RIGHT, 0);
 	sprite->setAnimationSpeed(WALKING_LEFT, 0);
 	sprite->setAnimationSpeed(FALLING_RIGHT, 0);
@@ -706,17 +618,24 @@ void Lemming::pause()
 	sprite->setAnimationSpeed(BUILDER_LEFT, 0);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, 0);
 	sprite->setAnimationSpeed(EXITING, 0);
+	sprite->setAnimationSpeed(DIE_EXPLOSION, 0);
 	sprite->setAnimationSpeed(FLOATER_RIGHT, 0);
 	sprite->setAnimationSpeed(FLOATER_LEFT, 0);
-	sprite->setAnimationSpeed(DYING_FALL_STATE, 0);
+	sprite->setAnimationSpeed(DIE_FALL, 0);
+	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, 0);
+	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, 0);
+}
+
+void Lemming::kill()
+{
+	status = DEAD_STATUS;
 }
 
 glm::vec2 Lemming::getPosition() {
 	return sprite->position();
 }
 
-int Lemming::getStatus()
-{
+int Lemming::getStatus() {
 	return status;
 }
 

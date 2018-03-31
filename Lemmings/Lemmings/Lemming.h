@@ -29,6 +29,7 @@ public:
 	void doubleSpeed();
 	void resetSpeed();
 	void pause();
+	void kill();
 	
 	glm::vec2 getPosition();
 
@@ -36,46 +37,7 @@ public:
 
 	
 private:
-	int collisionFloor(int maxFall);
-	int collisionRight(int maxWall);
-	int collisionLeft(int maxWall);
 
-	bool collisionWalk();
-	bool collisionFullWall();
-	bool collisionHeadRight();
-	bool collisionHeadLeft();
-	void setAnimations();
-
-	void move(int x, int y);
-
-	void dig();
-	void bashLeft(int q);
-	void bashRight(int q);
-
-	void goDieExplosion();
-
-	
-
-public:
-	enum LemmingStatus {
-		ALIVE_STATUS,	/* Siguen vivos				*/
-		EXITED_STATUS,	/* Han finalizado el nivel	*/
-		DEAD_STATUS		/* Han muerto				*/
-	};
-
-	/*
-	enum LemmingActions {
-		DIGGER,
-		BLOCKER,
-		BASHER,
-		CLIMBER,
-		FLOATER,
-		BOMBER,
-		EXPLODER
-	};
-	*/
-	
-private:
 	enum LemmingState {
 		WALKING_RIGHT_STATE, WALKING_LEFT_STATE,
 
@@ -107,6 +69,65 @@ private:
 
 		DYING_FALL_STATE
 	};
+
+	int collisionFloor(int maxFall);
+	int collisionRight(int maxWall);
+	int collisionLeft(int maxWall);
+
+	bool collisionWalk();
+	bool collisionFullWall();
+	bool collisionHeadRight();
+	bool collisionHeadLeft();
+	void setAnimations();
+
+	void move(int x, int y);
+
+	void dig();
+	void bashLeft(int q);
+	void bashRight(int q);
+
+	void goDieExplosion();
+	void goDieFall();
+	void goBlocker();
+	void goDigger(LemmingState oldNewState);
+	void goFloaterRight();
+	void goFloaterLeft();
+	void goBasherRight();
+	void goBasherLeft();
+	void goBuilderRight();
+	void goBuilderLeft();
+	void goClimberRight();
+	void goClimberLeft();
+	void goWalkLeft();
+	void goWalkRight();
+	void goFallLeft();
+	void goFallRight();
+
+	void resetActionTime();
+
+	
+
+public:
+	enum LemmingStatus {
+		ALIVE_STATUS,	/* Siguen vivos				*/
+		EXITED_STATUS,	/* Han finalizado el nivel	*/
+		DEAD_STATUS		/* Han muerto				*/
+	};
+
+	/*
+	enum LemmingActions {
+		DIGGER,
+		BLOCKER,
+		BASHER,
+		CLIMBER,
+		FLOATER,
+		BOMBER,
+		EXPLODER
+	};
+	*/
+	
+private:
+	
 
 	enum LemmingAnims {		// 23 ANIMATIONS
 		WALKING_RIGHT, WALKING_LEFT,
