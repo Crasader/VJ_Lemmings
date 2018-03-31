@@ -141,7 +141,7 @@ Scene * PlayScene::changeState()
 	}
 	else if (bBuilder) {
 		manager->changeLemmingState(5);
-		bFloater = false;
+		bBuilder = false;
 	}
 	else if (bFloater) {
 		manager->changeLemmingState(6);
