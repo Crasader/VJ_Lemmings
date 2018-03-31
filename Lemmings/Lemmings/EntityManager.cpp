@@ -26,6 +26,10 @@ void EntityManager::update(int deltaTime){
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 		else if (paused) lemmings[lemmings.size() - 1].pause();
 	}
+
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) lemmings.erase(lemmings.begin() + i);
+	}
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].update(deltaTime);
 	}
