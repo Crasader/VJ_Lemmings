@@ -41,9 +41,9 @@ void Menu::init() {
 	titleTexture.setMagFilter(GL_NEAREST);
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
 
-	title = Sprite::createSprite(glm::vec2(float((446)*0.30f), float((154)*0.30f)), glm::vec2(1.f, 1.f),
+	title = Sprite::createSprite(glm::vec2(float((446)*0.50f), float((154)*0.50f)), glm::vec2(1.f, 1.f),
 		&titleTexture, &simpleTexProgram);
-	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
+	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 / 4), 0.0f));
 
 	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
 		&bgTexture, &simpleTexProgram);

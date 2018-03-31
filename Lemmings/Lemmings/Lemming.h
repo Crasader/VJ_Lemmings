@@ -32,6 +32,8 @@ public:
 	
 	glm::vec2 getPosition();
 
+	int getStatus();
+
 	
 private:
 	int collisionFloor(int maxFall);

@@ -715,6 +715,11 @@ glm::vec2 Lemming::getPosition() {
 	return sprite->position();
 }
 
+int Lemming::getStatus()
+{
+	return status;
+}
+
 int Lemming::collisionFloor(int maxFall) {
 	bool bContact = false;
 	int fall = -1;
