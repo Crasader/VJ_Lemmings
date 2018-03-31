@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm::vec2 &doorEndPosition, ShaderProgram &shaderProgram,VariableTexture *mask, string dorIni, string dorEnd) {
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram,VariableTexture *mask, string dorIni, string dorEnd) {
 	this->doorStartPosition = doorStartPosition;
 	this->doorEndPosition = doorEndPosition;
 	this->shaderProgram = shaderProgram;
@@ -9,6 +9,8 @@ EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm:
 	this->mask = mask;
 	this->dorIni = dorIni;
 	this->dorEnd = dorEnd;
+	this->doorSColor = doorStartType;
+	this->doorEColor = doorEndType;
 	init();
 }
 
@@ -33,13 +35,13 @@ void EntityManager::init() {
 	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetStart.setMinFilter(GL_NEAREST);
 	spritesheetStart.setMagFilter(GL_NEAREST);
-	doorStart = new DoorStart(DoorStart::BROWN);
+	doorStart = new DoorStart(doorSColor);
 	doorStart->init(doorStartPosition, shaderProgram, spritesheetStart);
 
 	spritesheetEnd.loadFromFile(dorEnd, TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetEnd.setMinFilter(GL_NEAREST);
 	spritesheetEnd.setMagFilter(GL_NEAREST);
-	doorEnd = new DoorEnd(DoorEnd::BLACK);
+	doorEnd = new DoorEnd(doorEColor);
 	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
 }
 
@@ -164,7 +166,7 @@ void EntityManager::killAllLemmings() {
 void EntityManager::checkMapLimits() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		glm::vec2 posBase = lemmings[i].getPosition() + glm::vec2(7, 16);
-		if (posBase.x < 0 || posBase.x > mask->width() || posBase.y < 0 || posBase.y > mask->height())
+		if (posBase.x < 0 || posBase.x > mask->width() || posBase.y < 0 || posBase.y > 160)
 			lemmings[i].kill();
 	}
 }

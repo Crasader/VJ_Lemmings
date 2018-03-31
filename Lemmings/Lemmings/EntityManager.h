@@ -13,7 +13,7 @@
 class EntityManager
 {
 public:
-	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm::vec2 &doorEndPositon, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
+	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPositon, int doorEndType, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();
 	void update(int deltaTime);
 	void render();
@@ -51,6 +51,9 @@ private:
 	string dorIni;
 	string dorEnd;
 	bool armagedon;
+
+	int doorSColor;
+	int doorEColor;
 
 	void init();	
 	void checkMapLimits();

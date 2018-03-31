@@ -24,7 +24,7 @@ void PlayScene::init()
 	
 	initShaders();
 
-	textProcessor = new TextProcessor("maps/Level1.txt");
+	textProcessor = new TextProcessor("maps/Level3.txt");
 
 	cameraX = textProcessor->camPos.x;
 	cameraY = textProcessor->camPos.y;
@@ -49,7 +49,7 @@ void PlayScene::init()
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(textProcessor->lemmings, textProcessor->startDoor, textProcessor->endDoor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
+	manager = new EntityManager(textProcessor->lemmings, textProcessor->startDoor, textProcessor->doorStartColor, textProcessor->endDoor, textProcessor->doorEndColor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	gui->init();
 }

@@ -30,6 +30,7 @@ public:
 	void resetSpeed();
 	void pause();
 	void kill();
+	void exit();
 	
 	glm::vec2 getPosition();
 

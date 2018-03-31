@@ -280,12 +280,11 @@ void Lemming::update(int deltaTime) {
 				// no action triggered -> continue bashing
 				else {
 					nextState = oldState;
-					if (actionTime % 16 > 10 && actionTime % 16 <= 15) {
+					if (actionTime % 16 > 10 && actionTime % 16 <= 15)
 						move(1, 0);
-					}
-					else if (actionTime % 16 > 0 && actionTime % 16 <= 6) {
+					else if (actionTime % 16 > 0 && actionTime % 16 <= 6) 
 						bashRight(actionTime % 16 + 2);
-					}
+	
 					if (actionTime % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
@@ -313,12 +312,11 @@ void Lemming::update(int deltaTime) {
 				// no action triggered -> continue bashing
 				else {
 					nextState = oldState;
-					if (actionTime % 16 > 10 && actionTime % 16 <= 15) {
+					if (actionTime % 16 > 10 && actionTime % 16 <= 15) 
 						move(-1, 0);
-					}
-					else if (actionTime % 16 > 0 && actionTime % 16 <= 6) {
+					else if (actionTime % 16 > 0 && actionTime % 16 <= 6) 
 						bashLeft(actionTime % 16 + 1);
-					}
+					
 					if (actionTime % 16 == 1) AudioEngine::instance().diggEffect();
 				}
 			}
@@ -411,12 +409,15 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case DYING_FALL_STATE:
-			if (actionTime > 8) status = DEAD_STATUS;
+			if (actionTime > 14) status = DEAD_STATUS;
 			break;
 
 		case DYING_EXPLOSION_STATE:
-			if (actionTime > 16) status = DEAD_STATUS;
+			if (actionTime > 14) status = DEAD_STATUS;
 			break;
+
+		case EXITING_STATE:
+			if (actionTime > 14) status = EXITED_STATUS;
 
 		default:
 			break;
@@ -458,8 +459,9 @@ void Lemming::goFloaterRight() {
 	resetActionTime();
 	move(0, 1);
 	sprite->changeAnimation(OPENING_UMBRELLA_RIGHT);
-	oldState = nextState = WALKING_RIGHT_STATE;
+	oldState = WALKING_RIGHT_STATE;
 	state = FLOATER_RIGHT_STATE;
+	nextState = FLOATER_TRIGGERED;
 	
 }
 
@@ -467,8 +469,9 @@ void Lemming::goFloaterLeft() {
 	resetActionTime();
 	move(0, 1);
 	sprite->changeAnimation(OPENING_UMBRELLA_LEFT);
-	nextState = oldState = WALKING_LEFT_STATE;
+	oldState = WALKING_LEFT_STATE;
 	state = FLOATER_LEFT_STATE;
+	nextState = FLOATER_TRIGGERED;
 
 }
 
@@ -626,9 +629,14 @@ void Lemming::pause() {
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, 0);
 }
 
-void Lemming::kill()
-{
+void Lemming::kill() {
 	status = DEAD_STATUS;
+}
+
+void Lemming::exit() {
+	resetActionTime();
+	sprite->changeAnimation(EXITING);
+	state = EXITING_STATE;
 }
 
 glm::vec2 Lemming::getPosition() {
