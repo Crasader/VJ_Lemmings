@@ -13,8 +13,8 @@ class TextProcessor
 {
 public:
 	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos;
-	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numDig, numStop, numBash, numbCli, numbFlo, numbBomb, numbBuild;
-	string levelName, path, mPath, doorStartColor, doorEndColor;
+	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numDig, numStop, numBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor;
+	string levelName, path, mPath;
 
 	TextProcessor(string path);
 	~TextProcessor();

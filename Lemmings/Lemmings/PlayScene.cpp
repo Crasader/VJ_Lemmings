@@ -22,12 +22,16 @@ void PlayScene::init()
 {
 	bExit = bMouseLeft = bMouseRight = bMoveCameraRight = bMoveCameraLeft = false;
 	bDigger = bBasher = bBlocker = bClimber = bBuilder = bFloater = bBomber = bExplosion = false;
-	cameraX = 120;
-	cameraY = 0;
+	
 	initShaders();
 
+	textProcessor = new TextProcessor("maps/Level1.txt");
+
+	cameraX = textProcessor->camPos.x;
+	cameraY = textProcessor->camPos.y;
+
 	
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(512.f, 256.f) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(textProcessor->width), float(textProcessor->height)) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	
 	/*
@@ -36,17 +40,17 @@ void PlayScene::init()
 	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile("images/maps/fun2.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile(textProcessor->path, TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile("images/maps/fun2_mask.png", TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile(textProcessor->mPath, TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(30, glm::vec2(180, 30),glm::vec2(180,60), simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
+	manager = new EntityManager(textProcessor->lemmings, textProcessor->startDoor, textProcessor->endDoor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	gui->init();
 }
@@ -189,8 +193,8 @@ Scene * PlayScene::changeState()
 		bMouseRight = false;
 	}
 	if (bMoveCameraRight || bMoveCameraLeft) {
-		if (bMoveCameraRight) cameraX += 2;
-		else if (bMoveCameraLeft) cameraX -= 2;
+		if (bMoveCameraRight && cameraX < (textProcessor->width - CAMERA_WIDTH)) cameraX += 2;
+		else if (bMoveCameraLeft && cameraX > 0) cameraX -= 2;
 		projection = glm::ortho(0.f+cameraX, float(CAMERA_WIDTH - 1)+cameraX, float(CAMERA_HEIGHT - 1), 0.f);
 		bMoveCameraRight = false;
 		bMoveCameraLeft = false;

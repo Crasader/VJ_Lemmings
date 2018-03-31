@@ -6,15 +6,16 @@
 #include "ShaderProgram.h"
 #include "MaskedTexturedQuad.h"
 #include "Game.h"
-#include "Lemming.h"
 #include "EntityManager.h"
 #include "InterfazUsuario.h"
 #include "Cursor.h"
+#include "TextProcessor.h"
 
 
 class InterfazUsuario;
 class DoorEnd;
 class DoorStart;
+class TextProcessor;
 
 class PlayScene :
 	public Scene
@@ -40,6 +41,8 @@ private:
 	InterfazUsuario* gui;
 	VariableTexture maskTexture;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
+	TextProcessor* textProcessor;
+
 	float currentTime;
 	glm::mat4 projection;
 	bool bExit, bMouseLeft, bMouseRight, bMoveCameraRight, bMoveCameraLeft;

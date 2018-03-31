@@ -105,12 +105,12 @@ void TextProcessor::processText()
 				else if (tag == "DSCOLOR") {
 					string var;
 					iss >> var;
-					copyStringToString(var, doorStartColor);
+					copyStringToVar(var, doorStartColor);
 				}
 				else if (tag == "DECOLOR") {
 					string var;
 					iss >> var;
-					copyStringToString(var, doorEndColor);
+					copyStringToVar(var, doorEndColor);
 				}
 				else if (tag == "LEMSTART") {
 					string var1, var2;
