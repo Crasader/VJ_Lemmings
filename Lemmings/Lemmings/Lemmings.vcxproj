@@ -33,6 +33,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="TextProcessor.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturedQuad.cpp" />
     <ClCompile Include="VariableTexture.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StartScene.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="TextProcessor.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturedQuad.h" />
     <ClInclude Include="VariableTexture.h" />

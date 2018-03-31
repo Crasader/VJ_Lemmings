@@ -12,7 +12,6 @@ EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm:
 	init();
 }
 
-
 EntityManager::~EntityManager()
 {
 }

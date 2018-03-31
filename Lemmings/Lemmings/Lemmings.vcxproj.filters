@@ -76,6 +76,7 @@
     <ClCompile Include="InterfazUsuario.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="TextProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -159,6 +160,7 @@
     <ClInclude Include="InterfazUsuario.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="TextProcessor.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
