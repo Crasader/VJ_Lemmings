@@ -45,7 +45,7 @@ private:
 
 	float currentTime;
 	glm::mat4 projection;
-	bool bExit, bMoveCameraRight, bMoveCameraLeft;
+	bool bExit, bMouseLeft, bMoveCameraRight, bMoveCameraLeft;
 	bool bBasher, bBlocker, bDigger, bBuilder, bClimber, bFloater, bBomber, bExplosion;
 	float cameraX, cameraY;
 	EntityManager* manager;
