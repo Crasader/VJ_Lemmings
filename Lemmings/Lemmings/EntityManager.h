@@ -51,6 +51,8 @@ private:
 	string dorIni;
 	string dorEnd;
 	bool armagedon;
+
 	void init();	
+	void checkMapLimits();
 };
 

@@ -12,8 +12,35 @@ EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, glm:
 	init();
 }
 
-EntityManager::~EntityManager()
-{
+EntityManager::~EntityManager() {
+}
+
+void EntityManager::init() {
+	spritesheet.loadFromFile("images/lemmings_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.setMinFilter(GL_NEAREST);
+	spritesheet.setMagFilter(GL_NEAREST);
+	sceneTime = 0;
+	lastLemmingCreation = 0;
+	lemmings.push_back(Lemming());
+	lemmings[0].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
+	numLemmings--;
+
+	doubleSpeed = false;
+	paused = false;
+	spawnFrequency = 0;
+	armagedon = false;
+
+	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetStart.setMinFilter(GL_NEAREST);
+	spritesheetStart.setMagFilter(GL_NEAREST);
+	doorStart = new DoorStart(DoorStart::BROWN);
+	doorStart->init(doorStartPosition, shaderProgram, spritesheetStart);
+
+	spritesheetEnd.loadFromFile(dorEnd, TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetEnd.setMinFilter(GL_NEAREST);
+	spritesheetEnd.setMagFilter(GL_NEAREST);
+	doorEnd = new DoorEnd(DoorEnd::BLACK);
+	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
 }
 
 void EntityManager::update(int deltaTime){
@@ -22,10 +49,12 @@ void EntityManager::update(int deltaTime){
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
-		lemmings[lemmings.size()-1].init(doorStartPosition, shaderProgram, spritesheet,mask);
+		lemmings[lemmings.size()-1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet,mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
-		else if (paused) lemmings[lemmings.size() - 1].pause();
+		//else if (paused) lemmings[lemmings.size() - 1].pause();
 	}
+
+	checkMapLimits();
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) lemmings.erase(lemmings.begin() + i);
@@ -48,34 +77,7 @@ void EntityManager::render() {
 	}
 }
 
-void EntityManager::init() {
-	spritesheet.loadFromFile("images/lemmings_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheet.setMinFilter(GL_NEAREST);
-	spritesheet.setMagFilter(GL_NEAREST);
-	sceneTime = 0;
-	lastLemmingCreation = 0;
-	lemmings.push_back(Lemming());
-	lemmings[0].init(doorStartPosition, shaderProgram,spritesheet,mask);
-	numLemmings--;
 
-	doubleSpeed = false;
-	paused = false;
-	spawnFrequency = 0;
-	armagedon = false;
-
-	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetStart.setMinFilter(GL_NEAREST);
-	spritesheetStart.setMagFilter(GL_NEAREST);
-	doorStart = new DoorStart(DoorStart::BROWN);
-	doorStart->init(doorStartPosition, shaderProgram, spritesheetStart);
-
-	spritesheetEnd.loadFromFile(dorEnd, TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetEnd.setMinFilter(GL_NEAREST);
-	spritesheetEnd.setMagFilter(GL_NEAREST);
-	doorEnd = new DoorEnd(DoorEnd::BLACK);
-	doorEnd->init(glm::vec2(260, 30), shaderProgram, spritesheetEnd);
-	
-}
 
 void EntityManager::changeLemmingState(int x) {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
@@ -156,5 +158,13 @@ void EntityManager::killAllLemmings() {
 	armagedon = true;
 	for (int i = 0; i < lemmings.size(); ++i) {
 		lemmings[i].changeState(8);
+	}
+}
+
+void EntityManager::checkMapLimits() {
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		glm::vec2 posBase = lemmings[i].getPosition() + glm::vec2(7, 16);
+		if (posBase.x < 0 || posBase.x > mask->width() || posBase.y < 0 || posBase.y > mask->height())
+			lemmings[i].kill();
 	}
 }
