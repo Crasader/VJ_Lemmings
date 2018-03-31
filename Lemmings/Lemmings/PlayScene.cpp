@@ -164,8 +164,7 @@ Scene * PlayScene::changeState()
 		else if (buttonPressed == 1) effect = 2;
 		else if (buttonPressed == 2) effect = 4;
 		else if (buttonPressed == 3) effect = 1;
-		// implementar cuando este el floater
-		//else if (buttonPressed == 4) effect = -1;
+		else if (buttonPressed == 4) effect = 6;
 		else if (buttonPressed == 5) {
 			manager->increaseSpawnTime();
 			gui->decreaseSpawnRate();
@@ -176,6 +175,7 @@ Scene * PlayScene::changeState()
 		}
 		else if (buttonPressed == 7) doubleSceneSpeed();
 		else if (buttonPressed == 8) manager->pause();
+		else if (buttonPressed == 9) manager->killAllLemmings();
 		if(effect != -1)effectForLemming(x, y, effect);
 
 		

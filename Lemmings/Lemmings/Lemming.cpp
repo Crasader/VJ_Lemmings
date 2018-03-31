@@ -660,6 +660,9 @@ void Lemming::doubleSpeed()
 	sprite->setAnimationSpeed(BUILDER_LEFT, speed * 2);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed * 2);
 	sprite->setAnimationSpeed(EXITING, speed * 2);
+	sprite->setAnimationSpeed(FLOATER_RIGHT, speed*2);
+	sprite->setAnimationSpeed(FLOATER_LEFT, speed*2);
+	sprite->setAnimationSpeed(DYING_FALL_STATE, speed * 2);
 }
 
 void Lemming::resetSpeed()
@@ -680,12 +683,17 @@ void Lemming::resetSpeed()
 	sprite->setAnimationSpeed(BUILDER_LEFT, speed);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed);
 	sprite->setAnimationSpeed(EXITING, speed);
+	sprite->setAnimationSpeed(FLOATER_RIGHT, speed);
+	sprite->setAnimationSpeed(FLOATER_LEFT, speed);
+	sprite->setAnimationSpeed(DYING_FALL_STATE, speed);
 }
 
 void Lemming::pause()
 {
 	sprite->setAnimationSpeed(WALKING_RIGHT, 0);
 	sprite->setAnimationSpeed(WALKING_LEFT, 0);
+	sprite->setAnimationSpeed(FALLING_RIGHT, 0);
+	sprite->setAnimationSpeed(FALLING_LEFT, 0);
 	sprite->setAnimationSpeed(DIGGER, 0);
 	sprite->setAnimationSpeed(BLOCKER, 0);
 	sprite->setAnimationSpeed(BASHER_RIGHT, 0);
@@ -698,6 +706,9 @@ void Lemming::pause()
 	sprite->setAnimationSpeed(BUILDER_LEFT, 0);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, 0);
 	sprite->setAnimationSpeed(EXITING, 0);
+	sprite->setAnimationSpeed(FLOATER_RIGHT, 0);
+	sprite->setAnimationSpeed(FLOATER_LEFT, 0);
+	sprite->setAnimationSpeed(DYING_FALL_STATE, 0);
 }
 
 glm::vec2 Lemming::getPosition() {

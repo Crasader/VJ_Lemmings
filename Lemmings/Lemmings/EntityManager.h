@@ -27,6 +27,8 @@ public:
 	void increaseSpawnTime();
 	void decreaseSpawnTime();
 
+	void killAllLemmings();
+
 
 private:
 	

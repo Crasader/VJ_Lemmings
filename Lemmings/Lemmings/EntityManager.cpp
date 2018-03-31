@@ -103,7 +103,7 @@ bool EntityManager::lemmingInCursor(int mouseX, int mouseY) {
 
 bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY) {
 
-	if (mouseX >= lemmingTopLeftPos.x  && mouseX <= (lemmingTopLeftPos.x + 16) && mouseY >= lemmingTopLeftPos.y && mouseY <= (lemmingTopLeftPos.y + 16)) return true;
+	if (mouseX >= lemmingTopLeftPos.x  && mouseX <= (lemmingTopLeftPos.x + 16) && mouseY >= lemmingTopLeftPos.y && mouseY <= (lemmingTopLeftPos.y + 20)) return true;
 	else return false;
 
 }
@@ -149,3 +149,8 @@ void EntityManager::decreaseSpawnTime(){
 	if (spawnFrequency > -4250) spawnFrequency -= 85;
 }
 
+void EntityManager::killAllLemmings() {
+	for (int i = 0; i < lemmings.size(); ++i) {
+		lemmings[i].changeState(8);
+	}
+}
