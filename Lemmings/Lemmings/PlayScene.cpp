@@ -156,7 +156,7 @@ Scene * PlayScene::changeState()
 		bExplosion = false;
 	}
 	if (bMouseLeft) {
-		buttonPressed = gui->getButtonPressed();
+		int buttonPressed1 = gui->getButtonPressed();
 		int x = 0, y = 0;
 		//eraseMask(x, y);
 		int effect = -1;
@@ -165,11 +165,11 @@ Scene * PlayScene::changeState()
 		else if (buttonPressed == 2) effect = 4;
 		else if (buttonPressed == 3) effect = 1;
 		else if (buttonPressed == 4) effect = 6;
-		else if (buttonPressed == 5) {
+		else if (buttonPressed1 == 5) {
 			manager->increaseSpawnTime();
 			gui->decreaseSpawnRate();
 		}
-		else if (buttonPressed == 6) {
+		else if (buttonPressed1 == 6) {
 			gui->increaseSpawnRate();
 			manager->decreaseSpawnTime();
 		}
