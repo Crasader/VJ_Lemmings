@@ -11,8 +11,7 @@ PlayScene::PlayScene() {
 	map = NULL;
 }
 
-PlayScene::~PlayScene()
-{
+PlayScene::~PlayScene() {
 	if (map != NULL) {
 		delete map;
 	}
@@ -20,7 +19,7 @@ PlayScene::~PlayScene()
 
 void PlayScene::init()
 {
-	bExit = bMouseLeft = bMouseRight = bMoveCameraRight = bMoveCameraLeft = false;
+	bExit = bMouseLeft = bMoveCameraRight = bMoveCameraLeft = false;
 	bDigger = bBasher = bBlocker = bClimber = bBuilder = bFloater = bBomber = bExplosion = false;
 	
 	initShaders();
@@ -90,7 +89,6 @@ void PlayScene::update(int deltaTime)
 	if (x < 60) bMoveCameraLeft = true;
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
-	if (Game::instance().getRightMousePressed()) bMouseRight = true;
 	gui->update(x/3,  y/3);
 
 }
@@ -185,13 +183,7 @@ Scene * PlayScene::changeState()
 		
 		bMouseLeft = false;
 	}
-	if (bMouseRight) {
-		int x = 0, y = 0;
-		Game::instance().getMousePosition(x, y);
-		//applyMask(x, y);
-		
-		bMouseRight = false;
-	}
+	
 	if (bMoveCameraRight || bMoveCameraLeft) {
 		if (bMoveCameraRight && cameraX < (textProcessor->width - CAMERA_WIDTH)) cameraX += 2;
 		else if (bMoveCameraLeft && cameraX > 0) cameraX -= 2;
