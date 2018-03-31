@@ -43,7 +43,7 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	bool bExit, bMouseLeft, bMouseRight, bMoveCameraRight, bMoveCameraLeft;
-	bool bBasher, bBlocker, bDigger, bBuilder, bClimber;
+	bool bBasher, bBlocker, bDigger, bBuilder, bClimber, bFloater, bBomber, bExplosion;
 	float cameraX, cameraY;
 	EntityManager* manager;
 	int buttonPressed;

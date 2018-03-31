@@ -53,8 +53,8 @@ void DoorStart::setAnimations() {
 	sprite->addKeyframe(CLOSED, glm::vec2(xSpriteSheet, 0.f));
 
 	sprite->setAnimationSpeed(OPENING, speedDoorStart);
-	for (int i = 0; i<8; i++)
-		sprite->addKeyframe(OPENING, glm::vec2(xSpriteSheet, 0.1 + (float(i) / 10)));
+	for (int i = 1; i<9; i++)
+		sprite->addKeyframe(OPENING, glm::vec2(xSpriteSheet, float(i) / 10));
 
 	sprite->setAnimationSpeed(OPEN, 0);
 	sprite->addKeyframe(OPEN, glm::vec2(xSpriteSheet, 0.9f));

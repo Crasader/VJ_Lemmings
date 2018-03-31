@@ -21,7 +21,7 @@ PlayScene::~PlayScene()
 void PlayScene::init()
 {
 	bExit = bMouseLeft = bMouseRight = bMoveCameraRight = bMoveCameraLeft = false;
-	bDigger = bBasher = bBlocker = bClimber = false;
+	bDigger = bBasher = bBlocker = bClimber = bBuilder = bFloater = bBomber = bExplosion = false;
 	cameraX = 120;
 	cameraY = 0;
 	initShaders();
@@ -36,10 +36,10 @@ void PlayScene::init()
 	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile("images/maps/fun4.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile("images/maps/fun2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile("images/maps/fun4_mask.png", TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile("images/maps/fun2_mask.png", TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
@@ -67,6 +67,11 @@ void PlayScene::update(int deltaTime)
 	if (Game::instance().getKey('2')) bBlocker = true;
 	if (Game::instance().getKey('3')) bBasher = true;
 	if (Game::instance().getKey('4')) bClimber = true;
+	if (Game::instance().getKey('5')) bBuilder = true;
+	if (Game::instance().getKey('6')) bFloater = true;
+	if (Game::instance().getKey('7')) bBomber = true;
+	if (Game::instance().getKey('8')) bExplosion = true;
+
 
 
 	int x = 0, y = 0;
@@ -133,6 +138,22 @@ Scene * PlayScene::changeState()
 	else if (bClimber) {
 		manager->changeLemmingState(4);
 		bClimber = false;
+	}
+	else if (bBuilder) {
+		manager->changeLemmingState(5);
+		bFloater = false;
+	}
+	else if (bFloater) {
+		manager->changeLemmingState(6);
+		bFloater = false;
+	}
+	else if (bBomber) {
+		manager->changeLemmingState(7);
+		bBomber = false;
+	}
+	else if (bExplosion) {
+		manager->changeLemmingState(8);
+		bExplosion = false;
 	}
 	if (bMouseLeft) {
 		buttonPressed = gui->getButtonPressed();

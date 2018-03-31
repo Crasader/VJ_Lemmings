@@ -20,6 +20,7 @@ public:
 	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet,VariableTexture *mask);
 	
 	void update(int deltaTime);
+	
 	void render();
 	
 	
@@ -43,11 +44,13 @@ private:
 	bool collisionHeadLeft();
 	void setAnimations();
 
-	void move(float x, float y);
+	void move(int x, int y);
 
 	void dig();
 	void bashLeft(int q);
 	void bashRight(int q);
+
+	void goDieExplosion();
 
 	
 
@@ -57,6 +60,18 @@ public:
 		EXITED_STATUS,	/* Han finalizado el nivel	*/
 		DEAD_STATUS		/* Han muerto				*/
 	};
+
+	/*
+	enum LemmingActions {
+		DIGGER,
+		BLOCKER,
+		BASHER,
+		CLIMBER,
+		FLOATER,
+		BOMBER,
+		EXPLODER
+	};
+	*/
 	
 private:
 	enum LemmingState {
@@ -78,6 +93,12 @@ private:
 		BUILDER_RIGHT_STATE, BUILDER_LEFT_STATE,
 		BUILDER_TRIGGERED,
 
+		FLOATER_RIGHT_STATE, FLOATER_LEFT_STATE,
+		FLOATER_TRIGGERED,
+
+		BOMBER_RIGHT_STATE, BOMBER_LEFT_STATE,
+		BOMBER_TRIGGERED,
+
 		EXITING_STATE,
 
 		DYING_EXPLOSION_STATE, DYING_EXPLOSION_TRIGGERED,
@@ -85,7 +106,7 @@ private:
 		DYING_FALL_STATE
 	};
 
-	enum LemmingAnims {		// 19 ANIMATIONS
+	enum LemmingAnims {		// 23 ANIMATIONS
 		WALKING_RIGHT, WALKING_LEFT,
 		FALLING_RIGHT, FALLING_LEFT,
 		BLOCKER,
@@ -97,15 +118,17 @@ private:
 		BUILDER_STOP_RIGHT, BUILDER_STOP_LEFT,
 		EXITING,
 		DIE_EXPLOSION,
-		DIE_FALL
+		DIE_FALL,
+		OPENING_UMBRELLA_RIGHT, FLOATER_RIGHT,
+		OPENING_UMBRELLA_LEFT, FLOATER_LEFT
 	};
 
 	LemmingState oldState, state, nextState;
 	//Texture spritesheet1;
 	Sprite *sprite;
 	VariableTexture *mask;
-
-	int bash_time, dig_time, climb_time;
+	int status;
+	int actionTime;
 
 };
 
