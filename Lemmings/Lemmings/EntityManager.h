@@ -26,7 +26,6 @@ public:
 	void pause();
 	void increaseSpawnTime();
 	void decreaseSpawnTime();
-
 	void killAllLemmings();
 
 
@@ -51,6 +50,7 @@ private:
 	Texture spritesheetEnd;
 	string dorIni;
 	string dorEnd;
+	bool armagedon;
 	void init();	
 };
 

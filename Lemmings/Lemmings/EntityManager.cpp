@@ -18,7 +18,7 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(int deltaTime){
 	sceneTime += deltaTime;
-	if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused) {
+	if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
@@ -61,7 +61,7 @@ void EntityManager::init() {
 	doubleSpeed = false;
 	paused = false;
 	spawnFrequency = 0;
-
+	armagedon = false;
 
 	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetStart.setMinFilter(GL_NEAREST);
@@ -153,6 +153,7 @@ void EntityManager::decreaseSpawnTime(){
 }
 
 void EntityManager::killAllLemmings() {
+	armagedon = true;
 	for (int i = 0; i < lemmings.size(); ++i) {
 		lemmings[i].changeState(8);
 	}
