@@ -106,6 +106,15 @@ void InterfazUsuario::update(int mouseX, int mouseY)
 			float diff = mouseX - topMiniMap;
 			*camX = diff / scaleFactor;
 		}
+		buttons[0]->update(to_string(basher));
+		buttons[1]->update(to_string(blocker));
+		buttons[2]->update(to_string(climber));
+		buttons[3]->update(to_string(digger));
+		buttons[4]->update(to_string(floater));
+		buttons[5]->update(to_string(bomber));
+		buttons[6]->update(to_string(builder));
+		
+		
 	}
 }
 

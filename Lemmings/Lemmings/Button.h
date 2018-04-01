@@ -17,7 +17,7 @@ public:
 	Button(glm::ivec2 size, glm::vec2 position, string texture, string number);
 	~Button();
 	void render();
-	void update(string number, bool pressed);
+	void update(string number);
 	bool checkColision(int mouseX, int mouseY);
 	void select();
 	void deselect();

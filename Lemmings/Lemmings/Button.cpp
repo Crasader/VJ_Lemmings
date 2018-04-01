@@ -76,8 +76,8 @@ void Button::initShader()
 
 }
 
-void Button::update(string number, bool pressed) {
-	//this->number = number;
+void Button::update(string number) {
+	this->number = number;
 	//this->pressed = pressed;
 }
 
