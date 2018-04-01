@@ -13,7 +13,7 @@ InterfazUsuario::~InterfazUsuario()
 {
 }
 
-void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture, int camX, int camY)
+void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture, float & camX, float & camY)
 {	
 	initShader();
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
@@ -39,8 +39,8 @@ void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture
 	floater = 0;
 	bomber = 0;
 	builder = 0;
-	this->camX = camX;
-	this->camY = camY;
+	this->camX = &camX;
+	this->camY = &camY;
 	if (!info.init("fonts/upheavtt.ttf"))
 		cout << "Could not load font!!!" << endl;
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
@@ -50,6 +50,12 @@ void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture
 	frame.setMagFilter(GL_NEAREST);
 	marco = Sprite::createSprite(glm::ivec2(64,32), glm::vec2(1, 1), &frame, &simpleTexProgram);
 	marco->setPosition(glm::vec2(CAMERA_WIDTH - 64, CAMERA_HEIGHT - 32));
+	float scaleFactor = ((float)64 / (float)TextProcessor::instance().width);
+	selector.loadFromFile("images/selectorMinimapa.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	selector.setMinFilter(GL_NEAREST);
+	selector.setMagFilter(GL_NEAREST);
+	camSelector = Sprite::createSprite(glm::ivec2(320 * scaleFactor, 32), glm::vec2(1, 1), &selector, &simpleTexProgram);
+	
 }
 
 void InterfazUsuario::render()
@@ -72,6 +78,8 @@ void InterfazUsuario::render()
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	
 	marco->render();
+	camSelector->setPosition(glm::vec2(CAMERA_WIDTH - (TextProcessor::instance().width - *camX)*scaleFactor, CAMERA_HEIGHT - 32));
+	camSelector->render();
 	renderButtons();
 	info.render("  OUT: " + to_string(out) + "  IN: " + to_string(in) + "  TIME: " + to_string(time), glm::vec2((CAMERA_WIDTH/ 2), CAMERA_HEIGHT*3 - 35*3), 35, colorGreen);
 }

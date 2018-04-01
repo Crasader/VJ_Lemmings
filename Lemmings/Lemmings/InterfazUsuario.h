@@ -25,7 +25,7 @@ class InterfazUsuario
 public:
 	InterfazUsuario();
 	~InterfazUsuario();
-	void init(Texture & colorTexture, VariableTexture & maskTexture,int camX, int camY);
+	void init(Texture & colorTexture, VariableTexture & maskTexture,float & camX, float & camY);
 	void render();
 	void update(int mouseX, int mouseY);
 	void setTime(int time);
@@ -55,8 +55,9 @@ private:
 	int blocker;
 	int bomber;
 	int builder;
-	int camX, camY;
-	Texture colorTexture, frame;
+	float  * camX;
+	float * camY;
+	Texture colorTexture, frame,selector;
 	VariableTexture maskTexture;
 	MaskedTexturedQuad* map;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
@@ -64,6 +65,7 @@ private:
 	glm::mat4 projection;
 	vector<Button*> buttons;
 	Sprite * marco;
+	Sprite * camSelector;
 	void placeButtons();
 	void renderButtons();
 	void initShader();
