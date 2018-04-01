@@ -41,8 +41,7 @@ private:
 	InterfazUsuario* gui;
 	VariableTexture maskTexture;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
-	TextProcessor* textProcessor;
-
+	
 	float currentTime;
 	glm::mat4 projection;
 	bool bExit, bMouseLeft, bMoveCameraRight, bMoveCameraLeft;

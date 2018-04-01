@@ -24,13 +24,13 @@ void PlayScene::init()
 	
 	initShaders();
 
-	textProcessor = new TextProcessor("maps/Level3.txt");
+	TextProcessor::instance().loadFileAndProcess("maps/Level3.txt");
 
-	cameraX = textProcessor->camPos.x;
-	cameraY = textProcessor->camPos.y;
+	cameraX = TextProcessor::instance().camPos.x;
+	cameraY = TextProcessor::instance().camPos.y;
 
 	
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(textProcessor->width), float(textProcessor->height)) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	
 	/*
@@ -39,19 +39,20 @@ void PlayScene::init()
 	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile(textProcessor->path, TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.loadFromFile(TextProcessor::instance().path, TEXTURE_PIXEL_FORMAT_RGBA);
 	colorTexture.setMinFilter(GL_NEAREST);
 	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile(textProcessor->mPath, TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.loadFromFile(TextProcessor::instance().mPath, TEXTURE_PIXEL_FORMAT_L);
 	maskTexture.setMinFilter(GL_NEAREST);
 	maskTexture.setMagFilter(GL_NEAREST);
 
 	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 
-	manager = new EntityManager(textProcessor->lemmings, textProcessor->startDoor, textProcessor->doorStartColor, textProcessor->endDoor, textProcessor->doorEndColor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
+	manager = new EntityManager(TextProcessor::instance().lemmings, TextProcessor::instance().startDoor, TextProcessor::instance().doorStartColor, TextProcessor::instance().endDoor,
+		TextProcessor::instance().doorEndColor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
-	gui->init();
+	gui->init(colorTexture, maskTexture,cameraX,cameraY);
 }
 
 void PlayScene::update(int deltaTime)
@@ -192,7 +193,7 @@ Scene * PlayScene::changeState()
 	}
 	
 	if (bMoveCameraRight || bMoveCameraLeft) {
-		if (bMoveCameraRight && cameraX < (textProcessor->width - CAMERA_WIDTH)) cameraX += 2;
+		if (bMoveCameraRight && cameraX < (TextProcessor::instance().width - CAMERA_WIDTH)) cameraX += 2;
 		else if (bMoveCameraLeft && cameraX > 0) cameraX -= 2;
 		projection = glm::ortho(0.f+cameraX, float(CAMERA_WIDTH - 1)+cameraX, float(CAMERA_HEIGHT - 1), 0.f);
 		bMoveCameraRight = false;

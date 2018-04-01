@@ -2,8 +2,17 @@
 
 
 
-TextProcessor::TextProcessor(string path)
+TextProcessor::TextProcessor()
 {
+	
+}
+
+
+TextProcessor::~TextProcessor()
+{
+}
+
+void TextProcessor::loadFileAndProcess(string path) {
 	try {
 		file.open(path);
 		processText();
@@ -11,11 +20,6 @@ TextProcessor::TextProcessor(string path)
 	catch (int e) {
 		cout << "unable to open file." << endl;
 	}
-}
-
-
-TextProcessor::~TextProcessor()
-{
 }
 
 void TextProcessor::processText()

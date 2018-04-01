@@ -13,8 +13,20 @@ InterfazUsuario::~InterfazUsuario()
 {
 }
 
-void InterfazUsuario::init()
-{
+void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture, int camX, int camY)
+{	
+	initShader();
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
+	/*
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(CAMERA_WIDTH), float(CAMERA_HEIGHT)) };
+	glm::vec2 texCoords[2] = { glm::vec2(120.f / 512.0, 0.f), glm::vec2((120.f + 320.f) / 512.0f, 160.f / 256.0f) };
+	*/
+
+	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
+	this->colorTexture = colorTexture;
+	this->maskTexture = maskTexture;
 	out = 0;
 	in = 0;
 	buttonSelected = -1;
@@ -27,16 +39,38 @@ void InterfazUsuario::init()
 	floater = 0;
 	bomber = 0;
 	builder = 0;
-
-	initShader();
+	this->camX = camX;
+	this->camY = camY;
 	if (!info.init("fonts/upheavtt.ttf"))
 		cout << "Could not load font!!!" << endl;
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	placeButtons();
+	frame.loadFromFile("images/marcoMinimapa.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	frame.setMinFilter(GL_NEAREST);
+	frame.setMagFilter(GL_NEAREST);
+	marco = Sprite::createSprite(glm::ivec2(64,32), glm::vec2(1, 1), &frame, &simpleTexProgram);
+	marco->setPosition(glm::vec2(CAMERA_WIDTH - 64, CAMERA_HEIGHT - 32));
 }
 
 void InterfazUsuario::render()
 {
+	glm::mat4 modelview;
+	maskedTexProgram.use();
+	maskedTexProgram.setUniformMatrix4f("projection", projection);
+	maskedTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	modelview = glm::translate(modelview, glm::vec3(CAMERA_WIDTH - 64, CAMERA_HEIGHT- (48 / 1.5) + 6, 0));
+	modelview = glm::scale(modelview, glm::vec3(0.12, 0.12, 1));
+	maskedTexProgram.setUniformMatrix4f("modelview", modelview);
+	map->render(maskedTexProgram, colorTexture, maskTexture);
+	
+	modelview = glm::mat4(1.0f);
+	simpleTexProgram.use();
+	simpleTexProgram.setUniformMatrix4f("projection", projection);
+	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
+	
+	marco->render();
 	renderButtons();
 	info.render("  OUT: " + to_string(out) + "  IN: " + to_string(in) + "  TIME: " + to_string(time), glm::vec2((CAMERA_WIDTH/ 2), CAMERA_HEIGHT*3 - 35*3), 35, colorGreen);
 }
@@ -123,6 +157,30 @@ void InterfazUsuario::initShader()
 		cout << "" << simpleTexProgram.log() << endl << endl;
 	}
 	simpleTexProgram.bindFragmentOutput("outColor");
+	vShader.free();
+	fShader.free();
+	vShader.initFromFile(VERTEX_SHADER, "shaders/maskedTexture.vert");
+	if (!vShader.isCompiled())
+	{
+		cout << "Vertex Shader Error" << endl;
+		cout << "" << vShader.log() << endl << endl;
+	}
+	fShader.initFromFile(FRAGMENT_SHADER, "shaders/maskedTexture.frag");
+	if (!fShader.isCompiled())
+	{
+		cout << "Fragment Shader Error" << endl;
+		cout << "" << fShader.log() << endl << endl;
+	}
+	maskedTexProgram.init();
+	maskedTexProgram.addShader(vShader);
+	maskedTexProgram.addShader(fShader);
+	maskedTexProgram.link();
+	if (!maskedTexProgram.isLinked())
+	{
+		cout << "Shader Linking Error" << endl;
+		cout << "" << maskedTexProgram.log() << endl << endl;
+	}
+	maskedTexProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
 }

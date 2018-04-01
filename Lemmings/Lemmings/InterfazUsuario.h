@@ -15,13 +15,17 @@
 #include <glm/glm.hpp>
 #include "AnimKeyframes.h"
 #include "AudioEngine.h"
+#include "Texture.h"
+#include "VariableTexture.h"
+#include "MaskedTexturedQuad.h"
+#include "Sprite.h"
 
 class InterfazUsuario
 {
 public:
 	InterfazUsuario();
 	~InterfazUsuario();
-	void init();
+	void init(Texture & colorTexture, VariableTexture & maskTexture,int camX, int camY);
 	void render();
 	void update(int mouseX, int mouseY);
 	void setTime(int time);
@@ -51,10 +55,15 @@ private:
 	int blocker;
 	int bomber;
 	int builder;
-	ShaderProgram simpleTexProgram;
+	int camX, camY;
+	Texture colorTexture, frame;
+	VariableTexture maskTexture;
+	MaskedTexturedQuad* map;
+	ShaderProgram simpleTexProgram, maskedTexProgram;
 	Text info;
 	glm::mat4 projection;
 	vector<Button*> buttons;
+	Sprite * marco;
 	void placeButtons();
 	void renderButtons();
 	void initShader();
