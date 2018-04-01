@@ -15,7 +15,7 @@ class EntityManager
 public:
 	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPositon, int doorEndType, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();
-	void update(int deltaTime);
+	void update(int deltaTime, int buttonPressed);
 	void render();
 	void changeLemmingState(int x);
 	void clickManager(int mouseX, int mouseY, int state);

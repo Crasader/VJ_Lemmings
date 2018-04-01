@@ -25,6 +25,7 @@ void InterfazUsuario::init()
 	basher = 0;
 	digger = 0;
 	floater = 0;
+	bomber = 0;
 
 	initShader();
 	if (!info.init("fonts/upheavtt.ttf"))
@@ -44,10 +45,10 @@ void InterfazUsuario::update(int mouseX, int mouseY)
 	if (Game::instance().getLeftMousePressed()) {
 		for (int i = 0; i < (int)buttons.size(); ++i) {
 			if (buttons[i]->checkColision(mouseX, mouseY)) {
-				if (buttonSelected != i || buttonSelected == 5 || buttonSelected == 6) {
+				if (buttonSelected != i || buttonSelected == 6 || buttonSelected == 7) {
 					if (buttonSelected >= 0) buttons[buttonSelected]->deselect();
 					buttonSelected = i;
-					if (buttonSelected != 5 && buttonSelected != 6) {
+					if (buttonSelected != 6 && buttonSelected != 7) {
 						buttons[buttonSelected]->select();
 						AudioEngine::instance().buttonEffect();
 					}
@@ -77,14 +78,14 @@ void InterfazUsuario::setClimbers(int climber)
 void InterfazUsuario::increaseSpawnRate()
 {
 	this->spawnRate++;
-	buttons[6]->increaseText();
-	buttons[5]->decreaseText();
+	buttons[7]->increaseText();
+	buttons[6]->decreaseText();
 }
 
 void InterfazUsuario::decreaseSpawnRate() {
 	this->spawnRate--;
-	buttons[5]->increaseText();
-	buttons[6]->decreaseText();
+	buttons[6]->increaseText();
+	buttons[7]->decreaseText();
 }
 
 void InterfazUsuario::setBlockers(int bloker) {
@@ -136,7 +137,9 @@ void InterfazUsuario::placeButtons()
 	++i;
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Digger.png", to_string(digger)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Floater.png", to_string(floater)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Floater.png", to_string(floater))); 
+	++i;
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Bomber.png", to_string(bomber)));
 	++i;
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Decrease_Release_Rate.png", to_string(50 - spawnRate)));
 	++i;
@@ -164,6 +167,11 @@ void InterfazUsuario::setLemmingsOut(int out) {
 
 void InterfazUsuario::setLemmingsIn(int in) {
 	this->in = in;
+}
+
+void InterfazUsuario::setBomber(int bomber)
+{
+	this->bomber = bomber;
 }
 
 int InterfazUsuario::getButtonPressed() {

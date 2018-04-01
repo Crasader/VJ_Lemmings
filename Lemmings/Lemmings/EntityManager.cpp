@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram,VariableTexture *mask, string dorIni, string dorEnd) {
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPositon, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *mask, string dorIni, string dorEnd) {
 	this->doorStartPosition = doorStartPosition;
 	this->doorEndPosition = doorEndPosition;
 	this->shaderProgram = shaderProgram;
@@ -23,10 +23,6 @@ void EntityManager::init() {
 	spritesheet.setMagFilter(GL_NEAREST);
 	sceneTime = 0;
 	lastLemmingCreation = 0;
-	lemmings.push_back(Lemming());
-	lemmings[0].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
-	numLemmings--;
-
 	doubleSpeed = false;
 	paused = false;
 	spawnFrequency = 0;
@@ -45,15 +41,22 @@ void EntityManager::init() {
 	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
 }
 
-void EntityManager::update(int deltaTime){
+void EntityManager::update(int deltaTime, int buttonPressed){
 	sceneTime += deltaTime;
-	if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon) {
+	
+	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armagedon && buttonPressed == 8) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
-		lemmings[lemmings.size()-1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet,mask);
+		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
-		//else if (paused) lemmings[lemmings.size() - 1].pause();
+	}
+	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon && buttonPressed != 8) {
+		lastLemmingCreation = sceneTime;
+		numLemmings--;
+		lemmings.push_back(Lemming());
+		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
+		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 	}
 
 	checkMapLimits();
@@ -78,8 +81,6 @@ void EntityManager::render() {
 		lemmings[i].render();
 	}
 }
-
-
 
 void EntityManager::changeLemmingState(int x) {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
@@ -158,7 +159,7 @@ void EntityManager::decreaseSpawnTime(){
 
 void EntityManager::killAllLemmings() {
 	armagedon = true;
-	for (int i = 0; i < lemmings.size(); ++i) {
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].changeState(8);
 	}
 }

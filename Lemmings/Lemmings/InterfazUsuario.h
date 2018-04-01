@@ -33,6 +33,7 @@ public:
 	void setBashers(int basher);
 	void setLemmingsOut(int out);
 	void setLemmingsIn(int in);
+	void setBomber(int bomber);
 	int getButtonPressed();
 private:
 
@@ -48,6 +49,7 @@ private:
 	int mouseX;
 	int mouseY;
 	int blocker;
+	int bomber;
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;
