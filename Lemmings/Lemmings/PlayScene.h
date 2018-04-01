@@ -33,6 +33,7 @@ private:
 	void eraseMask(int mouseX, int mouseY);
 	void applyMask(int mouseX, int mouseY);
 	void effectForLemming(int mouseX, int mouseY, int effect);
+	void setGUI();
 
 
 private:
@@ -51,6 +52,8 @@ private:
 	int buttonPressed;
 	void doubleSceneSpeed();
 	void decreaseSceneSpeed();
+
+	int numDiggers, numBlockers, numBashers, numFloaters, numBombers, numClimbers, numBuilders;
 	
 	
 };

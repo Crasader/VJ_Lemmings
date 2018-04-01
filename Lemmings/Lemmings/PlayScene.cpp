@@ -17,8 +17,7 @@ PlayScene::~PlayScene() {
 	}
 }
 
-void PlayScene::init()
-{
+void PlayScene::init() {
 	bExit = bMouseLeft = bMoveCameraRight = bMoveCameraLeft = false;
 	bDigger = bBasher = bBlocker = bClimber = bBuilder = bFloater = bBomber = bExplosion = false;
 	
@@ -29,6 +28,13 @@ void PlayScene::init()
 	cameraX = TextProcessor::instance().camPos.x;
 	cameraY = TextProcessor::instance().camPos.y;
 
+	numDiggers = TextProcessor::instance().numbDig;
+	numBlockers = TextProcessor::instance().numbStop;
+	numBashers = TextProcessor::instance().numbBash;
+	numFloaters = TextProcessor::instance().numbFlo;
+	numClimbers = TextProcessor::instance().numbCli;
+	numBombers = TextProcessor::instance().numbBomb;
+	numBuilders = TextProcessor::instance().numbBuild;
 	
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
@@ -52,11 +58,12 @@ void PlayScene::init()
 	manager = new EntityManager(TextProcessor::instance().lemmings, TextProcessor::instance().startDoor, TextProcessor::instance().doorStartColor, TextProcessor::instance().endDoor,
 		TextProcessor::instance().doorEndColor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
-	gui->init(colorTexture, maskTexture,cameraX,cameraY);
+	setGUI();
+	gui->init(colorTexture, maskTexture, cameraX, cameraY);
+	
 }
 
-void PlayScene::update(int deltaTime)
-{
+void PlayScene::update(int deltaTime) {
 	currentTime += deltaTime;
 	int buttonAnt = buttonPressed;
 	buttonPressed = gui->getButtonPressed();
@@ -64,9 +71,10 @@ void PlayScene::update(int deltaTime)
 	else if (buttonPressed != 9 && buttonAnt == 9) manager->resetNormalSpeed();
 	manager->update(deltaTime, buttonPressed);
 	
-
-
+	
+	
 	if (Game::instance().getKey(27)) bExit = true;
+	/*
 	if (Game::instance().getKey('1')) bDigger = true;
 	if (Game::instance().getKey('2')) bBlocker = true;
 	if (Game::instance().getKey('3')) bBasher = true;
@@ -75,6 +83,7 @@ void PlayScene::update(int deltaTime)
 	if (Game::instance().getKey('6')) bFloater = true;
 	if (Game::instance().getKey('7')) bBomber = true;
 	if (Game::instance().getKey('8')) bExplosion = true;
+	*/
 
 
 
@@ -90,6 +99,8 @@ void PlayScene::update(int deltaTime)
 	if (x < 60 && y < 495) bMoveCameraLeft = true;
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
+
+	gui->setLemmingsIn(manager->getLemmingsSaved());
 	gui->update(x/3,  y/3);
 
 }
@@ -161,14 +172,12 @@ Scene * PlayScene::changeState()
 	if (bMouseLeft) {
 		int buttonPressed1 = gui->getButtonPressed();
 		int x = 0, y = 0;
-		//eraseMask(x, y);
 		int effect = -1;
 		if (buttonPressed == 0) effect = 3;
 		else if (buttonPressed == 1) effect = 2;
 		else if (buttonPressed == 2) effect = 4;
 		else if (buttonPressed == 3) effect = 1;
 		else if (buttonPressed == 4) effect = 6;
-		//aqui hay conflicto de animaciones
 		else if (buttonPressed == 5) effect = 7;
 		else if (buttonPressed == 6) effect = 5;
 		else if (buttonPressed1 == 7) {
@@ -186,7 +195,10 @@ Scene * PlayScene::changeState()
 			manager->killAllLemmings();
 			
 		}
-		if(effect != -1)effectForLemming(x, y, effect);
+		if (effect != -1) {
+			effectForLemming(x, y, effect);
+			setGUI();
+		}
 
 		
 		bMouseLeft = false;
@@ -231,11 +243,31 @@ void PlayScene::applyMask(int mouseX, int mouseY)
 			maskTexture.setPixel(x, y, 255);
 }
 
-void PlayScene::effectForLemming(int mouseX, int mouseY, int effect)
-{
+void PlayScene::effectForLemming(int mouseX, int mouseY, int effect) {
 	int x, y;
 	Game::instance().getMousePosition(x, y);
-	manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	bool lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	if (lemmingChanged) {
+		if (effect == 1) numDiggers--;
+		else if (effect == 2) numBlockers--;
+		else if (effect == 3) numBashers--;
+		else if (effect == 4) numClimbers--;
+		else if (effect == 5) numBuilders--;
+		else if (effect == 6) numFloaters--;
+		else if (effect == 7) numBombers--;
+	}
+}
+
+void PlayScene::setGUI() {
+	gui->setBashers(numBashers);
+	gui->setDiggers(numDiggers);
+	gui->setClimbers(numClimbers);
+	gui->setBlockers(numBlockers);
+	gui->setBuilders(numBuilders);
+	gui->setFloaters(numFloaters);
+	gui->setBombers(numBombers);
+
+	
 }
 
 void PlayScene::initShaders()

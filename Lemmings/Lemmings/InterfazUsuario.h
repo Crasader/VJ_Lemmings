@@ -31,13 +31,15 @@ public:
 	void setTime(int time);
 	void setDiggers(int digger);
 	void setClimbers(int climber);
+	void setBuilders(int builder);
+	void setFloaters(int floater);
 	void decreaseSpawnRate();
 	void increaseSpawnRate();
 	void setBlockers(int bloker);
 	void setBashers(int basher);
 	void setLemmingsOut(int out);
 	void setLemmingsIn(int in);
-	void setBomber(int bomber);
+	void setBombers(int bomber);
 	int getButtonPressed();
 private:
 

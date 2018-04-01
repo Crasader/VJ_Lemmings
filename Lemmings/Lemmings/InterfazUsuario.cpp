@@ -31,14 +31,7 @@ void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture
 	in = 0;
 	buttonSelected = -1;
 	spawnRate = 0;
-	climber = 0;
 	time = 0;
-	blocker = 0;
-	basher = 0;
-	digger = 0;
-	floater = 0;
-	bomber = 0;
-	builder = 0;
 	this->camX = &camX;
 	this->camY = &camY;
 	if (!info.init("fonts/upheavtt.ttf"))
@@ -133,11 +126,19 @@ void InterfazUsuario::setClimbers(int climber)
 	this->climber = climber;
 }
 
+void InterfazUsuario::setBuilders(int builder) {
+	this->builder = builder;
+}
+
 void InterfazUsuario::increaseSpawnRate()
 {
 	this->spawnRate++;
 	buttons[8]->increaseText();
 	buttons[7]->decreaseText();
+}
+
+void InterfazUsuario::setFloaters(int floater) {
+	this->floater = floater;
 }
 
 void InterfazUsuario::decreaseSpawnRate() {
@@ -261,8 +262,7 @@ void InterfazUsuario::setLemmingsIn(int in) {
 	this->in = in;
 }
 
-void InterfazUsuario::setBomber(int bomber)
-{
+void InterfazUsuario::setBombers(int bomber) {
 	this->bomber = bomber;
 }
 

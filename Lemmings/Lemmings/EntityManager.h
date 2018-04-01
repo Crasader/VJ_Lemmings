@@ -18,7 +18,7 @@ public:
 	void update(int deltaTime, int buttonPressed);
 	void render();
 	void changeLemmingState(int x);
-	void clickManager(int mouseX, int mouseY, int state);
+	bool clickManager(int mouseX, int mouseY, int state);
 	bool lemmingInCursor(int mouseX, int mouseY);
 	bool checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY);
 	void doubleSpeedAnimation();
@@ -27,6 +27,8 @@ public:
 	void increaseSpawnTime();
 	void decreaseSpawnTime();
 	void killAllLemmings();
+
+	int getLemmingsSaved();
 
 
 private:
@@ -51,6 +53,8 @@ private:
 	string dorIni;
 	string dorEnd;
 	bool armagedon;
+
+	int lemmingsSaved;
 
 	int doorSColor;
 	int doorEColor;

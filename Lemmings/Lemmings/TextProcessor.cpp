@@ -37,7 +37,7 @@ void TextProcessor::processText()
 					string var;
 					iss >> var;
 					copyStringToVar(var, levelNumber);
-					cout <<"level"<< levelNumber << endl;
+					cout <<"level"<< levelNumber << " loaded" << endl;
 				}
 				else if (tag == "LVLNAME") {
 					string var;
@@ -127,17 +127,17 @@ void TextProcessor::processText()
 				else if (tag == "NUMDIG") {
 					string var;
 					iss >> var;
-					copyStringToVar(var, numDig);
+					copyStringToVar(var, numbDig);
 				}
 				else if (tag == "NUMSTOP") {
 					string var;
 					iss >> var;
-					copyStringToVar(var, numStop);
+					copyStringToVar(var, numbStop);
 				} 
 				else if (tag == "NUMBASH") {
 					string var;
 					iss >> var;
-					copyStringToVar(var, numBash);
+					copyStringToVar(var, numbBash);
 				}
 				else if (tag == "NUMBCLI") {
 					string var;

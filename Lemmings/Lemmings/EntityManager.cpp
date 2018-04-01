@@ -27,6 +27,7 @@ void EntityManager::init() {
 	paused = false;
 	spawnFrequency = 0;
 	armagedon = false;
+	lemmingsSaved = 0;
 
 	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetStart.setMinFilter(GL_NEAREST);
@@ -63,6 +64,10 @@ void EntityManager::update(int deltaTime, int buttonPressed){
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) lemmings.erase(lemmings.begin() + i);
+		else if (lemmings[i].getStatus() == Lemming::EXITED_STATUS) {
+			lemmings.erase(lemmings.begin() + i);
+			lemmingsSaved++;
+		}
 	}
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].update(deltaTime);
@@ -90,13 +95,14 @@ void EntityManager::changeLemmingState(int x) {
 
 }
 
-void EntityManager::clickManager(int mouseX, int mouseY, int state) {
+bool EntityManager::clickManager(int mouseX, int mouseY, int state) {
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
 		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
 			lemmings[i].changeState(state);
-			break;
+			return true;
 		}
 	}
+	return false;
 
 }
 
@@ -162,6 +168,11 @@ void EntityManager::killAllLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].changeState(8);
 	}
+}
+
+int EntityManager::getLemmingsSaved()
+{
+	return lemmingsSaved;
 }
 
 void EntityManager::checkStatusLemmings() {
