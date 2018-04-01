@@ -36,6 +36,7 @@ void Game::render() {
 void Game::keyPressed(int key) {
 	keys[key] = true;
 }
+
 void Game::closeGame() {
 	
 	AudioEngine::instance().exitGameEffect();

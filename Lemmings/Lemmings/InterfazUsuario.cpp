@@ -130,29 +130,29 @@ void InterfazUsuario::initShader()
 void InterfazUsuario::placeButtons()
 {
 	int i = 0;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Basher.png", to_string(basher)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Basher.png", to_string(basher)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Blocker.png", to_string(blocker)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Blocker.png", to_string(blocker)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Climber.png", to_string(climber)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Climber.png", to_string(climber)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Digger.png", to_string(digger)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Digger.png", to_string(digger)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Floater.png", to_string(floater))); 
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Floater.png", to_string(floater))); 
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Bomber.png", to_string(bomber)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Bomber.png", to_string(bomber)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Builder.png", to_string(builder)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Builder.png", to_string(builder)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Decrease_Release_Rate.png", to_string(50 - spawnRate)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Decrease_Release_Rate.png", to_string(50 - spawnRate)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Increase_Release_Rate.png", to_string(50 + spawnRate)));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Increase_Release_Rate.png", to_string(50 + spawnRate)));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Speed.png", ""));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Speed.png", ""));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Pause.png", ""));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Pause.png", ""));
 	++i;
-	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5) + 20, CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Armageddon.png", ""));
+	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Armageddon.png", ""));
 
 }
 

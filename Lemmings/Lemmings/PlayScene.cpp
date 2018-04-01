@@ -180,7 +180,11 @@ Scene * PlayScene::changeState()
 		}
 		else if (buttonPressed == 9) doubleSceneSpeed();
 		else if (buttonPressed == 10) manager->pause();
-		else if (buttonPressed == 11) manager->killAllLemmings();
+		else if (buttonPressed == 11) {
+			manager->resetNormalSpeed();
+			manager->killAllLemmings();
+			
+		}
 		if(effect != -1)effectForLemming(x, y, effect);
 
 		
