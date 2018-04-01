@@ -66,9 +66,11 @@ private:
 	vector<Button*> buttons;
 	Sprite * marco;
 	Sprite * camSelector;
+	float scaleFactor;
 	void placeButtons();
 	void renderButtons();
 	void initShader();
+	bool checkColisionMinimap(int mouseX, int mouseY);
 };
 #endif
 

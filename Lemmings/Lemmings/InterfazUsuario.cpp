@@ -50,7 +50,7 @@ void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture
 	frame.setMagFilter(GL_NEAREST);
 	marco = Sprite::createSprite(glm::ivec2(64,32), glm::vec2(1, 1), &frame, &simpleTexProgram);
 	marco->setPosition(glm::vec2(CAMERA_WIDTH - 64, CAMERA_HEIGHT - 32));
-	float scaleFactor = ((float)64 / (float)TextProcessor::instance().width);
+	scaleFactor = ((float)64 / (float)TextProcessor::instance().width);
 	selector.loadFromFile("images/selectorMinimapa.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	selector.setMinFilter(GL_NEAREST);
 	selector.setMagFilter(GL_NEAREST);
@@ -60,8 +60,7 @@ void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture
 
 void InterfazUsuario::render()
 {	
-	float scaleFactor = ((float)64 /(float) TextProcessor::instance().width);
-	glm::mat4 modelview;
+		glm::mat4 modelview;
 	maskedTexProgram.use();
 	maskedTexProgram.setUniformMatrix4f("projection", projection);
 	maskedTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -100,6 +99,12 @@ void InterfazUsuario::update(int mouseX, int mouseY)
 				}
 				break;
 			}
+		}
+
+		if (checkColisionMinimap(mouseX, mouseY)) {
+			float topMiniMap = CAMERA_WIDTH - 64;
+			float diff = mouseX - topMiniMap;
+			*camX = diff / scaleFactor;
 		}
 	}
 }
@@ -192,6 +197,14 @@ void InterfazUsuario::initShader()
 	maskedTexProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+bool InterfazUsuario::checkColisionMinimap(int mouseX, int mouseY)
+{
+	float topMiniMapX = CAMERA_WIDTH - 64;
+	float topMiniMapY = CAMERA_HEIGHT - 32;
+	if (mouseX >= topMiniMapX && mouseX <= CAMERA_WIDTH && mouseY >= topMiniMapY && mouseY <= CAMERA_HEIGHT) return true;
+	else return false;
 }
 
 void InterfazUsuario::placeButtons()
