@@ -195,11 +195,10 @@ Scene * PlayScene::changeState()
 	if (bMoveCameraRight || bMoveCameraLeft) {
 		if (bMoveCameraRight && cameraX < (TextProcessor::instance().width - CAMERA_WIDTH)) cameraX += 2;
 		else if (bMoveCameraLeft && cameraX > 0) cameraX -= 2;
-		projection = glm::ortho(0.f+cameraX, float(CAMERA_WIDTH - 1)+cameraX, float(CAMERA_HEIGHT - 1), 0.f);
 		bMoveCameraRight = false;
 		bMoveCameraLeft = false;
-
 	}
+	projection = glm::ortho(0.f + cameraX, float(CAMERA_WIDTH - 1) + cameraX, float(CAMERA_HEIGHT - 1), 0.f);
 	
 	return this;
 }
