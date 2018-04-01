@@ -170,7 +170,7 @@ Scene * PlayScene::changeState()
 		else if (buttonPressed == 4) effect = 6;
 		//aqui hay conflicto de animaciones
 		else if (buttonPressed == 5) effect = 7;
-		else if (buttonPressed == 6) effect = 7;
+		else if (buttonPressed == 6) effect = 5;
 		else if (buttonPressed1 == 7) {
 			manager->increaseSpawnTime();
 			gui->decreaseSpawnRate();

@@ -53,14 +53,15 @@ void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture
 }
 
 void InterfazUsuario::render()
-{
+{	
+	float scaleFactor = ((float)64 /(float) TextProcessor::instance().width);
 	glm::mat4 modelview;
 	maskedTexProgram.use();
 	maskedTexProgram.setUniformMatrix4f("projection", projection);
 	maskedTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
 	modelview = glm::translate(modelview, glm::vec3(CAMERA_WIDTH - 64, CAMERA_HEIGHT- (48 / 1.5) + 6, 0));
-	modelview = glm::scale(modelview, glm::vec3(0.12, 0.12, 1));
+	modelview = glm::scale(modelview, glm::vec3(scaleFactor, scaleFactor, 1));
 	maskedTexProgram.setUniformMatrix4f("modelview", modelview);
 	map->render(maskedTexProgram, colorTexture, maskTexture);
 	
