@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPositon, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *mask, string dorIni, string dorEnd) {
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *mask, string dorIni, string dorEnd) {
 	this->doorStartPosition = doorStartPosition;
 	this->doorEndPosition = doorEndPosition;
 	this->shaderProgram = shaderProgram;
@@ -59,7 +59,7 @@ void EntityManager::update(int deltaTime, int buttonPressed){
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 	}
 
-	checkMapLimits();
+	checkStatusLemmings();
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) lemmings.erase(lemmings.begin() + i);
@@ -164,10 +164,13 @@ void EntityManager::killAllLemmings() {
 	}
 }
 
-void EntityManager::checkMapLimits() {
+void EntityManager::checkStatusLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		glm::vec2 posBase = lemmings[i].getPosition() + glm::vec2(7, 16);
 		if (posBase.x < 0 || posBase.x > mask->width() || posBase.y < 0 || posBase.y > 160)
-			lemmings[i].kill();
+			lemmings[i].goKill();
+		glm::vec2 exitBase = doorEndPosition + glm::vec2(18, 32);
+		if (posBase.x == exitBase.x && posBase.y == exitBase.y)
+			lemmings[i].goExit();
 	}
 }

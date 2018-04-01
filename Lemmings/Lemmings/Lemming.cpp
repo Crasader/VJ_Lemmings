@@ -409,15 +409,16 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case DYING_FALL_STATE:
-			if (actionTime > 14) status = DEAD_STATUS;
+			if (actionTime > 14) goKill();
 			break;
 
 		case DYING_EXPLOSION_STATE:
-			if (actionTime > 14) status = DEAD_STATUS;
+			if (actionTime > 14) goKill();
 			break;
 
 		case EXITING_STATE:
 			if (actionTime > 14) status = EXITED_STATUS;
+			break;
 
 		default:
 			break;
@@ -541,6 +542,18 @@ void Lemming::goFallRight() {
 	state = FALLING_RIGHT_STATE;
 }
 
+void Lemming::goKill() {
+	status = DEAD_STATUS;
+}
+
+void Lemming::goExit() {
+	if (state != EXITING_STATE) {
+		resetActionTime();
+		sprite->changeAnimation(EXITING);
+		state = EXITING_STATE;
+	}
+}
+
 void Lemming::resetActionTime() {
 	actionTime = 0;
 }
@@ -629,15 +642,6 @@ void Lemming::pause() {
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, 0);
 }
 
-void Lemming::kill() {
-	status = DEAD_STATUS;
-}
-
-void Lemming::exit() {
-	resetActionTime();
-	sprite->changeAnimation(EXITING);
-	state = EXITING_STATE;
-}
 
 glm::vec2 Lemming::getPosition() {
 	return sprite->position();

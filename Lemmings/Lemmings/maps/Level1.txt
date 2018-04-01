@@ -11,7 +11,7 @@ PATH images/maps/fun1.png
 MPATH images/maps/fun1_mask.png
 CAM 120 0
 DSTART 190 35
-DEND 340 100
+DEND 336 99
 DSCOLOR 0 brown
 DECOLOR 0 black
 LEMSTART 219 50

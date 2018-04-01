@@ -29,8 +29,8 @@ public:
 	void doubleSpeed();
 	void resetSpeed();
 	void pause();
-	void kill();
-	void exit();
+	void goKill();
+	void goExit();
 	
 	glm::vec2 getPosition();
 

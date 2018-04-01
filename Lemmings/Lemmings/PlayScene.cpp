@@ -24,7 +24,7 @@ void PlayScene::init()
 	
 	initShaders();
 
-	TextProcessor::instance().loadFileAndProcess("maps/Level3.txt");
+	TextProcessor::instance().loadFileAndProcess("maps/Level1.txt");
 
 	cameraX = TextProcessor::instance().camPos.x;
 	cameraY = TextProcessor::instance().camPos.y;
@@ -86,8 +86,8 @@ void PlayScene::update(int deltaTime)
 	else {
 		Cursor::instance().lemmingInside(false);
 	}
-	if (x > 900) bMoveCameraRight = true;
-	if (x < 60) bMoveCameraLeft = true;
+	if (x > 900 && y < 495) bMoveCameraRight = true;
+	if (x < 60 && y < 495) bMoveCameraLeft = true;
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
 	gui->update(x/3,  y/3);

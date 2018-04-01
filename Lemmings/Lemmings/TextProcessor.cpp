@@ -2,10 +2,6 @@
 
 
 
-TextProcessor::TextProcessor()
-{
-	
-}
 
 
 TextProcessor::~TextProcessor()

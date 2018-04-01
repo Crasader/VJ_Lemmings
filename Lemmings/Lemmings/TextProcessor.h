@@ -23,7 +23,7 @@ public:
 	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numDig, numStop, numBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor;
 	string levelName, path, mPath;
 	void loadFileAndProcess(string path);
-	TextProcessor();
+	TextProcessor() {}
 	~TextProcessor();
 
 private:
