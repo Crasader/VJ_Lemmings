@@ -50,6 +50,7 @@ private:
 	int mouseY;
 	int blocker;
 	int bomber;
+	int builder;
 	ShaderProgram simpleTexProgram;
 	Text info;
 	glm::mat4 projection;

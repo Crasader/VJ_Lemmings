@@ -44,14 +44,14 @@ void EntityManager::init() {
 void EntityManager::update(int deltaTime, int buttonPressed){
 	sceneTime += deltaTime;
 	
-	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armagedon && buttonPressed == 8) {
+	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armagedon && buttonPressed == 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
 		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 	}
-	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon && buttonPressed != 8) {
+	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon && buttonPressed != 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());

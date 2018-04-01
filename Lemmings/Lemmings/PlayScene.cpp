@@ -59,8 +59,8 @@ void PlayScene::update(int deltaTime)
 	currentTime += deltaTime;
 	int buttonAnt = buttonPressed;
 	buttonPressed = gui->getButtonPressed();
-	if (buttonPressed != 7 && buttonAnt == 7) decreaseSceneSpeed();
-	else if (buttonPressed != 8 && buttonAnt == 8) manager->resetNormalSpeed();
+	if (buttonPressed != 8 && buttonAnt == 8) decreaseSceneSpeed();
+	else if (buttonPressed != 9 && buttonAnt == 9) manager->resetNormalSpeed();
 	manager->update(deltaTime, buttonPressed);
 	
 
@@ -167,18 +167,20 @@ Scene * PlayScene::changeState()
 		else if (buttonPressed == 2) effect = 4;
 		else if (buttonPressed == 3) effect = 1;
 		else if (buttonPressed == 4) effect = 6;
+		//aqui hay conflicto de animaciones
 		else if (buttonPressed == 5) effect = 7;
-		else if (buttonPressed1 == 6) {
+		else if (buttonPressed == 6) effect = 7;
+		else if (buttonPressed1 == 7) {
 			manager->increaseSpawnTime();
 			gui->decreaseSpawnRate();
 		}
-		else if (buttonPressed1 == 7) {
+		else if (buttonPressed1 == 8) {
 			gui->increaseSpawnRate();
 			manager->decreaseSpawnTime();
 		}
-		else if (buttonPressed == 8) doubleSceneSpeed();
-		else if (buttonPressed == 9) manager->pause();
-		else if (buttonPressed == 10) manager->killAllLemmings();
+		else if (buttonPressed == 9) doubleSceneSpeed();
+		else if (buttonPressed == 10) manager->pause();
+		else if (buttonPressed == 11) manager->killAllLemmings();
 		if(effect != -1)effectForLemming(x, y, effect);
 
 		
