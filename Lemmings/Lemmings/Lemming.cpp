@@ -353,7 +353,7 @@ void Lemming::update(int deltaTime) {
 			break;
 
 
-		/* Building */
+		/* Building */ /* TODO FIXME collisions stop building */
 		case BUILDER_RIGHT_STATE:
 			nextState = WALKING_RIGHT_STATE;
 			if (counter == 12) goStopBuilderRight();

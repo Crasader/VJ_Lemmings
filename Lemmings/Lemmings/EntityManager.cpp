@@ -192,8 +192,8 @@ bool EntityManager::lemmingHasActionAssigned(int i, int state) {
 	else if (state == 2 && (lemmings[i].getState() == Lemming::BLOCKER_STATE || lemmings[i].getNextState() == Lemming::BLOCKER_TRIGGERED)) return true;
 	else if (state == 3 && (lemmings[i].getState() == Lemming::BASHER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BASHER_TRIGGERED || lemmings[i].getState() == Lemming::BASHER_RIGHT_STATE)) return true;
 	else if (state == 4 && (lemmings[i].getState() == Lemming::CLIMBER_LEFT_STATE || lemmings[i].getNextState() == Lemming::CLIMBER_TRIGGERED || lemmings[i].getState() == Lemming::CLIMBER_RIGHT_STATE)) return true;
-	else if (state == 5 && (lemmings[i].getState() == Lemming::BUILDER_LEFT_STATE || lemmings[i].getNextState() == Lemming::CLIMBER_TRIGGERED || lemmings[i].getState() == Lemming::BUILDER_RIGHT_STATE)) return true;
+	else if (state == 5 && (lemmings[i].getState() == Lemming::BUILDER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BUILDER_TRIGGERED || lemmings[i].getState() == Lemming::BUILDER_RIGHT_STATE)) return true;
 	else if (state == 6 && (lemmings[i].getState() == Lemming::FLOATER_LEFT_STATE || lemmings[i].getState() == Lemming::FLOATER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::FLOATER_TRIGGERED)) return true;
-	else if (state == 6 && (lemmings[i].getState() == Lemming::BOMBER_LEFT_STATE || lemmings[i].getState() == Lemming::BOMBER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::BOMBER_TRIGGERED)) return true;
+	else if (state == 7 && (lemmings[i].getState() == Lemming::BOMBER_LEFT_STATE || lemmings[i].getState() == Lemming::BOMBER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::BOMBER_TRIGGERED)) return true;
 	else return false;
 }
