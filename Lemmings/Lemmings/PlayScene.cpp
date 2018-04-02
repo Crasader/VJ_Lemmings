@@ -99,7 +99,6 @@ void PlayScene::update(int deltaTime) {
 	if (x < 60 && y < 495) bMoveCameraLeft = true;
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
-
 	gui->setLemmingsIn(manager->getLemmingsSaved());
 	gui->update(x/3,  y/3);
 
@@ -246,7 +245,16 @@ void PlayScene::applyMask(int mouseX, int mouseY)
 void PlayScene::effectForLemming(int mouseX, int mouseY, int effect) {
 	int x, y;
 	Game::instance().getMousePosition(x, y);
-	bool lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	bool lemmingChanged = false;
+	if (effect == 1 && numDiggers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	else if (effect == 2 && numBlockers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	else if (effect == 3 && numBashers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	else if (effect == 4 && numClimbers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	else if (effect == 5 && numBuilders > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	else if (effect == 6 && numFloaters > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+	else if (effect == 7 && numBombers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
+
+	 
 	if (lemmingChanged) {
 		if (effect == 1) numDiggers--;
 		else if (effect == 2) numBlockers--;

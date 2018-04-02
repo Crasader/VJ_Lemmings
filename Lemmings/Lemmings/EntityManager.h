@@ -60,5 +60,6 @@ private:
 
 	void init();	
 	void checkStatusLemmings();
+	bool lemmingHasActionAssigned(int i);
 };
 
