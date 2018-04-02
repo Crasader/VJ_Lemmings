@@ -60,6 +60,6 @@ private:
 
 	void init();	
 	void checkStatusLemmings();
-	bool lemmingHasActionAssigned(int i);
+	bool lemmingHasActionAssigned(int i, int state);
 };
 
