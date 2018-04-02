@@ -353,19 +353,35 @@ void Lemming::update(int deltaTime) {
 			break;
 
 
-		/* Building */ /* TODO FIXME collisions stop building */
+		/* Building */ 
 		case BUILDER_RIGHT_STATE:
 			nextState = WALKING_RIGHT_STATE;
+			// all tiles done
 			if (counter == 12) goStopBuilderRight();
-			else if (actionTime % 16 == 8) build(glm::vec2(9, 15));
-			else if (actionTime % 16 == 0) move(2, -1);
+			// wall
+			else if (collisionRight(15) < 8) goStopBuilderRight();
+			// head collision
+			else if (collisionHeadRight()) goStopBuilderRight();
+			// still tiles to do and no collisions
+			else {
+				if (actionTime % 16 == 8) build(glm::vec2(9, 15));
+				if (actionTime % 16 == 0) move(2, -1);
+			}
 			break;
 
 		case BUILDER_LEFT_STATE:
 			nextState = WALKING_LEFT_STATE;
+			// all tiles done
 			if (counter == 12) goStopBuilderLeft();
-			else if (actionTime % 16 == 8) build(glm::vec2(2, 15));
-			else if (actionTime % 16 == 0) move(-2, -1);
+			// wall
+			else if (collisionLeft(15) < 6) goStopBuilderLeft();
+			// head collision
+			else if (collisionHeadLeft()) goStopBuilderLeft();
+			// still tiles to do and no collisions
+			else {
+				if (actionTime % 16 == 8) build(glm::vec2(2, 15));
+				if (actionTime % 16 == 0) move(-2, -1);
+			}
 			break;
 
 		case BUILDER_STOP_STATE:
