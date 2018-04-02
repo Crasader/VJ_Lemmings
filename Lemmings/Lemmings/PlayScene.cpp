@@ -23,8 +23,6 @@ void PlayScene::init() {
 	
 	initShaders();
 
-	TextProcessor::instance().loadFileAndProcess("maps/Level1.txt");
-
 	cameraX = TextProcessor::instance().camPos.x;
 	cameraY = TextProcessor::instance().camPos.y;
 
@@ -127,8 +125,7 @@ void PlayScene::render()
 	
 }
 
-Scene * PlayScene::changeState()
-{
+Scene * PlayScene::changeState() {
 	if (bExit) {
 		Scene* menu = new Menu();
 		AudioEngine::instance().buttonEffect();

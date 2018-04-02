@@ -23,51 +23,45 @@ Menu::~Menu()
 
 void Menu::init() {
 	AudioEngine::instance().playMusic("Music/menu.mp3");
-	bExit = false;
-	bPlay = false;
-	bCredits = false;
-	bInstructions = false;
-	bUp = false;
-	bDown = false;
-	pooledUp = false;
-	pooledDown = false;
+	bExit = bPlay = bCredits = bInstructions = false;
+	bUp = bDown = pooledUp = pooledDown = false;
 	selected = 0;
 
 	initShaders();
 
-	//inicializar texturas y sprites
+	
 	titleTexture.loadFromFile("images/logo2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	titleTexture.setMinFilter(GL_NEAREST);
 	titleTexture.setMagFilter(GL_NEAREST);
+
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
-	bgTexture.setMinFilter(GL_NEAREST);
-	bgTexture.setMagFilter(GL_NEAREST);
-	/* Uncomment to have the ugliest buttons ever
+	
 	buttonTexture.loadFromFile("images/Button_Big.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	buttonTexture.setMinFilter(GL_NEAREST);
 	buttonTexture.setMagFilter(GL_NEAREST);
-	*/
+	
 	
 
-	title = Sprite::createSprite(glm::vec2(float((446)*0.50f), float((154)*0.50f)), glm::vec2(1.f, 1.f),
-		&titleTexture, &simpleTexProgram);
+	title = Sprite::createSprite(glm::vec2(float((446)*0.50f), float((154)*0.50f)), glm::vec2(1.f, 1.f), &titleTexture, &simpleTexProgram);
 	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 / 4), 0.0f));
 
 	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
 		&bgTexture, &simpleTexProgram);
 
-	/* Uncomment to have the ugliest buttons ever
-	playButton = Sprite::createSprite(glm::vec2(420.f/3, 65.f/3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
-	playButton->setPosition(glm::vec2(240/3, 270/3));
-	instructionsButton = Sprite::createSprite(glm::vec2(420.f / 3, 65.f / 3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
-	instructionsButton->setPosition(glm::vec2(240 / 3, 344 / 3));
-	creditsButton = Sprite::createSprite(glm::vec2(420.f / 3, 65.f / 3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
-	creditsButton->setPosition(glm::vec2(240 / 3, 408 / 3));
-	exitButton = Sprite::createSprite(glm::vec2(420.f / 3, 65.f / 3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
-	exitButton->setPosition(glm::vec2(240 / 3, 472 / 3));
-	*/
+	float buttonPosX = (CAMERA_WIDTH / 2) - 420 / 6; // x = 90
+	float buttonSizeX = 420 / 3; // x = 140;
+	float buttonSizeY = 22; // because 65/3 is not exact...
+	playButton			= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	playButton->setPosition(glm::vec2(buttonPosX, 80));
+	instructionsButton	= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	instructionsButton->setPosition(glm::vec2(buttonPosX, 112));
+	creditsButton		= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	creditsButton->setPosition(glm::vec2(buttonPosX, 144));
+	exitButton			= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	exitButton->setPosition(glm::vec2(buttonPosX, 176));
+	
 
-	//inicializar texto
+	// init font
 	if (!playText.init("fonts/Cartoon_Regular.ttf"))
 		cout << "Could not load font!!!" << endl;
 
@@ -75,33 +69,32 @@ void Menu::init() {
 }
 
 void Menu::render() {
-			glm::mat4 modelview;
-			simpleTexProgram.use();
-			simpleTexProgram.setUniformMatrix4f("projection", projection);
-			simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-			modelview = glm::mat4(1.0f);
-			simpleTexProgram.setUniformMatrix4f("modelview", modelview);
-			background->render();
-			title->render();
-			/* Uncomment to have the ugliest buttons ever
-			playButton->render();
-			instructionsButton->render();
-			creditsButton->render();
-			exitButton->render();
-			*/ 
-			simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
-			if (selected == 0)
-				playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorGreen);
-			else playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorWhite);
-			if (selected == 1)
-				playText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64 ), 46, colorGreen);
-			else playText.render("INSTRUCTIONS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64), 46, colorWhite);
-			if (selected == 2)
-				playText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorGreen);
-			else playText.render("CREDITS", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*2), 46, colorWhite);
-			if (selected == 3)
-				playText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorGreen);
-			else playText.render("EXIT", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos + 64*3), 46, colorWhite);
+	glm::mat4 modelview;
+	simpleTexProgram.use();
+	simpleTexProgram.setUniformMatrix4f("projection", projection);
+	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
+	background->render();
+	title->render();
+	playButton->render();
+	instructionsButton->render();
+	creditsButton->render();
+	exitButton->render();
+			
+	simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
+	if (selected == 0)
+		playText.render("PLAY", glm::vec2(138*3, 97 * 3), 46, colorWhite);
+	else playText.render("PLAY", glm::vec2(138 * 3, 97 * 3), 46, colorDarkGreen);
+	if (selected == 1)
+		playText.render("INSTRUCTIONS", glm::vec2(103 * 3, 129 * 3), 46, colorWhite);
+	else playText.render("INSTRUCTIONS", glm::vec2(103 * 3, 129 * 3), 46, colorDarkGreen);
+	if (selected == 2)
+		playText.render("CREDITS", glm::vec2(125 * 3, 161 * 3), 46, colorWhite);
+	else playText.render("CREDITS", glm::vec2(125 * 3, 161 * 3), 46, colorDarkGreen);
+	if (selected == 3)
+		playText.render("EXIT", glm::vec2(142 * 3, 193 * 3), 46, colorWhite);
+	else playText.render("EXIT", glm::vec2(142 * 3, 193 * 3), 46, colorDarkGreen);
 			
 			
 }
@@ -131,7 +124,7 @@ void Menu::update(int deltaTime){
 
 Scene* Menu::changeState() {
 	if (bPlay) {
-		Scene* scene = new PlayScene();
+		Scene* scene = new StartScene("maps/Level1.txt");
 		AudioEngine::instance().buttonEffect();
 		AudioEngine::instance().yippee();
 		AudioEngine::instance().playMusic("Music/lemmings.wav");

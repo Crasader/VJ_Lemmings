@@ -12,6 +12,8 @@
 #define colorYellow glm::vec4(1,1,0,1)
 #define colorMagenta glm::vec4(1,0,1,1)
 #define colorCian glm::vec4(0,1,1,1)
+#define colorDarkGreen glm::vec4(0, 0.33f, 0, 1)
+#define colorOrange glm::vec4(1,0.5f,0,1)
 #define textRPos (CAMERA_HEIGHT * 3 / 2) - 32
 #define speed 12
 #define speedDoorStart 8

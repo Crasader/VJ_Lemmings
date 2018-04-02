@@ -8,28 +8,33 @@
 
 
 
-StartScene::StartScene() {}
+StartScene::StartScene(string pathLevel) {
+	path = pathLevel;
+}
 
 
 StartScene::~StartScene() {}
 
 void StartScene::init() {
+	bExit = bContinue = false;
 	initShaders();
+
+	TextProcessor::instance().loadFileAndProcess(path);
 
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
 	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f), &bgTexture, &simpleTexProgram);
-	titleTexture.loadFromFile("images/logo2.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	titleTexture.setMinFilter(GL_NEAREST);
-	titleTexture.setMagFilter(GL_NEAREST);
 
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
-	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
+	if (!simpleText.init("fonts/DroidSerif-Bold.ttf")) {
 		cout << "Couldn't load font" << endl;
 	}
 }
 
 void StartScene::update(int deltaTime) {
 	currentTime += deltaTime;
+
+	if (Game::instance().getKey(27)) bExit = true;
+	if (Game::instance().getKey(13)) bContinue = true;
 }
 
 void StartScene::render() {
@@ -38,23 +43,50 @@ void StartScene::render() {
 	simpleTexProgram.use();
 	simpleTexProgram.setUniformMatrix4f("projection", projection);
 	simpleTexProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
 
 	// Level Num
-	simpleText.render("Level x", glm::vec2(20, 20), 32, colorRed);
+	string numLevel = "Level " + to_string(TextProcessor::instance().levelNumber);
+	simpleText.render(numLevel, glm::vec2(20, 80), 64, colorRed);
 	// Level Name
-	simpleText.render("Level name", glm::vec2(60, 20), 32, colorRed);
+	string nameLevel = TextProcessor::instance().levelName;
+	simpleText.render(nameLevel, glm::vec2(340, 80), 64, colorRed);
 	// Num Lemmings Spawn
-	simpleText.render("Num Lemmings Spawn", glm::vec2(80, 40), 24, colorGreen);
+	string lemmingsToSpawn = to_string(TextProcessor::instance().lemmings) + " lemmings";
+	simpleText.render(lemmingsToSpawn, glm::vec2(300, 200), 48, colorBlue);
 	// Num Lemmings Save
-	simpleText.render("Num Lemmings Sav", glm::vec2(80, 64), 24, colorCian);
+	int lemmingsToEnter = (TextProcessor::instance().minLemmings * 100) / TextProcessor::instance().lemmings;
+	string lemmingsTobeSaved = to_string(lemmingsToEnter) + "% to be saved";
+	simpleText.render(lemmingsTobeSaved, glm::vec2(300, 260), 48, colorGreen);
+	// Release Rate
+	string releaseRate = "Release rate " + to_string(TextProcessor::instance().spawnrate);
+	simpleText.render(releaseRate, glm::vec2(300, 320), 48, colorOrange);
 	// Max Time
-	simpleText.render("Max Time", glm::vec2(80, 88), 24, colorMagenta);
+	string time = "Time " + to_string(TextProcessor::instance().maxTime) + " seconds";
+	simpleText.render(time, glm::vec2(300, 380), 48, colorCian);
 	// Click to continue
-	simpleText.render("Click to continue", glm::vec2(20, 110), 32, colorYellow);
+	simpleText.render("Press Enter to continue or Escape to go back to menu", glm::vec2(20, 580), 34, colorYellow);
+
+}
+
+Scene * StartScene::changeState() {
+	if (bExit) {
+		Scene* menu = new Menu();
+		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().stopEffect();
+		menu->init();
+		return menu;
+	}
+	else if (bContinue) {
+		Scene* scene = new PlayScene();
+		AudioEngine::instance().buttonEffect();
+		scene->init();
+		return scene;
+	}
+
+	return this;
 
 }
 

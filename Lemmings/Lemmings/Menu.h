@@ -5,7 +5,9 @@
 #include "Sprite.h"
 #include "Text.h"
 #include "PlayScene.h"
+#include "StartScene.h"
 #include "InstructionsScene.h"
+
 
 class Menu :
 	public Scene

@@ -12,11 +12,12 @@ void Game::init() {
 	bPlay = true;
 	bLeftMouse = bRightMouse = false;
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
 	scene = new Menu();
 	scene->init();
+
 	Cursor::instance().init();
 	glutSetCursor(GLUT_CURSOR_NONE);
-	
 }
 
 bool Game::update(int deltaTime) {
@@ -30,7 +31,6 @@ void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	scene->render();
 	Cursor::instance().render();
-
 }
 
 void Game::keyPressed(int key) {
@@ -38,7 +38,6 @@ void Game::keyPressed(int key) {
 }
 
 void Game::closeGame() {
-	
 	AudioEngine::instance().exitGameEffect();
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	bPlay = false;
