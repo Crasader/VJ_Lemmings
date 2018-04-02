@@ -779,9 +779,7 @@ void Lemming::build(glm::vec2 offset) {
 	for (int x = max(0, int(posBase.x)); x <= min(map->width(), int(posBase.x + 6)); x++) {
 		mask->setPixel(x, int(posBase.y), 254);
 		map->setPixel(x, int(posBase.y), glm::ivec4(120,77,0,255));
-	}
-	map->saveBMP("prueba1.png");
-	
+	}	
 }
 
 void Lemming::block() {
