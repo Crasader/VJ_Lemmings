@@ -31,6 +31,7 @@ void EndScene::init() {
 	if (levelNum == 1) newPath = "maps/Level2.txt";
 	else if (levelNum == 2) newPath = "maps/Level3.txt";
 	else if (levelNum == 3) newPath = "maps/Level4.txt";
+	else newPath = "maps/Level1.txt";
 }
 
 void EndScene::update(int deltaTime) {
