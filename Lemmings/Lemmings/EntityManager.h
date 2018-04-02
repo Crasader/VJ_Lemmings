@@ -10,8 +10,7 @@
 #include "DoorStart.h"
 
 
-class EntityManager
-{
+class EntityManager {
 public:
 	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();

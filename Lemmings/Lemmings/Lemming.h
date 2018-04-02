@@ -33,10 +33,14 @@ public:
 	
 	glm::vec2 getPosition();
 
-	int getStatus();
 
-	
-private:
+	/* Lemming status. Dead and Exited aren't rendered */
+	enum LemmingStatus {
+		ALIVE_STATUS,	/* Still alive				*/
+		EXITED_STATUS,	/* Have been saved			*/
+		DEAD_STATUS		/* Have died				*/
+	};
+	LemmingStatus getStatus();
 
 	/* All lemming's posible states */
 	enum LemmingState {
@@ -71,6 +75,13 @@ private:
 
 		DYING_FALL_STATE
 	};
+	LemmingState getState();
+	LemmingState getNextState();
+
+	
+private:
+
+	
 
 	int collisionFloor(int maxFall);
 	int collisionRight(int maxWall);
@@ -115,12 +126,8 @@ private:
 	
 
 public:
-	/* Lemming status. Dead and Exited aren't rendered */
-	enum LemmingStatus {
-		ALIVE_STATUS,	/* Still alive				*/
-		EXITED_STATUS,	/* Have been saved			*/
-		DEAD_STATUS		/* Have died				*/
-	};
+	
+	
 
 	/*
 	enum LemmingActions {
@@ -162,7 +169,7 @@ private:
 	Sprite *sprite;	
 	VariableTexture *map;	/* needed for builders, they put the stairs directly in the map */
 	VariableTexture *mask;	/* bitmask for collisions and stuff */
-	int status;				/* current status */ /* TODO maybe change it to LemmingStatus? */
+	LemmingStatus status;				/* current status */ /* TODO maybe change it to LemmingStatus? */
 	int actionTime;			/* time doing action */
 	int counter;			/* builder counter */
 

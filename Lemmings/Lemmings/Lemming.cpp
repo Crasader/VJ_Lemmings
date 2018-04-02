@@ -144,9 +144,9 @@ void Lemming::update(int deltaTime) {
 			}
 			// no wall
 			else {
-				fall = collisionFloor(3);
+				fall = collisionFloor(4);
 				// no falling
-				if (fall < 3) {
+				if (fall < 4) {
 					move(0, fall);
 					//action triggered
 					if (nextState == BLOCKER_TRIGGERED) 
@@ -186,9 +186,9 @@ void Lemming::update(int deltaTime) {
 			}
 			// no wall
 			else {
-				fall = collisionFloor(3);
+				fall = collisionFloor(4);
 				// no falling
-				if (fall < 3) {
+				if (fall < 4) {
 					move(0, fall);
 					//action triggered
 					if (nextState == BLOCKER_TRIGGERED) 
@@ -656,8 +656,16 @@ glm::vec2 Lemming::getPosition() {
 	return sprite->position();
 }
 
-int Lemming::getStatus() {
+Lemming::LemmingStatus Lemming::getStatus() {
 	return status;
+}
+
+Lemming::LemmingState Lemming::getState() {
+	return state;
+}
+
+Lemming::LemmingState Lemming::getNextState() {
+	return nextState;
 }
 
 int Lemming::collisionFloor(int maxFall) {
