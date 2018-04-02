@@ -7,8 +7,9 @@
 
 
 
-PlayScene::PlayScene() {
+PlayScene::PlayScene(string levelPath) {
 	map = NULL;
+	path = levelPath;
 }
 
 PlayScene::~PlayScene() {
@@ -18,7 +19,7 @@ PlayScene::~PlayScene() {
 }
 
 void PlayScene::init() {
-	bExit = bMouseLeft = bMoveCameraRight = bMoveCameraLeft = false;
+	bExit = bEnd = bMouseLeft = bMoveCameraRight = bMoveCameraLeft = false;
 	bDigger = bBasher = bBlocker = bClimber = bBuilder = bFloater = bBomber = bExplosion = false;
 	
 	initShaders();
@@ -97,8 +98,12 @@ void PlayScene::update(int deltaTime) {
 	if (x < 60 && y < 495) bMoveCameraLeft = true;
 
 	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
-	gui->setLemmingsIn(manager->getLemmingsSaved());
+	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
+
+
+	int lemmingsStillAlive = TextProcessor::instance().lemmings - manager->getLemmingsDied() - manager->getLemmingsExited();
+	if (lemmingsStillAlive == 0) bEnd = true;
 
 }
 
@@ -126,6 +131,13 @@ void PlayScene::render()
 }
 
 Scene * PlayScene::changeState() {
+	if (bEnd) {
+		Scene* scene = new EndScene(path, manager->getLemmingsExited());
+		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().stopEffect();
+		scene->init();
+		return scene;
+	}
 	if (bExit) {
 		Scene* menu = new Menu();
 		AudioEngine::instance().buttonEffect();

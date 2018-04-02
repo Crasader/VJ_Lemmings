@@ -17,6 +17,7 @@
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DoorEnd.cpp" />
     <ClCompile Include="DoorStart.cpp" />
+    <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Estado.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="DoorEnd.h" />
     <ClInclude Include="DoorStart.h" />
+    <ClInclude Include="EndScene.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Estado.h" />
     <ClInclude Include="Game.h" />

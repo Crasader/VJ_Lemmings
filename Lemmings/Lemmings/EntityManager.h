@@ -27,7 +27,8 @@ public:
 	void decreaseSpawnTime();
 	void killAllLemmings();
 
-	int getLemmingsSaved();
+	int getLemmingsExited();
+	int getLemmingsDied();
 
 
 private:
@@ -53,7 +54,7 @@ private:
 	string dorEnd;
 	bool armagedon;
 
-	int lemmingsSaved;
+	int lemmingsSaved, lemmingsDied;
 
 	int doorSColor;
 	int doorEColor;

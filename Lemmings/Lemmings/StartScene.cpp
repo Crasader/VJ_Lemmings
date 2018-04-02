@@ -38,7 +38,7 @@ void StartScene::update(int deltaTime) {
 }
 
 void StartScene::render() {
-	glm::mat4 modelview;
+	glm::mat4 modelview; 
 
 	simpleTexProgram.use();
 	simpleTexProgram.setUniformMatrix4f("projection", projection);
@@ -46,7 +46,7 @@ void StartScene::render() {
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
-
+	
 	// Level Num
 	string numLevel = "Level " + to_string(TextProcessor::instance().levelNumber);
 	simpleText.render(numLevel, glm::vec2(20, 80), 64, colorRed);
@@ -80,7 +80,7 @@ Scene * StartScene::changeState() {
 		return menu;
 	}
 	else if (bContinue) {
-		Scene* scene = new PlayScene();
+		Scene* scene = new PlayScene(path);
 		AudioEngine::instance().buttonEffect();
 		scene->init();
 		return scene;

@@ -10,18 +10,18 @@
 #include "InterfazUsuario.h"
 #include "Cursor.h"
 #include "TextProcessor.h"
+#include "EndScene.h"
 
 
 class InterfazUsuario;
 class DoorEnd;
 class DoorStart;
-class TextProcessor;
 
 class PlayScene :
 	public Scene
 {
 public:
-	PlayScene();
+	PlayScene(string levelPath);
 	~PlayScene();
 	void init();
 	void render();
@@ -43,9 +43,10 @@ private:
 	VariableTexture maskTexture;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	
+	string path;
 	float currentTime;
 	glm::mat4 projection;
-	bool bExit, bMouseLeft, bMoveCameraRight, bMoveCameraLeft;
+	bool bExit, bMouseLeft, bMoveCameraRight, bMoveCameraLeft, bEnd;
 	bool bBasher, bBlocker, bDigger, bBuilder, bClimber, bFloater, bBomber, bExplosion;
 	float cameraX, cameraY;
 	EntityManager* manager;

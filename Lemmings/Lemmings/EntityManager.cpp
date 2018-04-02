@@ -28,7 +28,7 @@ void EntityManager::init() {
 	paused = false;
 	spawnFrequency = 0;
 	armagedon = false;
-	lemmingsSaved = 0;
+	lemmingsSaved = lemmingsDied = 0;
 
 	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetStart.setMinFilter(GL_NEAREST);
@@ -64,7 +64,10 @@ void EntityManager::update(int deltaTime, int buttonPressed){
 	checkStatusLemmings();
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) lemmings.erase(lemmings.begin() + i);
+		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) {
+			lemmings.erase(lemmings.begin() + i);
+			lemmingsDied++;
+		}
 		else if (lemmings[i].getStatus() == Lemming::EXITED_STATUS) {
 			lemmings.erase(lemmings.begin() + i);
 			lemmingsSaved++;
@@ -174,9 +177,14 @@ void EntityManager::killAllLemmings() {
 	}
 }
 
-int EntityManager::getLemmingsSaved()
+int EntityManager::getLemmingsExited()
 {
 	return lemmingsSaved;
+}
+
+int EntityManager::getLemmingsDied()
+{
+	return lemmingsDied;
 }
 
 void EntityManager::checkStatusLemmings() {

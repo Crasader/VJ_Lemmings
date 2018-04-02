@@ -10,6 +10,7 @@ TextProcessor::~TextProcessor()
 
 void TextProcessor::loadFileAndProcess(string path) {
 	try {
+		file.close();
 		file.open(path);
 		processText();
 	}
@@ -18,8 +19,7 @@ void TextProcessor::loadFileAndProcess(string path) {
 	}
 }
 
-void TextProcessor::processText()
-{
+void TextProcessor::processText() {
 
 	string line;
 	getline(file, line);

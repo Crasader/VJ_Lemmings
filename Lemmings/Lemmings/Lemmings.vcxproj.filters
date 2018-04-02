@@ -79,6 +79,7 @@
     <ClCompile Include="TextProcessor.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="EndScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -165,6 +166,7 @@
     <ClInclude Include="TextProcessor.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="EndScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
