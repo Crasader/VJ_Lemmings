@@ -40,6 +40,14 @@ void Menu::init() {
 	titleTexture.setMinFilter(GL_NEAREST);
 	titleTexture.setMagFilter(GL_NEAREST);
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
+	bgTexture.setMinFilter(GL_NEAREST);
+	bgTexture.setMagFilter(GL_NEAREST);
+	/* Uncomment to have the ugliest buttons ever
+	buttonTexture.loadFromFile("images/Button_Big.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonTexture.setMinFilter(GL_NEAREST);
+	buttonTexture.setMagFilter(GL_NEAREST);
+	*/
+	
 
 	title = Sprite::createSprite(glm::vec2(float((446)*0.50f), float((154)*0.50f)), glm::vec2(1.f, 1.f),
 		&titleTexture, &simpleTexProgram);
@@ -47,6 +55,17 @@ void Menu::init() {
 
 	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
 		&bgTexture, &simpleTexProgram);
+
+	/* Uncomment to have the ugliest buttons ever
+	playButton = Sprite::createSprite(glm::vec2(420.f/3, 65.f/3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	playButton->setPosition(glm::vec2(240/3, 270/3));
+	instructionsButton = Sprite::createSprite(glm::vec2(420.f / 3, 65.f / 3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	instructionsButton->setPosition(glm::vec2(240 / 3, 344 / 3));
+	creditsButton = Sprite::createSprite(glm::vec2(420.f / 3, 65.f / 3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	creditsButton->setPosition(glm::vec2(240 / 3, 408 / 3));
+	exitButton = Sprite::createSprite(glm::vec2(420.f / 3, 65.f / 3), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	exitButton->setPosition(glm::vec2(240 / 3, 472 / 3));
+	*/
 
 	//inicializar texto
 	if (!playText.init("fonts/Cartoon_Regular.ttf"))
@@ -64,6 +83,12 @@ void Menu::render() {
 			simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 			background->render();
 			title->render();
+			/* Uncomment to have the ugliest buttons ever
+			playButton->render();
+			instructionsButton->render();
+			creditsButton->render();
+			exitButton->render();
+			*/ 
 			simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
 			if (selected == 0)
 				playText.render("PLAY", glm::vec2((CAMERA_WIDTH * 3 / 2) - 446 * 0.15, textRPos), 46, colorGreen);

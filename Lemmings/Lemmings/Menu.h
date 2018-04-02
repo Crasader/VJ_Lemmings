@@ -21,9 +21,11 @@ public:
 private:
 	bool bPlay, bExit, bInstructions, bCredits, bUp, bDown,pooledUp,pooledDown;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
-	Texture titleTexture, bgTexture;
+	Texture titleTexture, bgTexture, buttonTexture;
 	Sprite* title;
 	Sprite* background;
+	Sprite *playButton, *instructionsButton, *creditsButton, *exitButton;
+
 	glm::mat4 projection;
 	Text playText;
 	int selected;
