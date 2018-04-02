@@ -20,12 +20,14 @@
 #include "MaskedTexturedQuad.h"
 #include "Sprite.h"
 
+class VariableTexture;
+
 class InterfazUsuario
 {
 public:
 	InterfazUsuario();
 	~InterfazUsuario();
-	void init(Texture & colorTexture, VariableTexture & maskTexture,float & camX, float & camY);
+	void init(VariableTexture & colorTexture, VariableTexture & maskTexture,float & camX, float & camY);
 	void render();
 	void update(int mouseX, int mouseY);
 	void setTime(int time);
@@ -59,7 +61,8 @@ private:
 	int builder;
 	float  * camX;
 	float * camY;
-	Texture colorTexture, frame,selector;
+	Texture frame, selector;
+	VariableTexture colorTexture;
 	VariableTexture maskTexture;
 	MaskedTexturedQuad* map;
 	ShaderProgram simpleTexProgram, maskedTexProgram;

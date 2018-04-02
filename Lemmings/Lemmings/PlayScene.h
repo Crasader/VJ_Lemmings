@@ -37,7 +37,7 @@ private:
 
 
 private:
-	Texture colorTexture;
+	VariableTexture colorTexture;
 	MaskedTexturedQuad* map;
 	InterfazUsuario* gui;
 	VariableTexture maskTexture;

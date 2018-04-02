@@ -13,7 +13,7 @@ InterfazUsuario::~InterfazUsuario()
 {
 }
 
-void InterfazUsuario::init(Texture & colorTexture, VariableTexture & maskTexture, float & camX, float & camY)
+void InterfazUsuario::init(VariableTexture & colorTexture, VariableTexture & maskTexture, float & camX, float & camY)
 {	
 	initShader();
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };

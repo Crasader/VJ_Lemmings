@@ -1,12 +1,13 @@
 #include "EntityManager.h"
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *mask, string dorIni, string dorEnd) {
+EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask, string dorIni, string dorEnd) {
 	this->doorStartPosition = doorStartPosition;
 	this->doorEndPosition = doorEndPosition;
 	this->shaderProgram = shaderProgram;
 	this->numLemmings = numLemmings;
 	this->mask = mask;
+	this->map = map;
 	this->dorIni = dorIni;
 	this->dorEnd = dorEnd;
 	this->doorSColor = doorStartType;
@@ -49,14 +50,14 @@ void EntityManager::update(int deltaTime, int buttonPressed){
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
-		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
+		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 	}
 	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon && buttonPressed != 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
-		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, mask);
+		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 	}
 

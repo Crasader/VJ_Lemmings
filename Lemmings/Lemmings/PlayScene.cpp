@@ -56,7 +56,7 @@ void PlayScene::init() {
 	currentTime = 0.0f;
 
 	manager = new EntityManager(TextProcessor::instance().lemmings, TextProcessor::instance().startDoor, TextProcessor::instance().doorStartColor, TextProcessor::instance().endDoor,
-		TextProcessor::instance().doorEndColor, simpleTexProgram, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
+		TextProcessor::instance().doorEndColor, simpleTexProgram, &colorTexture, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	setGUI();
 	gui->init(colorTexture, maskTexture, cameraX, cameraY);

@@ -22,12 +22,12 @@ Lemming::Lemming() {
 Lemming::~Lemming() {
 }
 
-void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *mask) {
-	setMapMask(mask);
+void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *map, VariableTexture *mask) {
+	setMapMask(map, mask);
 	state = FALLING_RIGHT_STATE;
 	status = ALIVE_STATUS;
 	oldState = nextState = WALKING_RIGHT_STATE;
-	actionTime = 0;
+	resetActionTime();
 
 	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.03125), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(23);
@@ -217,12 +217,9 @@ void Lemming::update(int deltaTime) {
 				move(0, 1);
 
 				// left
-				if (oldState == WALKING_LEFT_STATE) 
-					goFallLeft();
-					
+				if (oldState == WALKING_LEFT_STATE) goFallLeft();
 				// right
-				else 
-					goFallRight();
+				else goFallRight();
 			}
 			// no falling
 			else {
@@ -235,11 +232,8 @@ void Lemming::update(int deltaTime) {
 					move(0, 1);
 					dig();
 					move(0, -1);
-					if (oldState == WALKING_LEFT_STATE)
-						goWalkLeft();
-
-					else
-						goWalkRight();
+					if (oldState == WALKING_LEFT_STATE) goWalkLeft();
+					else goWalkRight();
 				}
 				// no action triggered -> continue digging
 				else {
@@ -252,22 +246,20 @@ void Lemming::update(int deltaTime) {
 			}
 			break;
 
+
 		/* Blocking */
 		case BLOCKER_STATE:
 			// ? nothing to do ?
 			break;
 		
+
 		/* Bashing */
 		case BASHER_RIGHT_STATE:
 			fall = collisionFloor(2);
 			// falling
-			if (fall > 0) 
-				goFallRight();
-				
+			if (fall > 0) goFallRight();
 			// no falling no wall
-			else if (collisionRight(14) > 13) 
-				goWalkRight();
-				
+			else if (collisionRight(14) > 13) goWalkRight();
 			// no falling wall -> continue bashing
 			else {
 				//action triggered -> stop, walk and trigger again
@@ -293,14 +285,10 @@ void Lemming::update(int deltaTime) {
 		case BASHER_LEFT_STATE:
 			fall = collisionFloor(2);
 			// falling
-			if (fall > 0)
-				goFallLeft();
-				
+			if (fall > 0) goFallLeft();
 			// no falling no wall
-			else if (collisionLeft(13) > 12) 
-				goWalkLeft();
-				
-			// no falling no wall -> continue bashing
+			else if (collisionLeft(13) > 12) goWalkLeft();
+			// no falling wall -> continue bashing
 			else {
 				//action triggered -> stop, walk and trigger again
 				if (nextState == CLIMBER_TRIGGERED ||
@@ -308,7 +296,6 @@ void Lemming::update(int deltaTime) {
 					nextState == DIGGER_TRIGGERED ||
 					nextState == BLOCKER_TRIGGERED) 
 					goWalkLeft();
-
 				// no action triggered -> continue bashing
 				else {
 					nextState = oldState;
@@ -322,52 +309,45 @@ void Lemming::update(int deltaTime) {
 			}
 			break;
 
+
 		/* Climbing */
 		case CLIMBER_RIGHT_STATE:
-			// no wall
+			// no wall -> top of wall
 			if (!collisionFullWall()) {
 				resetActionTime();
 				sprite->changeAnimation(CLIMBER_TOP_RIGHT);
 				state = CLIMBER_TOP_STATE;
 			}
+			// head collision -> fall not facing fall
 			else if (collisionHeadRight()) {
 				goFallLeft();
 				move(-1, 0);
 			}
 			// wall
-			else {
-				if (actionTime % 8 > 4)
-					move(0, -1);
-			}
+			else if (actionTime % 8 > 4) move(0, -1);
 			break;
 
 		case CLIMBER_LEFT_STATE:
-			// no wall
+			// no wall -> top of wall
 			if (!collisionFullWall()) {
 				resetActionTime();
 				sprite->changeAnimation(CLIMBER_TOP_LEFT);
 				state = CLIMBER_TOP_STATE;
 			}
-			// head collision
+			// head collision -> fall not facing fall
 			else if (collisionHeadLeft()) {
 				goFallRight();
 				move(1, 0);
 			}
 			// wall
-			else {
-				if (actionTime % 8 > 4)
-					move(0, -1);
-			}
+			else if (actionTime % 8 > 4) move(0, -1);
+			
 			break;
 
 		case CLIMBER_TOP_STATE:
-			if (actionTime == 8) {
-				if (oldState == WALKING_RIGHT_STATE) 
-					goWalkRight();
-					
-				else
-					goWalkLeft();
-					
+			if (actionTime > 8) {
+				if (oldState == WALKING_RIGHT_STATE) goWalkRight();
+				else goWalkLeft();
 				move(0, -7);
 			}
 			break;
@@ -375,39 +355,50 @@ void Lemming::update(int deltaTime) {
 
 		/* Building */
 		case BUILDER_RIGHT_STATE:
+			nextState = WALKING_RIGHT_STATE;
+			if (counter == 12) goStopBuilderRight();
+			else if (actionTime % 16 == 8) build(glm::vec2(9, 15));
+			else if (actionTime % 16 == 0) move(2, -1);
 			break;
 
 		case BUILDER_LEFT_STATE:
+			nextState = WALKING_LEFT_STATE;
+			if (counter == 12) goStopBuilderLeft();
+			else if (actionTime % 16 == 8) build(glm::vec2(2, 15));
+			else if (actionTime % 16 == 0) move(-2, -1);
+			break;
+
+		case BUILDER_STOP_STATE:
+			if (actionTime > 8) {
+				// left
+				if (oldState == WALKING_LEFT_STATE) goWalkLeft();
+				// right
+				else goWalkRight();
+			}
 			break;
 
 
 		/* Floating */
 		case FLOATER_RIGHT_STATE:
-			fall = collisionFloor(2);
 			if (actionTime == 4) sprite->changeAnimation(FLOATER_RIGHT);
-
+			fall = collisionFloor(2);
 			// more falling
-			if (fall > 0) 
-				move(0, fall);
-				
+			if (fall > 0) move(0, fall);
 			// no more falling
-			else 
-				goWalkRight();
+			else goWalkRight();
 			break;
 
 		case FLOATER_LEFT_STATE:
-			fall = collisionFloor(2);
 			if (actionTime == 4) sprite->changeAnimation(FLOATER_LEFT);
-
+			fall = collisionFloor(2);
 			// more falling
-			if (fall > 0) 
-				move(0, fall);
-
+			if (fall > 0) move(0, fall);
 			// no more falling
-			else
-				goWalkLeft();
+			else goWalkLeft();
 			break;
 
+
+		/* Dying */
 		case DYING_FALL_STATE:
 			if (actionTime > 14) goKill();
 			break;
@@ -416,8 +407,9 @@ void Lemming::update(int deltaTime) {
 			if (actionTime > 14) goKill();
 			break;
 
+		/* Exiting */
 		case EXITING_STATE:
-			if (actionTime > 14) status = EXITED_STATUS;
+			if (actionTime > 6) status = EXITED_STATUS;
 			break;
 
 		default:
@@ -441,11 +433,11 @@ void Lemming::goDieFall() {
 }
 
 void Lemming::goBlocker() {
+	block();
 	sprite->changeAnimation(BLOCKER);
 	oldState = BLOCKER_STATE;
 	state = BLOCKER_STATE;
 	nextState = BLOCKER_STATE;
-	// TODO print on mask to stop lemmings ?
 }
 
 void Lemming::goDigger(LemmingState oldNewState) {
@@ -493,15 +485,31 @@ void Lemming::goBasherLeft() {
 }
 
 void Lemming::goBuilderRight() {
+	resetActionTime();
+	counter = 0;
 	sprite->changeAnimation(BUILDER_RIGHT);
 	oldState = nextState = WALKING_RIGHT_STATE;
 	state = BUILDER_RIGHT_STATE;
 }
 
 void Lemming::goBuilderLeft() {
+	resetActionTime();
+	counter = 0;
 	sprite->changeAnimation(BUILDER_LEFT);
 	oldState = nextState = WALKING_LEFT_STATE;
 	state = BUILDER_LEFT_STATE;
+}
+
+void Lemming::goStopBuilderRight() {
+	resetActionTime();
+	sprite->changeAnimation(BUILDER_STOP_RIGHT);
+	state = BUILDER_STOP_STATE;
+}
+
+void Lemming::goStopBuilderLeft() {
+	resetActionTime();
+	sprite->changeAnimation(BUILDER_STOP_LEFT);
+	state = BUILDER_STOP_STATE;
 }
 
 void Lemming::goClimberRight() {
@@ -562,7 +570,8 @@ void Lemming::render() {
 	sprite->render();
 }
 
-void Lemming::setMapMask(VariableTexture *mapMask) {
+void Lemming::setMapMask(VariableTexture *mapMap, VariableTexture *mapMask) {
+	map = mapMap;
 	mask = mapMask;
 }
 
@@ -706,7 +715,7 @@ bool Lemming::collisionWalk() {
 	
 	posBase += glm::ivec2(7, 14);
 	for (int y = posBase.y; y < posBase.y + 1; y++) {
-		if ((mask->pixel(posBase.x, y) == 0) && (mask->pixel(posBase.x + 1, y) == 0))
+		if ((mask->pixel(posBase.x, y) != 255) && (mask->pixel(posBase.x + 1, y) != 255))
 			return false;
 	}
 
@@ -754,14 +763,35 @@ void Lemming::dig() {
 
 void Lemming::bashLeft(int q) {
 	glm::vec2 posBase = sprite->position() + glm::vec2(7, 7);
-	for (int y = max(0, int(posBase.y-1)); y <= min(mask->width(), int(posBase.y + 8)); y++)
+	for (int y = max(0, int(posBase.y-1)); y <= min(mask->height(), int(posBase.y + 8)); y++)
 		mask->setPixel(int(posBase.x) - q, y, 0);
 }
 
 void Lemming::bashRight(int q) {
 	glm::vec2 posBase = sprite->position() + glm::vec2(7, 7);
-	for (int y = max(0, int(posBase.y-1)); y <= min(mask->width(), int(posBase.y + 8)); y++)
+	for (int y = max(0, int(posBase.y-1)); y <= min(mask->height(), int(posBase.y + 8)); y++)
 		mask->setPixel(int(posBase.x) + q, y, 0);
+}
+
+void Lemming::build(glm::vec2 offset) {
+	counter++;
+	glm::vec2 posBase = sprite->position() + offset;
+	for (int x = max(0, int(posBase.x)); x <= min(map->width(), int(posBase.x + 6)); x++) {
+		mask->setPixel(x, int(posBase.y), 254);
+		map->setPixel(x, int(posBase.y), glm::ivec4(120,77,0,255));
+	}
+	map->saveBMP("prueba1.png");
+	
+}
+
+void Lemming::block() {
+	glm::vec2 posBase = sprite->position() + glm::vec2(3, 6);
+	for (int x = max(0, int(posBase.x)); x < min(map->width(), int(posBase.x + 10)); x++) {
+		for (int y = max(0, int(posBase.y)); y < min(mask->height(), int(posBase.y + 9)); y++) {
+			mask->setPixel(x, y, 255);
+			map->setPixel(x, y, glm::ivec4(0, 0, 0, 0));
+		}
+	}
 }
 
 void Lemming::changeState(int actionTriggered) {

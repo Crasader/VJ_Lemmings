@@ -11,13 +11,12 @@
 // all properties it needs to track its movement and collisions.
 
 
-class Lemming
-{
+class Lemming {
 
 public:
 	Lemming();
 	~Lemming();
-	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet,VariableTexture *mask);
+	void init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *map, VariableTexture *mask);
 	
 	void update(int deltaTime);
 	
@@ -25,7 +24,7 @@ public:
 	
 	
 	void changeState(int x);
-	void setMapMask(VariableTexture *mapMask);
+	void setMapMask(VariableTexture *mapMap, VariableTexture *mapMask);
 	void doubleSpeed();
 	void resetSpeed();
 	void pause();
@@ -39,6 +38,7 @@ public:
 	
 private:
 
+	/* All lemming's posible states */
 	enum LemmingState {
 		WALKING_RIGHT_STATE, WALKING_LEFT_STATE,
 
@@ -57,6 +57,7 @@ private:
 
 		BUILDER_RIGHT_STATE, BUILDER_LEFT_STATE,
 		BUILDER_TRIGGERED,
+		BUILDER_STOP_STATE,
 
 		FLOATER_RIGHT_STATE, FLOATER_LEFT_STATE,
 		FLOATER_TRIGGERED,
@@ -86,7 +87,10 @@ private:
 	void dig();
 	void bashLeft(int q);
 	void bashRight(int q);
+	void build(glm::vec2 offset);
+	void block();
 
+	/* change Animation and states */
 	void goDieExplosion();
 	void goDieFall();
 	void goBlocker();
@@ -97,6 +101,8 @@ private:
 	void goBasherLeft();
 	void goBuilderRight();
 	void goBuilderLeft();
+	void goStopBuilderRight();
+	void goStopBuilderLeft();
 	void goClimberRight();
 	void goClimberLeft();
 	void goWalkLeft();
@@ -109,10 +115,11 @@ private:
 	
 
 public:
+	/* Lemming status. Dead and Exited aren't rendered */
 	enum LemmingStatus {
-		ALIVE_STATUS,	/* Siguen vivos				*/
-		EXITED_STATUS,	/* Han finalizado el nivel	*/
-		DEAD_STATUS		/* Han muerto				*/
+		ALIVE_STATUS,	/* Still alive				*/
+		EXITED_STATUS,	/* Have been saved			*/
+		DEAD_STATUS		/* Have died				*/
 	};
 
 	/*
@@ -129,8 +136,8 @@ public:
 	
 private:
 	
-
-	enum LemmingAnims {		// 23 ANIMATIONS
+	/* Lemming animations, currently 23 */
+	enum LemmingAnims {	
 		WALKING_RIGHT, WALKING_LEFT,
 		FALLING_RIGHT, FALLING_LEFT,
 		BLOCKER,
@@ -147,12 +154,17 @@ private:
 		OPENING_UMBRELLA_LEFT, FLOATER_LEFT
 	};
 
-	LemmingState oldState, state, nextState;
-	//Texture spritesheet1;
-	Sprite *sprite;
-	VariableTexture *mask;
-	int status;
-	int actionTime;
+	LemmingState 
+		oldState,	/* either walking_right or walking_left. only indicates direction	*/
+		state,		/* actual state														*/
+		nextState;	/* next state. only triggers 										*/
+	
+	Sprite *sprite;	
+	VariableTexture *map;	/* needed for builders, they put the stairs directly in the map */
+	VariableTexture *mask;	/* bitmask for collisions and stuff */
+	int status;				/* current status */ /* TODO maybe change it to LemmingStatus? */
+	int actionTime;			/* time doing action */
+	int counter;			/* builder counter */
 
 };
 

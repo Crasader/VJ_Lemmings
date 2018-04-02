@@ -13,7 +13,7 @@
 class EntityManager
 {
 public:
-	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram,VariableTexture *mask ,string dorIni, string dorEnd);
+	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();
 	void update(int deltaTime, int buttonPressed);
 	void render();
@@ -38,7 +38,7 @@ private:
 	int spawnFrequency;
 	vector<Lemming> lemmings;
 	Texture spritesheet;
-	VariableTexture *mask;
+	VariableTexture *mask, *map;
 	ShaderProgram shaderProgram;
 	glm::vec2 doorStartPosition;
 	glm::vec2 doorEndPosition;
