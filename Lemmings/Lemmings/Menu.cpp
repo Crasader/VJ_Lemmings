@@ -50,16 +50,16 @@ void Menu::init() {
 		&bgTexture, &simpleTexProgram);
 	background->setPosition(background->position() + glm::vec2(-20, 0));
 
-	float buttonPosX = (CAMERA_WIDTH / 2) - 420 / 6; // x = 90
-	float buttonSizeX = 420 / 3; // x = 140;
-	float buttonSizeY = 22; // because 65/3 is not exact...
-	playButton			= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	buttonPosX = (CAMERA_WIDTH / 2) - 420 / 6; // x = 90
+	buttonSizeX = 420 / 3; // x = 140;
+	buttonSizeY = 22; // because 65/3 is not exact...
+	playButton= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
 	playButton->setPosition(glm::vec2(buttonPosX, 80));
-	instructionsButton	= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	instructionsButton= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
 	instructionsButton->setPosition(glm::vec2(buttonPosX, 112));
-	creditsButton		= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	creditsButton= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
 	creditsButton->setPosition(glm::vec2(buttonPosX, 144));
-	exitButton			= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	exitButton= Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
 	exitButton->setPosition(glm::vec2(buttonPosX, 176));
 	
 
@@ -102,19 +102,8 @@ void Menu::render() {
 }
 
 void Menu::update(int deltaTime){
-	if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
-		if (!pooledUp) {
-			pooledUp = true;
-			if (selected != 0) selected--;
-		}
-	}
-	if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)) {
-		if (!pooledDown) {
-			pooledDown = true;
-			if (selected != 3) selected++;
-		}
-	}
-	if (Game::instance().getKey(13)) {
+	selected = checkButtonsColison();
+	if (Game::instance().getLeftMousePressed()) {
 		if (selected == 3) bExit = true;
 		else if (selected == 0) bPlay = true;
 		else if (selected == 1) bInstructions = true;
@@ -206,7 +195,24 @@ void Menu::initShaders() {
 
 }
 
-
+int Menu::checkButtonsColison() {
+	int mouseX, mouseY;
+	Game::instance().getMousePosition(mouseX, mouseY);
+	if (mouseX >= buttonPosX*3 && mouseX <= (buttonPosX + buttonSizeX)*3) {
+		if ((mouseY >= (80 * 3)+12 && mouseY <= ((80 + buttonSizeY) * 3)+12)) {
+			return 0;
+		}
+		else if ((mouseY >= (112 * 3)+12 && mouseY <= ((112 + buttonSizeY) * 3)+12)) {
+			return 1;
+		}
+		else if ((mouseY >= (144 * 3)+12  && mouseY <= ((144 + buttonSizeY) * 3)+12)) {
+			return 2;
+		}
+		else if ((mouseY >= (173 * 3)+12  && mouseY <= ((173 + buttonSizeY) * 3)+12)) {
+			return 3;
+		}
+	}
+}
 
 
 

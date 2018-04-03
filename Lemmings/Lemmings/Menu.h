@@ -27,10 +27,15 @@ private:
 	Sprite* title;
 	Sprite* background;
 	Sprite *playButton, *instructionsButton, *creditsButton, *exitButton;
+	float buttonPosX;
+	float buttonSizeX;
+	float buttonSizeY;
+
 
 	glm::mat4 projection;
 	Text playText;
 	int selected;
 	void initShaders();
+	int checkButtonsColison();
 };
 
