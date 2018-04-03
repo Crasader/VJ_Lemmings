@@ -199,16 +199,16 @@ int Menu::checkButtonsColison() {
 	int mouseX, mouseY;
 	Game::instance().getMousePosition(mouseX, mouseY);
 	if (mouseX >= buttonPosX*3 && mouseX <= (buttonPosX + buttonSizeX)*3) {
-		if ((mouseY >= (80 * 3)+12 && mouseY <= ((80 + buttonSizeY) * 3)+12)) {
+		if ((mouseY >= (80 * 3) && mouseY <= ((80 + buttonSizeY) * 3))) {
 			return 0;
 		}
-		else if ((mouseY >= (112 * 3)+12 && mouseY <= ((112 + buttonSizeY) * 3)+12)) {
+		else if ((mouseY >= (112 * 3) && mouseY <= ((112 + buttonSizeY) * 3))) {
 			return 1;
 		}
-		else if ((mouseY >= (144 * 3)+12  && mouseY <= ((144 + buttonSizeY) * 3)+12)) {
+		else if ((mouseY >= (144 * 3)  && mouseY <= ((144 + buttonSizeY) * 3))) {
 			return 2;
 		}
-		else if ((mouseY >= (173 * 3)+12  && mouseY <= ((173 + buttonSizeY) * 3)+12)) {
+		else if ((mouseY >= (173 * 3)  && mouseY <= ((173 + buttonSizeY) * 3))) {
 			return 3;
 		}
 	}

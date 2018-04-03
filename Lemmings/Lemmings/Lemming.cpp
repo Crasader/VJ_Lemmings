@@ -667,7 +667,6 @@ void Lemming::pause() {
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, 0);
 }
 
-
 glm::vec2 Lemming::getPosition() {
 	return sprite->position();
 }

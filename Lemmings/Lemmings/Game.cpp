@@ -17,7 +17,7 @@ void Game::init() {
 	scene->init();
 
 	Cursor::instance().init();
-	glutSetCursor(GLUT_CURSOR_NONE);
+	//glutSetCursor(GLUT_CURSOR_NONE);
 }
 
 bool Game::update(int deltaTime) {
