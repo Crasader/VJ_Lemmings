@@ -66,8 +66,8 @@ void PlayScene::update(int deltaTime) {
 	currentTime += deltaTime;
 	int buttonAnt = buttonPressed;
 	buttonPressed = gui->getButtonPressed();
-	if (buttonPressed != 8 && buttonAnt == 8) decreaseSceneSpeed();
-	else if (buttonPressed != 9 && buttonAnt == 9) manager->resetNormalSpeed();
+	if (buttonPressed != 9 && buttonAnt == 9) decreaseSceneSpeed();
+	else if (buttonPressed != 10 && buttonAnt == 10) manager->resetNormalSpeed();
 	manager->update(deltaTime, buttonPressed);
 	
 	
