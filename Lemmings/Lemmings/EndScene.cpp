@@ -17,6 +17,7 @@ void EndScene::init() {
 	numLemmingsTotal = TextProcessor::instance().lemmings;
 	win = (numLemmingsExited >= numLemmingsMin);
 	initShaders();
+	currentTime = 0;
 
 	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
 	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f), &bgTexture, &simpleTexProgram);
@@ -37,7 +38,7 @@ void EndScene::init() {
 void EndScene::update(int deltaTime) {
 	currentTime += deltaTime;
 	if (Game::instance().getKey(27)) bExit = true;
-	if (Game::instance().getKey(13)) bContinue = true;
+	if (Game::instance().getKey(13) && currentTime > 200) bContinue = true;
 	if (Game::instance().getKey('r')) bRetry = true;
 }
 
@@ -96,8 +97,8 @@ void EndScene::render() {
 
 	// Continue
 	string next = "";
-	if (win) next = "Press Enter to next level. Escape to menu. r to Retry.";
-	else next = "Press Escape to menu. r to Retry.";
+	if (win) next = "Press Enter to next level. Escape to menu. R to Retry.";
+	else next = "Press Escape to menu. R to Retry.";
 	simpleText.render(next, glm::vec2(20, 580), 34, colorYellow);
 
 }

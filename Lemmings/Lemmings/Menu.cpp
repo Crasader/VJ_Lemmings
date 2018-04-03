@@ -34,8 +34,9 @@ void Menu::init() {
 	titleTexture.setMinFilter(GL_NEAREST);
 	titleTexture.setMagFilter(GL_NEAREST);
 
-	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
-	
+	bgTexture.loadFromFile("images/backTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
+	bgTexture.setMinFilter(GL_NEAREST);
+	bgTexture.setMagFilter(GL_NEAREST);
 	buttonTexture.loadFromFile("images/Button_Big.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	buttonTexture.setMinFilter(GL_NEAREST);
 	buttonTexture.setMagFilter(GL_NEAREST);
@@ -45,8 +46,9 @@ void Menu::init() {
 	title = Sprite::createSprite(glm::vec2(float((446)*0.50f), float((154)*0.50f)), glm::vec2(1.f, 1.f), &titleTexture, &simpleTexProgram);
 	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 / 4), 0.0f));
 
-	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
+	background = Sprite::createSprite(glm::vec2(1920.f/5.15f, 1080.f/5.15f), glm::vec2(1.f, 1.f),
 		&bgTexture, &simpleTexProgram);
+	background->setPosition(background->position() + glm::vec2(-20, 0));
 
 	float buttonPosX = (CAMERA_WIDTH / 2) - 420 / 6; // x = 90
 	float buttonSizeX = 420 / 3; // x = 140;
@@ -62,7 +64,7 @@ void Menu::init() {
 	
 
 	// init font
-	if (!playText.init("fonts/Cartoon_Regular.ttf"))
+	if (!playText.init("fonts/GILLUBCD.ttf"))
 		cout << "Could not load font!!!" << endl;
 
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
@@ -112,7 +114,7 @@ void Menu::update(int deltaTime){
 			if (selected != 3) selected++;
 		}
 	}
-	if (Game::instance().getKey('y')) {
+	if (Game::instance().getKey(13)) {
 		if (selected == 3) bExit = true;
 		else if (selected == 0) bPlay = true;
 		else if (selected == 1) bInstructions = true;

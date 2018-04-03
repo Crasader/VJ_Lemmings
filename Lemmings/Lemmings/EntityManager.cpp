@@ -27,7 +27,7 @@ void EntityManager::init() {
 	doubleSpeed = false;
 	paused = false;
 	spawnFrequency = 0;
-	armagedon = false;
+	armageddon = false;
 	lemmingsSaved = lemmingsDied = 0;
 
 	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
@@ -46,14 +46,14 @@ void EntityManager::init() {
 void EntityManager::update(int deltaTime, int buttonPressed){
 	sceneTime += deltaTime;
 	
-	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armagedon && buttonPressed == 9) {
+	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armageddon && buttonPressed == 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
 		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
 		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
 	}
-	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armagedon && buttonPressed != 9) {
+	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armageddon && buttonPressed != 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(Lemming());
@@ -171,7 +171,7 @@ void EntityManager::decreaseSpawnTime(){
 }
 
 void EntityManager::killAllLemmings() {
-	armagedon = true;
+	armageddon = true;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i].changeState(8);
 	}
@@ -186,6 +186,7 @@ int EntityManager::getLemmingsDied()
 {
 	return lemmingsDied;
 }
+
 
 void EntityManager::checkStatusLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {

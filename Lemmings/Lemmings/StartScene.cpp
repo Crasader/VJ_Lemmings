@@ -18,6 +18,7 @@ StartScene::~StartScene() {}
 void StartScene::init() {
 	bExit = bContinue = false;
 	initShaders();
+	currentTime = 0;
 
 	TextProcessor::instance().loadFileAndProcess(path);
 
@@ -34,7 +35,7 @@ void StartScene::update(int deltaTime) {
 	currentTime += deltaTime;
 
 	if (Game::instance().getKey(27)) bExit = true;
-	if (Game::instance().getKey(13)) bContinue = true;
+	if (Game::instance().getKey(13) && currentTime > 200) bContinue = true;
 }
 
 void StartScene::render() {

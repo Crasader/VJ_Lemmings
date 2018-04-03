@@ -52,7 +52,7 @@ private:
 	Texture spritesheetEnd;
 	string dorIni;
 	string dorEnd;
-	bool armagedon;
+	bool armageddon;
 
 	int lemmingsSaved, lemmingsDied;
 
