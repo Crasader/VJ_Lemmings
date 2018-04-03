@@ -22,9 +22,12 @@ Credits::~Credits()
 void Credits::init(){
 	initShaders();
 	exitToMenu = false;
-	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
-	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f),
+	bgTexture.loadFromFile("images/backTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
+	bgTexture.setMinFilter(GL_NEAREST);
+	bgTexture.setMagFilter(GL_NEAREST);
+	background = Sprite::createSprite(glm::vec2(1920.f / 5.15f, 1080.f / 5.15f), glm::vec2(1.f, 1.f),
 		&bgTexture, &simpleTexProgram);
+	background->setPosition(background->position() + glm::vec2(-20, 0));
 	titleTexture.loadFromFile("images/logo2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	titleTexture.setMinFilter(GL_NEAREST);
 	titleTexture.setMagFilter(GL_NEAREST);
