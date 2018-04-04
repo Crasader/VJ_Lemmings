@@ -19,10 +19,6 @@ void InterfazUsuario::init(VariableTexture & colorTexture, VariableTexture & mas
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 
-	/*
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(CAMERA_WIDTH), float(CAMERA_HEIGHT)) };
-	glm::vec2 texCoords[2] = { glm::vec2(120.f / 512.0, 0.f), glm::vec2((120.f + 320.f) / 512.0f, 160.f / 256.0f) };
-	*/
 
 	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
 	this->colorTexture = colorTexture;
@@ -76,8 +72,7 @@ void InterfazUsuario::render()
 	info.render("  OUT: " + to_string(out) + "  IN: " + to_string(in) + "  TIME: " + to_string(time), glm::vec2((CAMERA_WIDTH/ 2), CAMERA_HEIGHT*3 - 35*3), 35, colorGreen);
 }
 
-void InterfazUsuario::update(int mouseX, int mouseY)
-{
+void InterfazUsuario::update(int mouseX, int mouseY) {
 	if (Game::instance().getLeftMousePressed()) {
 		for (int i = 0; i < (int)buttons.size(); ++i) {
 			if (buttons[i]->checkColision(mouseX, mouseY)) {
@@ -111,18 +106,15 @@ void InterfazUsuario::update(int mouseX, int mouseY)
 	}
 }
 
-void InterfazUsuario::setTime(int time)
-{
+void InterfazUsuario::setTime(int time) {
 	this->time = time;
 }
 
-void InterfazUsuario::setDiggers(int digger)
-{
+void InterfazUsuario::setDiggers(int digger) {
 	this->digger = digger;
 }
 
-void InterfazUsuario::setClimbers(int climber)
-{
+void InterfazUsuario::setClimbers(int climber) {
 	this->climber = climber;
 }
 
@@ -130,8 +122,7 @@ void InterfazUsuario::setBuilders(int builder) {
 	this->builder = builder;
 }
 
-void InterfazUsuario::increaseSpawnRate()
-{
+void InterfazUsuario::increaseSpawnRate() {
 	this->spawnRate++;
 	buttons[8]->increaseText();
 	buttons[7]->decreaseText();
@@ -209,16 +200,14 @@ void InterfazUsuario::initShader()
 	fShader.free();
 }
 
-bool InterfazUsuario::checkColisionMinimap(int mouseX, int mouseY)
-{
+bool InterfazUsuario::checkColisionMinimap(int mouseX, int mouseY) {
 	float topMiniMapX = CAMERA_WIDTH - 64;
 	float topMiniMapY = CAMERA_HEIGHT - 32;
 	if (mouseX >= topMiniMapX && mouseX <= CAMERA_WIDTH && mouseY >= topMiniMapY && mouseY <= CAMERA_HEIGHT) return true;
 	else return false;
 }
 
-void InterfazUsuario::placeButtons()
-{
+void InterfazUsuario::placeButtons() {
 	int i = 0;
 	buttons.push_back(new Button(glm::ivec2(32 / 1.5, 48 / 1.5), glm::vec2(i*(32 / 1.5), CAMERA_HEIGHT - 48 / 1.5), "images/GUI/Button_Basher.png", to_string(basher)));
 	++i;
@@ -246,9 +235,7 @@ void InterfazUsuario::placeButtons()
 
 }
 
-void InterfazUsuario::renderButtons()
-{
-
+void InterfazUsuario::renderButtons() {
 	for (int i = 0; i < (int)buttons.size(); ++i) {
 		buttons[i]->render();
 	}

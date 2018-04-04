@@ -80,9 +80,6 @@ public:
 
 	
 private:
-
-	
-
 	int collisionFloor(int maxFall);
 	int collisionRight(int maxWall);
 	int collisionLeft(int maxWall);
@@ -122,24 +119,6 @@ private:
 	void goFallRight();
 
 	void resetActionTime();
-
-	
-
-public:
-	
-	
-
-	/*
-	enum LemmingActions {
-		DIGGER,
-		BLOCKER,
-		BASHER,
-		CLIMBER,
-		FLOATER,
-		BOMBER,
-		EXPLODER
-	};
-	*/
 	
 private:
 	
@@ -165,11 +144,10 @@ private:
 		oldState,	/* either walking_right or walking_left. only indicates direction	*/
 		state,		/* actual state														*/
 		nextState;	/* next state. only triggers 										*/
-	
 	Sprite *sprite;	
 	VariableTexture *map;	/* needed for builders, they put the stairs directly in the map */
 	VariableTexture *mask;	/* bitmask for collisions and stuff */
-	LemmingStatus status;				/* current status */ /* TODO maybe change it to LemmingStatus? */
+	LemmingStatus status;	/* current status */
 	int actionTime;			/* time doing action */
 	int counter;			/* builder counter */
 

@@ -1,11 +1,4 @@
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include "Game.h"
-#include <iostream>
-#include <thread>         // std::this_thread::sleep_for
-#include <chrono>         // std::chrono::seconds
-
-
 
 
 void Game::init() {

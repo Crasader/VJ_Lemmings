@@ -1,41 +1,65 @@
-#pragma once
-#include "Scene.h"
+#ifndef _MENU_INCLUDE
+#define _MENU_INCLUDE
+
+#include <cmath>
+#include <algorithm>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Game.h"
 #include "Shader.h"
 #include "ShaderProgram.h"
 #include "Sprite.h"
 #include "Text.h"
-#include "PlayScene.h"
+
 #include "StartScene.h"
 #include "InstructionsScene.h"
+#include "Credits.h"
 
 
-class Menu :
-	public Scene
-{
+class Menu : public Scene {
 public:
 	Menu();
 	~Menu();
 	void init();
-	void render();
 	void update(int deltaTime);
 	virtual Scene* changeState();
+	void render();
 	
 private:
-	bool bPlay, bExit, bInstructions, bCredits, bUp, bDown,pooledUp,pooledDown;
+	enum MenuState {
+		ON,
+		PLAY_CHOSEN,
+		EXIT_CHOSEN,
+		INSTRUCTIONS_CHOSEN,
+		CREDITS_CHOSEN,
+	};
+	MenuState state;
+
+	enum MenuButton {
+		PLAY_BUTTON,
+		INSTRUCTIONS_BUTTON,
+		CREDITS_BUTTON,
+		EXIT_BUTTON,
+		NONE_BUTTON
+	};
+	MenuButton selected;
+
+	float currentTime;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	Texture titleTexture, bgTexture, buttonTexture;
-	Sprite* title;
-	Sprite* background;
+	Text playText;
+	Sprite *title, *background;
 	Sprite *playButton, *instructionsButton, *creditsButton, *exitButton;
-	float buttonPosX;
-	float buttonSizeX;
-	float buttonSizeY;
-
+	float buttonPosX, buttonSizeX, buttonSizeY;
 
 	glm::mat4 projection;
-	Text playText;
-	int selected;
+	
+	MenuButton checkButtonsColison();
+
+	void loadTextures();
+	void createSprites();
 	void initShaders();
-	int checkButtonsColison();
 };
+
+#endif
 

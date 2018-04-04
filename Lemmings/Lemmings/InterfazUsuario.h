@@ -2,17 +2,19 @@
 #define _INTERFAZUSUARIO_INCLUDE
 
 #include <iostream>
+#include <vector>
+#include <GL/glew.h>
+#include <GL/glut.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Game.h"
 #include "Shader.h"
 #include "ShaderProgram.h"
 #include "Text.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <glm/gtc/matrix_transform.hpp>
 #include "Sprite.h"
 #include "Button.h"
-#include "Game.h"
-#include <vector>
-#include <glm/glm.hpp>
+
 #include "AnimKeyframes.h"
 #include "AudioEngine.h"
 #include "Texture.h"
@@ -20,10 +22,7 @@
 #include "MaskedTexturedQuad.h"
 #include "Sprite.h"
 
-class VariableTexture;
-
-class InterfazUsuario
-{
+class InterfazUsuario {
 public:
 	InterfazUsuario();
 	~InterfazUsuario();
@@ -43,8 +42,24 @@ public:
 	void setLemmingsIn(int in);
 	void setBombers(int bomber);
 	int getButtonPressed();
-private:
 
+public:
+	enum Buttons {
+		BASHER_BUTTON,		// 0
+		BLOCKER_BUTTON,	
+		CLIMBER_BUTTON,		// 2
+		DIGGER_BUTTON,
+		FLOATER_BUTTON,		// 4
+		BOMBER_BUTTON,
+		BUILDER_BUTTON,		// 6
+		DECREASE_BUTTON,
+		INCREASE_BUTTON,	// 8
+		SPEED_BUTTON,
+		PAUSE_BUTTON,		// 10
+		ARMAGEDDON_BUTTON
+	};
+
+private:
 	int time;
 	int out;
 	int in;
@@ -59,8 +74,7 @@ private:
 	int blocker;
 	int bomber;
 	int builder;
-	float  * camX;
-	float * camY;
+	float  *camX, *camY;
 	Texture frame, selector;
 	VariableTexture colorTexture;
 	VariableTexture maskTexture;
@@ -69,9 +83,10 @@ private:
 	Text info;
 	glm::mat4 projection;
 	vector<Button*> buttons;
-	Sprite * marco;
-	Sprite * camSelector;
+	Sprite *marco, *camSelector;
 	float scaleFactor;
+
+private:
 	void placeButtons();
 	void renderButtons();
 	void initShader();

@@ -16,8 +16,22 @@ public:
 	~EntityManager();
 	void update(int deltaTime, int buttonPressed);
 	void render();
+
+
+	enum Effect {
+		BASHER_EFFECT,
+		BLOCKER_EFFECT,
+		CLIMBER_EFFECT,
+		DIGGER_EFFECT,
+		FLOATER_EFFECT,
+		BOMBER_EFFECT,
+		BUILDER_EFFECT,
+		ARMAGEDDON_EFFECT,
+		NONE_EFFECT
+	};
+
 	void changeLemmingState(int x);
-	bool clickManager(int mouseX, int mouseY, int state);
+	bool clickManager(int mouseX, int mouseY, Effect state);
 	bool lemmingInCursor(int mouseX, int mouseY);
 	bool checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY);
 	void doubleSpeedAnimation();
@@ -29,6 +43,7 @@ public:
 
 	int getLemmingsExited();
 	int getLemmingsDied();
+
 
 
 private:
@@ -59,8 +74,10 @@ private:
 	int doorSColor;
 	int doorEColor;
 
+	
+
 	void init();	
 	void checkStatusLemmings();
-	bool lemmingHasActionAssigned(int i, int state);
+	bool lemmingHasActionAssigned(int i, Effect state);
 };
 

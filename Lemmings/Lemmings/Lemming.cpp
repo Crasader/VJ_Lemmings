@@ -133,7 +133,7 @@ void Lemming::update(int deltaTime) {
 				
 			else if (collisionWalk()) {
 				// action triggered
-				if (nextState == CLIMBER_TRIGGERED) 
+				if (collisionFullWall() && nextState == CLIMBER_TRIGGERED) 
 					goClimberRight();
 					
 				// no action triggered
@@ -161,8 +161,10 @@ void Lemming::update(int deltaTime) {
 					// no action triggered -> continue walking
 				}
 				// falling
-				else 
+				else {
+					move(0, 1);
 					goFallRight();
+				}
 					
 			}
 			break;
@@ -175,7 +177,7 @@ void Lemming::update(int deltaTime) {
 				
 			else if (collisionWalk()) {
 				// action triggered
-				if (nextState == CLIMBER_TRIGGERED) 
+				if (collisionFullWall() && nextState == CLIMBER_TRIGGERED)
 					goClimberLeft();
 					
 				// no action triggered
@@ -203,8 +205,10 @@ void Lemming::update(int deltaTime) {
 					// no action triggered -> continue walking
 				}
 				// falling
-				else 
+				else {
+					move(0, 1);
 					goFallLeft();
+				}
 			}
 			break;
 
@@ -353,7 +357,7 @@ void Lemming::update(int deltaTime) {
 			break;
 
 
-		/* Building */ 
+		/* Building */ // TODO triggers should stop builder
 		case BUILDER_RIGHT_STATE:
 			nextState = WALKING_RIGHT_STATE;
 			// all tiles done
@@ -591,7 +595,6 @@ void Lemming::setMapMask(VariableTexture *mapMap, VariableTexture *mapMask) {
 	mask = mapMask;
 }
 
-// TODO añadir todas las animaciones
 void Lemming::doubleSpeed() {
 	sprite->setAnimationSpeed(WALKING_RIGHT, speed*2);
 	sprite->setAnimationSpeed(WALKING_LEFT, speed * 2);
@@ -608,6 +611,7 @@ void Lemming::doubleSpeed() {
 	sprite->setAnimationSpeed(BUILDER_RIGHT, speed * 2);
 	sprite->setAnimationSpeed(BUILDER_LEFT, speed * 2);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed * 2);
+	sprite->setAnimationSpeed(BUILDER_STOP_LEFT, speed * 2);
 	sprite->setAnimationSpeed(EXITING, speed * 2);
 	sprite->setAnimationSpeed(DIE_FALL, speed * 2);
 	sprite->setAnimationSpeed(DIE_EXPLOSION, 20);
@@ -633,6 +637,7 @@ void Lemming::resetSpeed() {
 	sprite->setAnimationSpeed(BUILDER_RIGHT, speed);
 	sprite->setAnimationSpeed(BUILDER_LEFT, speed);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed);
+	sprite->setAnimationSpeed(BUILDER_STOP_LEFT, speed);
 	sprite->setAnimationSpeed(EXITING, speed);
 	sprite->setAnimationSpeed(DIE_EXPLOSION, 10);
 	sprite->setAnimationSpeed(FLOATER_RIGHT, speed/2);
@@ -658,6 +663,7 @@ void Lemming::pause() {
 	sprite->setAnimationSpeed(BUILDER_RIGHT, 0);
 	sprite->setAnimationSpeed(BUILDER_LEFT, 0);
 	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, 0);
+	sprite->setAnimationSpeed(BUILDER_STOP_LEFT, 0);
 	sprite->setAnimationSpeed(EXITING, 0);
 	sprite->setAnimationSpeed(DIE_EXPLOSION, 0);
 	sprite->setAnimationSpeed(FLOATER_RIGHT, 0);
@@ -707,7 +713,7 @@ int Lemming::collisionRight(int maxWall) {
 
 	while ((wall < maxWall) && !bContact)
 	{
-		if (mask->pixel(posBase.x + wall, posBase.y ) == 0)
+		if (mask->pixel(posBase.x + wall, posBase.y ) < 255)
 			wall += 1;
 		else
 			bContact = true;
@@ -724,7 +730,7 @@ int Lemming::collisionLeft(int maxWall) {
 
 	while ((wall < maxWall) && !bContact)
 	{
-		if ((mask->pixel(posBase.x - wall, posBase.y) == 0))
+		if ((mask->pixel(posBase.x - wall, posBase.y) < 255))
 			wall += 1;
 		else
 			bContact = true;
@@ -734,15 +740,17 @@ int Lemming::collisionLeft(int maxWall) {
 }
 
 bool Lemming::collisionWalk() {
-	glm::ivec2 posBase = sprite->position(); // Add the map displacement
+	glm::ivec2 posBase = sprite->position() + glm::vec2(7,7); 
 	
-	posBase += glm::ivec2(7, 14);
-	for (int y = posBase.y; y < posBase.y + 1; y++) {
-		if ((mask->pixel(posBase.x, y) != 255) && (mask->pixel(posBase.x + 1, y) != 255))
-			return false;
+	int x = posBase.x;
+	int y = posBase.y;
+
+	for (y = posBase.y; y < posBase.y + 7; y++) {
+		if ((mask->pixel(posBase.x, y) > 253) || (mask->pixel(posBase.x + 1, y) > 253))
+			return true;
 	}
 
-	return true;
+	return false;
 }
 
 bool Lemming::collisionFullWall() {
@@ -750,17 +758,16 @@ bool Lemming::collisionFullWall() {
 
 	posBase += glm::ivec2(7, 7);
 	for (int y = posBase.y; y < posBase.y + 7; y++) {
-		if ((mask->pixel(posBase.x, y) == 0) && (mask->pixel(posBase.x + 1, y) == 0))
+		if ((mask->pixel(posBase.x, y) < 255) && (mask->pixel(posBase.x + 1, y) < 255))
 			return false;
 	}
-
 	return true;
 }
 
 bool Lemming::collisionHeadRight() {
 	glm::ivec2 posBase = sprite->position();
 	posBase += glm::ivec2(7, 4);
-	if ((mask->pixel(posBase.x, posBase.y) == 0))
+	if ((mask->pixel(posBase.x, posBase.y) < 254))
 		return false;
 	return true;
 }
@@ -768,7 +775,7 @@ bool Lemming::collisionHeadRight() {
 bool Lemming::collisionHeadLeft() {
 	glm::ivec2 posBase = sprite->position();
 	posBase += glm::ivec2(7, 4);
-	if ((mask->pixel(posBase.x + 1, posBase.y) == 0))
+	if ((mask->pixel(posBase.x + 1, posBase.y) < 254))
 		return false;
 	return true;
 }
@@ -800,7 +807,7 @@ void Lemming::build(glm::vec2 offset) {
 	counter++;
 	glm::vec2 posBase = sprite->position() + offset;
 	for (int x = max(0, int(posBase.x)); x <= min(map->width(), int(posBase.x + 6)); x++) {
-		mask->setPixel(x, int(posBase.y), 254);
+		mask->setPixel(x, int(posBase.y), 253);
 		map->setPixel(x, int(posBase.y), glm::ivec4(120,77,0,255));
 	}	
 }
@@ -809,7 +816,7 @@ void Lemming::block() {
 	glm::vec2 posBase = sprite->position() + glm::vec2(3, 6);
 	for (int x = max(0, int(posBase.x)); x < min(map->width(), int(posBase.x + 10)); x++) {
 		for (int y = max(0, int(posBase.y)); y < min(mask->height(), int(posBase.y + 9)); y++) {
-			mask->setPixel(x, y, 255);
+			mask->setPixel(x, y, 254);
 			map->setPixel(x, y, glm::ivec4(0, 0, 0, 0));
 		}
 	}
@@ -817,32 +824,32 @@ void Lemming::block() {
 
 void Lemming::changeState(int actionTriggered) {
 	switch (actionTriggered) {
-		case 1:
-			nextState = DIGGER_TRIGGERED;
-			break;
-		case 2:
-			nextState = BLOCKER_TRIGGERED;
-			break;
-		case 3:
-			nextState = BASHER_TRIGGERED;
-			break;
-		case 4: 
-			nextState = CLIMBER_TRIGGERED;
-			break;
-		case 5:
-			nextState = BUILDER_TRIGGERED;
-			break;
-		case 6: 
-			nextState = FLOATER_TRIGGERED;
-			break;
-		case 7:
-			nextState = BOMBER_TRIGGERED;
-			break;
-		case 8:
-			nextState = DYING_EXPLOSION_TRIGGERED;
-			break;
-		default:
-			break;
+	case 0:
+		nextState = BASHER_TRIGGERED;
+		break;
+	case 1:
+		nextState = BLOCKER_TRIGGERED;
+		break;
+	case 2:
+		nextState = CLIMBER_TRIGGERED;
+		break;
+	case 3:
+		nextState = DIGGER_TRIGGERED;
+		break;
+	case 4:
+		nextState = FLOATER_TRIGGERED;
+		break;
+	case 5:
+		nextState = BOMBER_TRIGGERED;
+		break;
+	case 6:
+		nextState = BUILDER_TRIGGERED;
+		break;
+	case 7:
+		nextState = DYING_EXPLOSION_TRIGGERED;
+		break;
+	default:
+		break;
 	}
 
 }

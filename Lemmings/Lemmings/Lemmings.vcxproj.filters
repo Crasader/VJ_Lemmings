@@ -52,9 +52,6 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Estado.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
     <ClCompile Include="StartScene.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
@@ -139,9 +136,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Estado.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="StartScene.h">

@@ -99,7 +99,7 @@ void EntityManager::changeLemmingState(int x) {
 
 }
 
-bool EntityManager::clickManager(int mouseX, int mouseY, int state) {
+bool EntityManager::clickManager(int mouseX, int mouseY, Effect state) {
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
 		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
 			if (!lemmingHasActionAssigned(i, state)) {
@@ -173,7 +173,7 @@ void EntityManager::decreaseSpawnTime(){
 void EntityManager::killAllLemmings() {
 	armageddon = true;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].changeState(8);
+		lemmings[i].changeState(ARMAGEDDON_EFFECT);
 	}
 }
 
@@ -199,13 +199,13 @@ void EntityManager::checkStatusLemmings() {
 	}
 }
 
-bool EntityManager::lemmingHasActionAssigned(int i, int state) {
-	if (state == 1 && (lemmings[i].getState() == Lemming::DIGGER_STATE || lemmings[i].getNextState() == Lemming::DIGGER_TRIGGERED)) return true;
-	else if (state == 2 && (lemmings[i].getState() == Lemming::BLOCKER_STATE || lemmings[i].getNextState() == Lemming::BLOCKER_TRIGGERED)) return true;
-	else if (state == 3 && (lemmings[i].getState() == Lemming::BASHER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BASHER_TRIGGERED || lemmings[i].getState() == Lemming::BASHER_RIGHT_STATE)) return true;
-	else if (state == 4 && (lemmings[i].getState() == Lemming::CLIMBER_LEFT_STATE || lemmings[i].getNextState() == Lemming::CLIMBER_TRIGGERED || lemmings[i].getState() == Lemming::CLIMBER_RIGHT_STATE)) return true;
-	else if (state == 5 && (lemmings[i].getState() == Lemming::BUILDER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BUILDER_TRIGGERED || lemmings[i].getState() == Lemming::BUILDER_RIGHT_STATE)) return true;
-	else if (state == 6 && (lemmings[i].getState() == Lemming::FLOATER_LEFT_STATE || lemmings[i].getState() == Lemming::FLOATER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::FLOATER_TRIGGERED)) return true;
-	else if (state == 7 && (lemmings[i].getState() == Lemming::BOMBER_LEFT_STATE || lemmings[i].getState() == Lemming::BOMBER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::BOMBER_TRIGGERED)) return true;
+bool EntityManager::lemmingHasActionAssigned(int i, Effect state) {
+	if (state == DIGGER_EFFECT && (lemmings[i].getState() == Lemming::DIGGER_STATE || lemmings[i].getNextState() == Lemming::DIGGER_TRIGGERED)) return true;
+	else if (state == BLOCKER_EFFECT && (lemmings[i].getState() == Lemming::BLOCKER_STATE || lemmings[i].getNextState() == Lemming::BLOCKER_TRIGGERED)) return true;
+	else if (state == BASHER_EFFECT && (lemmings[i].getState() == Lemming::BASHER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BASHER_TRIGGERED || lemmings[i].getState() == Lemming::BASHER_RIGHT_STATE)) return true;
+	else if (state == CLIMBER_EFFECT && (lemmings[i].getState() == Lemming::CLIMBER_LEFT_STATE || lemmings[i].getNextState() == Lemming::CLIMBER_TRIGGERED || lemmings[i].getState() == Lemming::CLIMBER_RIGHT_STATE)) return true;
+	else if (state == BUILDER_EFFECT && (lemmings[i].getState() == Lemming::BUILDER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BUILDER_TRIGGERED || lemmings[i].getState() == Lemming::BUILDER_RIGHT_STATE)) return true;
+	else if (state == FLOATER_EFFECT && (lemmings[i].getState() == Lemming::FLOATER_LEFT_STATE || lemmings[i].getState() == Lemming::FLOATER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::FLOATER_TRIGGERED)) return true;
+	else if (state == BOMBER_EFFECT && (lemmings[i].getState() == Lemming::BOMBER_LEFT_STATE || lemmings[i].getState() == Lemming::BOMBER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::BOMBER_TRIGGERED)) return true;
 	else return false;
 }

@@ -1,8 +1,5 @@
 #include "PlayScene.h"
-#include <iostream>
-#include <cmath>
-#include <algorithm>
-#include <glm/gtc/matrix_transform.hpp>
+
 #include "Cursor.h"
 
 
@@ -19,96 +16,125 @@ PlayScene::~PlayScene() {
 }
 
 void PlayScene::init() {
-	bExit = bEnd = bMouseLeft = bMoveCameraRight = bMoveCameraLeft = false;
-	bDigger = bBasher = bBlocker = bClimber = bBuilder = bFloater = bBomber = bExplosion = false;
+	state = ON;
+	currentTime = 0.0f;
 	
 	initShaders();
 
-	cameraX = TextProcessor::instance().camPos.x;
-	cameraY = TextProcessor::instance().camPos.y;
+	getLevelData();
+	createMap();
 
-	numDiggers = TextProcessor::instance().numbDig;
-	numBlockers = TextProcessor::instance().numbStop;
-	numBashers = TextProcessor::instance().numbBash;
-	numFloaters = TextProcessor::instance().numbFlo;
-	numClimbers = TextProcessor::instance().numbCli;
-	numBombers = TextProcessor::instance().numbBomb;
-	numBuilders = TextProcessor::instance().numbBuild;
-	
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
-	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
-	
-	/*
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(CAMERA_WIDTH), float(CAMERA_HEIGHT)) };
-	glm::vec2 texCoords[2] = { glm::vec2(120.f / 512.0, 0.f), glm::vec2((120.f + 320.f) / 512.0f, 160.f / 256.0f) };
-	*/
+	manager = new EntityManager(
+		TextProcessor::instance().lemmings, 
+		TextProcessor::instance().startDoor, 
+		TextProcessor::instance().doorStartColor, 
+		TextProcessor::instance().endDoor,
+		TextProcessor::instance().doorEndColor, 
+		simpleTexProgram, &colorTexture, &maskTexture, 
+		"images/start_spritesheet.png", "images/end_spritesheet.png"
+	);
 
-	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
-	colorTexture.loadFromFile(TextProcessor::instance().path, TEXTURE_PIXEL_FORMAT_RGBA);
-	colorTexture.setMinFilter(GL_NEAREST);
-	colorTexture.setMagFilter(GL_NEAREST);
-	maskTexture.loadFromFile(TextProcessor::instance().mPath, TEXTURE_PIXEL_FORMAT_L);
-	maskTexture.setMinFilter(GL_NEAREST);
-	maskTexture.setMagFilter(GL_NEAREST);
-
-	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
-	currentTime = 0.0f;
-
-	manager = new EntityManager(TextProcessor::instance().lemmings, TextProcessor::instance().startDoor, TextProcessor::instance().doorStartColor, TextProcessor::instance().endDoor,
-		TextProcessor::instance().doorEndColor, simpleTexProgram, &colorTexture, &maskTexture, "images/start_spritesheet.png", "images/end_spritesheet.png");
 	gui = new InterfazUsuario();
 	setGUI();
 	gui->init(colorTexture, maskTexture, cameraX, cameraY);
+
+	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	
 }
 
 void PlayScene::update(int deltaTime) {
 	currentTime += deltaTime;
-	int buttonAnt = buttonPressed;
-	buttonPressed = gui->getButtonPressed();
-	if (buttonPressed != 9 && buttonAnt == 9) decreaseSceneSpeed();
-	else if (buttonPressed != 10 && buttonAnt == 10) manager->resetNormalSpeed();
-	manager->update(deltaTime, buttonPressed);
-	
-	
-	
-	if (Game::instance().getKey(27)) bExit = true;
-	/*
-	if (Game::instance().getKey('1')) bDigger = true;
-	if (Game::instance().getKey('2')) bBlocker = true;
-	if (Game::instance().getKey('3')) bBasher = true;
-	if (Game::instance().getKey('4')) bClimber = true;
-	if (Game::instance().getKey('5')) bBuilder = true;
-	if (Game::instance().getKey('6')) bFloater = true;
-	if (Game::instance().getKey('7')) bBomber = true;
-	if (Game::instance().getKey('8')) bExplosion = true;
-	*/
+
+	int lemmingsStillAlive = TextProcessor::instance().lemmings - manager->getLemmingsDied() - manager->getLemmingsExited();
+	if (lemmingsStillAlive == 0) state = END;
+	if (Game::instance().getKey(27)) state = EXIT_CHOSEN;
 
 
-
+	// change cursor if mouse selects a lemmings
 	int x = 0, y = 0;
 	Game::instance().getMousePosition(x, y);
-	if (manager->lemmingInCursor(cameraX + x/3, cameraY + y/3)) {
+	if (manager->lemmingInCursor(cameraX + x/3, cameraY + y/3))
 		Cursor::instance().lemmingInside(true);
-	}
-	else {
+	else 
 		Cursor::instance().lemmingInside(false);
-	}
-	if (x > 900 && y < 495) bMoveCameraRight = true;
-	if (x < 60 && y < 495) bMoveCameraLeft = true;
 
-	if (Game::instance().getLeftMousePressed()) bMouseLeft = true;
+	// mouse near borders -> update camera
+	if (x > 900 && y < 495 && cameraX < (TextProcessor::instance().width - CAMERA_WIDTH))
+		cameraX += 2;
+	else if (x < 60 && y < 495 && cameraX > 0)
+		cameraX -= 2;
+	projection = glm::ortho(0.f + cameraX, float(CAMERA_WIDTH - 1) + cameraX, float(CAMERA_HEIGHT - 1), 0.f);
+
+	// mouse click -> gui?
+	buttonPressed = gui->getButtonPressed();
+	if (Game::instance().getLeftMousePressed()) {
+		manager->resetNormalSpeed();
+		int x = 0, y = 0;
+		EntityManager::Effect effect = EntityManager::NONE_EFFECT;
+		if (buttonPressed == InterfazUsuario::BASHER_BUTTON)
+			effect = EntityManager::BASHER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::BLOCKER_BUTTON)
+			effect = EntityManager::BLOCKER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::CLIMBER_BUTTON)
+			effect = EntityManager::CLIMBER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::DIGGER_BUTTON)
+			effect = EntityManager::DIGGER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::FLOATER_BUTTON)
+			effect = EntityManager::FLOATER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::BOMBER_BUTTON)
+			effect = EntityManager::BOMBER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::BUILDER_BUTTON)
+			effect = EntityManager::BUILDER_EFFECT;
+		else if (buttonPressed == InterfazUsuario::DECREASE_BUTTON) {
+			manager->increaseSpawnTime();
+			gui->decreaseSpawnRate();
+		}
+		else if (buttonPressed == InterfazUsuario::INCREASE_BUTTON) {
+			gui->increaseSpawnRate();
+			manager->decreaseSpawnTime();
+		}
+		else if (buttonPressed == InterfazUsuario::SPEED_BUTTON) 
+			manager->doubleSpeedAnimation();
+		else if (buttonPressed == InterfazUsuario::PAUSE_BUTTON) 
+			manager->pause();
+		else if (buttonPressed == InterfazUsuario::ARMAGEDDON_BUTTON)
+			manager->killAllLemmings();
+
+
+		if (effect != EntityManager::NONE_EFFECT) 
+			if (effectForLemming(x, y, effect))
+				setGUI();
+
+	}
+	manager->update(deltaTime, buttonPressed);
 	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
 
-
-	int lemmingsStillAlive = TextProcessor::instance().lemmings - manager->getLemmingsDied() - manager->getLemmingsExited();
-	if (lemmingsStillAlive == 0) bEnd = true;
-
 }
 
-void PlayScene::render()
-{
+Scene * PlayScene::changeState() {
+	switch (state) {
+	case EXIT_CHOSEN: {
+		Scene* menu = new Menu();
+		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().stopEffect();
+		menu->init();
+		return menu;
+	}
+	case END: {
+		Scene* scene = new EndScene(path, manager->getLemmingsExited());
+		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().stopEffect();
+		scene->init();
+		return scene;
+	}
+	default:
+		break;
+	}
+	return this;
+}
+
+void PlayScene::render() {
 	glm::mat4 modelview;
 
 	maskedTexProgram.use();
@@ -130,165 +156,95 @@ void PlayScene::render()
 	
 }
 
-Scene * PlayScene::changeState() {
-	if (bEnd) {
-		Scene* scene = new EndScene(path, manager->getLemmingsExited());
-		AudioEngine::instance().buttonEffect();
-		AudioEngine::instance().stopEffect();
-		scene->init();
-		return scene;
-	}
-	if (bExit) {
-		Scene* menu = new Menu();
-		AudioEngine::instance().buttonEffect();
-		AudioEngine::instance().stopEffect();
-		menu->init();
-		return menu;
-	}
-	if (bDigger) {
-		manager->changeLemmingState(1);
-		bDigger = false;
-	}
-	else if (bBlocker) {
-		manager->changeLemmingState(2);
-		bBlocker = false;
-	}
-	else if (bBasher) {
-		manager->changeLemmingState(3);
-		bBasher = false;
-	}
-	else if (bClimber) {
-		manager->changeLemmingState(4);
-		bClimber = false;
-	}
-	else if (bBuilder) {
-		manager->changeLemmingState(5);
-		bBuilder = false;
-	}
-	else if (bFloater) {
-		manager->changeLemmingState(6);
-		bFloater = false;
-	}
-	else if (bBomber) {
-		manager->changeLemmingState(7);
-		bBomber = false;
-	}
-	else if (bExplosion) {
-		manager->changeLemmingState(8);
-		bExplosion = false;
-	}
-	if (bMouseLeft) {
-		int buttonPressed1 = gui->getButtonPressed();
-		int x = 0, y = 0;
-		int effect = -1;
-		if (buttonPressed == 0) effect = 3;
-		else if (buttonPressed == 1) effect = 2;
-		else if (buttonPressed == 2) effect = 4;
-		else if (buttonPressed == 3) effect = 1;
-		else if (buttonPressed == 4) effect = 6;
-		else if (buttonPressed == 5) effect = 7;
-		else if (buttonPressed == 6) effect = 5;
-		else if (buttonPressed1 == 7) {
-			manager->increaseSpawnTime();
-			gui->decreaseSpawnRate();
-		}
-		else if (buttonPressed1 == 8) {
-			gui->increaseSpawnRate();
-			manager->decreaseSpawnTime();
-		}
-		else if (buttonPressed == 9) doubleSceneSpeed();
-		else if (buttonPressed == 10) manager->pause();
-		else if (buttonPressed == 11) {
-			manager->resetNormalSpeed();
-			manager->killAllLemmings();
-			
-		}
-		if (effect != -1) {
-			effectForLemming(x, y, effect);
-			setGUI();
-		}
 
-		
-		bMouseLeft = false;
-	}
-	
-	if (bMoveCameraRight || bMoveCameraLeft) {
-		if (bMoveCameraRight && cameraX < (TextProcessor::instance().width - CAMERA_WIDTH)) cameraX += 2;
-		else if (bMoveCameraLeft && cameraX > 0) cameraX -= 2;
-		bMoveCameraRight = false;
-		bMoveCameraLeft = false;
-	}
-	projection = glm::ortho(0.f + cameraX, float(CAMERA_WIDTH - 1) + cameraX, float(CAMERA_HEIGHT - 1), 0.f);
-	
-	return this;
-}
 
-void PlayScene::eraseMask(int mouseX, int mouseY)
-{
-	int posX, posY;
-
-	// Transform from mouse coordinates to map coordinates
-	//   The map is enlarged 3 times and displaced 120 pixels
-	posX = mouseX / 3 + int(cameraX);
-	posY = mouseY / 3;
-
-	for (int y = max(0, posY - 3); y <= min(maskTexture.height() - 1, posY + 3); y++)
-		for (int x = max(0, posX - 3); x <= min(maskTexture.width() - 1, posX + 3); x++)
-			maskTexture.setPixel(x, y, 0);
-}
-
-void PlayScene::applyMask(int mouseX, int mouseY)
-{
-	int posX, posY;
-
-	// Transform from mouse coordinates to map coordinates
-	//   The map is enlarged 3 times and displaced 120 pixels
-	posX = mouseX / 3 + int(cameraX);
-	posY = mouseY / 3;
-
-	for (int y = max(0, posY - 3); y <= min(maskTexture.height() - 1, posY + 3); y++)
-		for (int x = max(0, posX - 3); x <= min(maskTexture.width() - 1, posX + 3); x++)
-			maskTexture.setPixel(x, y, 255);
-}
-
-void PlayScene::effectForLemming(int mouseX, int mouseY, int effect) {
+bool PlayScene::effectForLemming(int mouseX, int mouseY, EntityManager::Effect effect) {
 	int x, y;
 	Game::instance().getMousePosition(x, y);
 	bool lemmingChanged = false;
-	if (effect == 1 && numDiggers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-	else if (effect == 2 && numBlockers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-	else if (effect == 3 && numBashers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-	else if (effect == 4 && numClimbers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-	else if (effect == 5 && numBuilders > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-	else if (effect == 6 && numFloaters > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-	else if (effect == 7 && numBombers > 0) lemmingChanged = manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect);
-
-	 
-	if (lemmingChanged) {
-		if (effect == 1) numDiggers--;
-		else if (effect == 2) numBlockers--;
-		else if (effect == 3) numBashers--;
-		else if (effect == 4) numClimbers--;
-		else if (effect == 5) numBuilders--;
-		else if (effect == 6) numFloaters--;
-		else if (effect == 7) numBombers--;
+	if (effect == EntityManager::DIGGER_EFFECT && numDiggers > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numDiggers--;
+			
+		}
 	}
+	else if (effect == EntityManager::BLOCKER_EFFECT && numBlockers > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numBlockers--;
+			return true;
+		}
+	}
+	else if (effect == EntityManager::BASHER_EFFECT && numBashers > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numBashers--;
+			return true;
+		}
+	}
+	else if (effect == EntityManager::CLIMBER_EFFECT && numClimbers > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numClimbers--;
+			return true;
+		}
+	}
+	else if (effect == EntityManager::BUILDER_EFFECT && numBuilders > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numBuilders--;
+			return true;
+		}
+	}
+	else if (effect == EntityManager::FLOATER_EFFECT && numFloaters > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numFloaters--;
+			return true;
+		}
+	}
+	else if (effect == EntityManager::BOMBER_EFFECT && numBombers > 0) {
+		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
+			numBombers--;
+			return true;
+		}
+	}
+	return false;
+
 }
 
 void PlayScene::setGUI() {
 	gui->setBashers(numBashers);
+	gui->setBlockers(numBlockers);
 	gui->setDiggers(numDiggers);
 	gui->setClimbers(numClimbers);
-	gui->setBlockers(numBlockers);
 	gui->setBuilders(numBuilders);
 	gui->setFloaters(numFloaters);
 	gui->setBombers(numBombers);
-
-	
 }
 
-void PlayScene::initShaders()
-{
+void PlayScene::getLevelData() {
+	cameraX = TextProcessor::instance().camPos.x;
+	cameraY = TextProcessor::instance().camPos.y;
+
+	numDiggers = TextProcessor::instance().numbDig;
+	numBlockers = TextProcessor::instance().numbStop;
+	numBashers = TextProcessor::instance().numbBash;
+	numFloaters = TextProcessor::instance().numbFlo;
+	numClimbers = TextProcessor::instance().numbCli;
+	numBombers = TextProcessor::instance().numbBomb;
+	numBuilders = TextProcessor::instance().numbBuild;
+}
+
+void PlayScene::createMap() {
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+
+	map = MaskedTexturedQuad::createTexturedQuad(geom, texCoords, maskedTexProgram);
+	colorTexture.loadFromFile(TextProcessor::instance().path, TEXTURE_PIXEL_FORMAT_RGBA);
+	colorTexture.setMinFilter(GL_NEAREST);
+	colorTexture.setMagFilter(GL_NEAREST);
+	maskTexture.loadFromFile(TextProcessor::instance().mPath, TEXTURE_PIXEL_FORMAT_L);
+	maskTexture.setMinFilter(GL_NEAREST);
+	maskTexture.setMagFilter(GL_NEAREST);
+}
+
+void PlayScene::initShaders() {
 	Shader vShader, fShader;
 
 	vShader.initFromFile(VERTEX_SHADER, "shaders/texture.vert");
@@ -340,13 +296,5 @@ void PlayScene::initShaders()
 	maskedTexProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
-}
-
-void PlayScene::doubleSceneSpeed() {
-	manager->doubleSpeedAnimation();
-}
-
-void PlayScene::decreaseSceneSpeed() {
-	manager->resetNormalSpeed();
 }
 

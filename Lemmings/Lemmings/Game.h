@@ -1,12 +1,14 @@
 #ifndef _GAME_INCLUDE
 #define _GAME_INCLUDE
 
+#include <iostream>
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 #include "Scene.h"
 #include "Menu.h"
-#include "Sprite.h"
-#include "Texture.h"
-#include "ShaderProgram.h"
 #include "AudioEngine.h"
 #include "Cursor.h"
 
@@ -14,17 +16,13 @@
 // Game is a singleton (a class with a single instance) that represents our whole application
 
 
-class Game
-{
+class Game {
 
 public:
 	Game() {}
 	
-	
-	static Game &instance()
-	{
+	static Game &instance() {
 		static Game G;
-	
 		return G;
 	}
 	
@@ -55,10 +53,9 @@ private:
 	int mouseX, mouseY;               // Mouse position
 	bool bLeftMouse, bRightMouse;     // Mouse button states
 	bool menu;
+
 	Scene* scene;
 	static Cursor cursor;
-	
-
 };
 
 
