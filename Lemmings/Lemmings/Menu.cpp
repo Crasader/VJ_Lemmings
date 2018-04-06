@@ -19,10 +19,6 @@ void Menu::init() {
 	loadTextures();
 	createSprites();
 
-	// init font
-	if (!playText.init("fonts/GILLUBCD.ttf"))
-		cout << "Could not load font!!!" << endl;
-
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
 
@@ -47,21 +43,18 @@ Scene* Menu::changeState() {
 		scene->init();
 		return scene;
 	}
-
 	case INSTRUCTIONS_CHOSEN: {
 		Scene * instructions = new InstructionsScene();
 		AudioEngine::instance().buttonEffect();
 		instructions->init();
 		return instructions;
 	}
-
 	case CREDITS_CHOSEN: {
 		Scene * credits = new Credits();
 		AudioEngine::instance().buttonEffect();
 		credits->init();
 		return credits;
 	}
-
 	case EXIT_CHOSEN:
 		Game::instance().closeGame();
 		break;
@@ -81,33 +74,31 @@ void Menu::render() {
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
 	title->render();
-	playButton->render();
-	instructionsButton->render();
-	creditsButton->render();
-	exitButton->render();
 			
-	simpleTexProgram.setUniform4f("color", 1.f, 1.f, 0.f, 1.0f);
+	simpleTexProgram.setUniform4f("color", 1.f, 1.f, 1.f, 1.0f);
+	
+
+
 	if (selected == PLAY_BUTTON)
-		playText.render("PLAY", glm::vec2(138*3, 97 * 3), 46, colorWhite);
-	else 
-		playText.render("PLAY", glm::vec2(138 * 3, 97 * 3), 46, colorDarkGreen);
+		playSelectedButton->render();
+	else
+		playButton->render();
 
 	if (selected == INSTRUCTIONS_BUTTON)
-		playText.render("INSTRUCTIONS", glm::vec2(103 * 3, 129 * 3), 46, colorWhite);
-	else 
-		playText.render("INSTRUCTIONS", glm::vec2(103 * 3, 129 * 3), 46, colorDarkGreen);
+		instructionsSelectedButton->render();
+	else
+		instructionsButton->render();
 
 	if (selected == CREDITS_BUTTON)
-		playText.render("CREDITS", glm::vec2(125 * 3, 161 * 3), 46, colorWhite);
-	else 
-		playText.render("CREDITS", glm::vec2(125 * 3, 161 * 3), 46, colorDarkGreen);
+		creditsSelectedButton->render();
+	else
+		creditsButton->render();
 
 	if (selected == EXIT_BUTTON)
-		playText.render("EXIT", glm::vec2(142 * 3, 193 * 3), 46, colorWhite);
-	else 
-		playText.render("EXIT", glm::vec2(142 * 3, 193 * 3), 46, colorDarkGreen);
-			
-			
+		exitSelectedButton->render();
+	else
+		exitButton->render();
+
 }
 
 Menu::MenuButton Menu::checkButtonsColison() {
@@ -135,9 +126,34 @@ void Menu::loadTextures() {
 	bgTexture.setMinFilter(GL_NEAREST);
 	bgTexture.setMagFilter(GL_NEAREST);
 
-	buttonTexture.loadFromFile("images/Button_Big.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	buttonTexture.setMinFilter(GL_NEAREST);
-	buttonTexture.setMagFilter(GL_NEAREST);
+	buttonPlayTexture.loadFromFile("images/Button_Big_Play.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonPlayTexture.setMinFilter(GL_NEAREST);
+	buttonPlayTexture.setMagFilter(GL_NEAREST);
+	buttonPlaySelectedTexture.loadFromFile("images/Button_Big_Play_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonPlaySelectedTexture.setMinFilter(GL_NEAREST);
+	buttonPlaySelectedTexture.setMagFilter(GL_NEAREST);
+
+	buttonInstructionsTexture.loadFromFile("images/Button_Big_Instructions.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonInstructionsTexture.setMinFilter(GL_NEAREST);
+	buttonInstructionsTexture.setMagFilter(GL_NEAREST);
+	buttonInstructionsSelectedTexture.loadFromFile("images/Button_Big_Instructions_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonInstructionsSelectedTexture.setMinFilter(GL_NEAREST);
+	buttonInstructionsSelectedTexture.setMagFilter(GL_NEAREST);
+
+	buttonCreditsTexture.loadFromFile("images/Button_Big_Credits.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonCreditsTexture.setMinFilter(GL_NEAREST);
+	buttonCreditsTexture.setMagFilter(GL_NEAREST);
+	buttonCreditsSelectedTexture.loadFromFile("images/Button_Big_Credits_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonCreditsSelectedTexture.setMinFilter(GL_NEAREST);
+	buttonCreditsSelectedTexture.setMagFilter(GL_NEAREST);
+
+	buttonExitTexture.loadFromFile("images/Button_Big_Exit.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonExitTexture.setMinFilter(GL_NEAREST);
+	buttonExitTexture.setMagFilter(GL_NEAREST);
+	buttonExitSelectedTexture.loadFromFile("images/Button_Big_Exit_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonExitSelectedTexture.setMinFilter(GL_NEAREST);
+	buttonExitSelectedTexture.setMagFilter(GL_NEAREST);
+
 }
 
 void Menu::createSprites() {
@@ -151,14 +167,22 @@ void Menu::createSprites() {
 	buttonPosX = (CAMERA_WIDTH / 2) - 420 / 6; // x = 90
 	buttonSizeX = 420 / 3; // x = 140;
 	buttonSizeY = 22; // because 65/3 is not exact...
-	playButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	playButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonPlayTexture, &simpleTexProgram);
 	playButton->setPosition(glm::vec2(buttonPosX, 80));
-	instructionsButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	playSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonPlaySelectedTexture, &simpleTexProgram);
+	playSelectedButton->setPosition(glm::vec2(buttonPosX, 80));
+	instructionsButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonInstructionsTexture, &simpleTexProgram);
 	instructionsButton->setPosition(glm::vec2(buttonPosX, 112));
-	creditsButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	instructionsSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonInstructionsSelectedTexture, &simpleTexProgram);
+	instructionsSelectedButton->setPosition(glm::vec2(buttonPosX, 112));
+	creditsButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonCreditsTexture, &simpleTexProgram);
 	creditsButton->setPosition(glm::vec2(buttonPosX, 144));
-	exitButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonTexture, &simpleTexProgram);
+	creditsSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonCreditsSelectedTexture, &simpleTexProgram);
+	creditsSelectedButton->setPosition(glm::vec2(buttonPosX, 144));
+	exitButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonExitTexture, &simpleTexProgram);
 	exitButton->setPosition(glm::vec2(buttonPosX, 176));
+	exitSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonExitSelectedTexture, &simpleTexProgram);
+	exitSelectedButton->setPosition(glm::vec2(buttonPosX, 176));
 }
 
 void Menu::initShaders() {

@@ -13,8 +13,22 @@ public:
 	Scene* changeState();
 
 private:
-	Texture bgTexture;
-	Sprite* background;
+	enum StartState {
+		ON,
+		MENU_CHOSEN,
+		OK_CHOSEN
+	};
+	StartState state;
+
+	enum StartButton {
+		MENU_BUTTON,
+		OK_BUTTON,
+		NONE_BUTTON
+	};
+	StartButton selected;
+
+	Texture bgTexture, buttonMenuTexture, buttonMenuSelectedTexture, buttonOkTexture, buttonOkSelectedTexture;
+	Sprite *background, *menuButton, *menuSelectedButton, *okButton, *okSelectedButton;
 	
 	ShaderProgram simpleTexProgram;
 	glm::mat4 projection;
@@ -22,9 +36,9 @@ private:
 	float currentTime;
 	string path;
 
-	bool bExit, bContinue;
+	float buttonPosY, buttonSizeX, buttonSizeY;
 
-
+	StartButton checkButtonsColision();
 	void initShaders();
 
 };

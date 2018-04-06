@@ -15,15 +15,27 @@ public:
 	void update(int deltaTime);
 	virtual Scene* changeState();
 private: 
-	Texture bgTexture, titleTexture;
-	Sprite* background;
-	Sprite* title;
+	enum CreditsState {
+		ON,
+		MENU_CHOSEN
+	};
+	CreditsState state;
+
+	enum CreditsButton {
+		MENU_BUTTON,
+		NONE_BUTTON
+	};
+	CreditsButton selected;
+
+	Texture bgTexture, titleTexture, buttonMenuTexture, buttonMenuSelectedTexture;
+	Sprite *background, *title, *menuButton, *menuSelectedButton;
 	ShaderProgram simpleTexProgram;
 	glm::mat4 projection;
-	bool exitToMenu;
 	Text simpleText;
 	
+	float buttonSizeY, buttonSizeX;
 	
+	CreditsButton checkButtonsColision();
 	void initShaders();
 };
 

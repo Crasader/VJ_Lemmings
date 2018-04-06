@@ -14,8 +14,26 @@ public:
 
 
 private:
-	Texture bgTexture;
-	Sprite* background;
+	enum EndState {
+		ON,
+		MENU_CHOSEN,
+		NEXT_CHOSEN,
+		RETRY_CHOSEN
+	};
+	EndState state;
+
+	enum EndButton {
+		MENU_BUTTON,
+		NEXT_BUTTON,
+		RETRY_BUTTON,
+		NONE_BUTTON
+	};
+	EndButton selected;
+
+	Texture bgTexture,
+		buttonRetryTexture, buttonRetrySelectedTexture, buttonMenuTexture, buttonMenuSelectedTexture, buttonNextTexture, buttonNextSelectedTexture;
+	Sprite *background, 
+		*retryButton, *retrySelectedButton, *menuButton, *menuSelectedButton, *nextButton, *nextSelectedButton;
 
 
 	ShaderProgram simpleTexProgram;
@@ -27,7 +45,9 @@ private:
 	bool win;
 	int numLemmingsExited, numLemmingsMin, numLemmingsTotal;
 	string path, newPath;
+	float buttonPosY, buttonSizeX, buttonSizeY;
 
+	EndButton checkButtonsColision();
 	void initShaders();
 };
 

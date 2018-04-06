@@ -46,10 +46,12 @@ private:
 
 	float currentTime;
 	ShaderProgram simpleTexProgram, maskedTexProgram;
-	Texture titleTexture, bgTexture, buttonTexture;
-	Text playText;
+	Texture titleTexture, bgTexture, 
+		buttonPlayTexture, buttonPlaySelectedTexture, buttonInstructionsTexture, buttonInstructionsSelectedTexture,
+		buttonCreditsTexture, buttonCreditsSelectedTexture, buttonExitTexture, buttonExitSelectedTexture;
 	Sprite *title, *background;
-	Sprite *playButton, *instructionsButton, *creditsButton, *exitButton;
+	Sprite *playButton, *instructionsButton, *creditsButton, *exitButton,
+		*playSelectedButton, *instructionsSelectedButton, *creditsSelectedButton, *exitSelectedButton;
 	float buttonPosX, buttonSizeX, buttonSizeY;
 
 	glm::mat4 projection;

@@ -21,7 +21,8 @@ Credits::~Credits()
 
 void Credits::init(){
 	initShaders();
-	exitToMenu = false;
+	state = ON;
+	selected = NONE_BUTTON;
 	bgTexture.loadFromFile("images/backTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
 	bgTexture.setMinFilter(GL_NEAREST);
 	bgTexture.setMagFilter(GL_NEAREST);
@@ -34,6 +35,21 @@ void Credits::init(){
 	title = Sprite::createSprite(glm::vec2(float((446)*0.30f), float((154)*0.30f)), glm::vec2(1.f, 1.f),
 		&titleTexture, &simpleTexProgram);
 	title->setPosition(glm::vec2(float((CAMERA_WIDTH / 2) - 446 * 0.15), 0.0f));
+
+	buttonMenuTexture.loadFromFile("images/Button_Short_Menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonMenuTexture.setMinFilter(GL_NEAREST);
+	buttonMenuTexture.setMagFilter(GL_NEAREST);
+	buttonMenuSelectedTexture.loadFromFile("images/Button_Short_Menu_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonMenuSelectedTexture.setMinFilter(GL_NEAREST);
+	buttonMenuSelectedTexture.setMagFilter(GL_NEAREST);
+
+	buttonSizeX = 210 / 3; // x = 70;
+	buttonSizeY = 22; // because 65/3 is not exact...
+	menuButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonMenuTexture, &simpleTexProgram);
+	menuButton->setPosition(glm::vec2(20, 175));
+	menuSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonMenuSelectedTexture, &simpleTexProgram);
+	menuSelectedButton->setPosition(glm::vec2(20, 175));
+
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
 		cout << "Couldn't load font" << endl;
@@ -53,23 +69,45 @@ void Credits::render(){
 	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+64), 32, colorGreen);
 	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 96), 32, colorGreen);
 
-	simpleText.render("Press ESC to return to the main menu", glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT * 3 - 50), 32 ,colorWhite);
+
+
+	simpleTexProgram.use();
+	if (selected == MENU_BUTTON)
+		menuSelectedButton->render();
+	else
+		menuButton->render();
 
 }
 
 void Credits::update(int deltaTime){
-	if (Game::instance().getKey(27)) exitToMenu = true;
+	selected = checkButtonsColision();
+
+	if (Game::instance().getLeftMousePressed()) 
+		if (selected == MENU_BUTTON) state = MENU_CHOSEN;
+	
 }
 
-Scene * Credits::changeState()
-{
-	if (exitToMenu) {
+Scene * Credits::changeState() {
+	switch (state) {
+	case MENU_CHOSEN: {
 		Scene* menu = new Menu();
 		AudioEngine::instance().buttonEffect();
 		menu->init();
 		return menu;
 	}
-	else return this;
+	}
+	return this;
+}
+
+Credits::CreditsButton Credits::checkButtonsColision() {
+	int mouseX, mouseY;
+	Game::instance().getMousePosition(mouseX, mouseY);
+	if (mouseY >= 175 * 3 && mouseY <= (175 + buttonSizeY) * 3) {
+		if ((mouseX >= (20 * 3) && mouseX <= ((20 + buttonSizeX) * 3)))
+			return MENU_BUTTON;
+		
+	}
+	return NONE_BUTTON;
 }
 
 void Credits::initShaders(){

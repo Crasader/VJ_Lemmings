@@ -16,14 +16,44 @@ StartScene::StartScene(string pathLevel) {
 StartScene::~StartScene() {}
 
 void StartScene::init() {
-	bExit = bContinue = false;
 	initShaders();
 	currentTime = 0;
+	selected = NONE_BUTTON;
+	state = ON;
 
 	TextProcessor::instance().loadFileAndProcess(path);
 
-	bgTexture.loadFromFile("images/rockTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
-	background = Sprite::createSprite(glm::vec2(470.f, 464.f), glm::vec2(10.f, 10.f), &bgTexture, &simpleTexProgram);
+	bgTexture.loadFromFile("images/backTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
+	bgTexture.setMinFilter(GL_NEAREST);
+	bgTexture.setMagFilter(GL_NEAREST);
+	background = Sprite::createSprite(glm::vec2(1920.f / 5.15f, 1080.f / 5.15f), glm::vec2(1.f, 1.f),
+		&bgTexture, &simpleTexProgram);
+
+	buttonMenuTexture.loadFromFile("images/Button_Short_Menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonMenuTexture.setMinFilter(GL_NEAREST);
+	buttonMenuTexture.setMagFilter(GL_NEAREST);
+	buttonMenuSelectedTexture.loadFromFile("images/Button_Short_Menu_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonMenuSelectedTexture.setMinFilter(GL_NEAREST);
+	buttonMenuSelectedTexture.setMagFilter(GL_NEAREST);
+
+	buttonOkTexture.loadFromFile("images/Button_Short_Ok.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonOkTexture.setMinFilter(GL_NEAREST);
+	buttonOkTexture.setMagFilter(GL_NEAREST);
+	buttonOkSelectedTexture.loadFromFile("images/Button_Short_Ok_Selected.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	buttonOkSelectedTexture.setMinFilter(GL_NEAREST);
+	buttonOkSelectedTexture.setMagFilter(GL_NEAREST);
+
+	buttonPosY = 175;
+	buttonSizeX = 210 / 3; // x = 70;
+	buttonSizeY = 22; // because 65/3 is not exact...
+	menuButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonMenuTexture, &simpleTexProgram);
+	menuButton->setPosition(glm::vec2(20, buttonPosY));
+	menuSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonMenuSelectedTexture, &simpleTexProgram);
+	menuSelectedButton->setPosition(glm::vec2(20, buttonPosY));
+	okButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonOkTexture, &simpleTexProgram);
+	okButton->setPosition(glm::vec2(220, buttonPosY));
+	okSelectedButton = Sprite::createSprite(glm::vec2(buttonSizeX, buttonSizeY), glm::vec2(1.f, 1.f), &buttonOkSelectedTexture, &simpleTexProgram);
+	okSelectedButton->setPosition(glm::vec2(220, buttonPosY));
 
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	if (!simpleText.init("fonts/DroidSerif-Bold.ttf")) {
@@ -33,9 +63,12 @@ void StartScene::init() {
 
 void StartScene::update(int deltaTime) {
 	currentTime += deltaTime;
+	selected = checkButtonsColision();
 
-	if (Game::instance().getKey(27)) bExit = true;
-	if (Game::instance().getKey(13) && currentTime > 200) bContinue = true;
+	if (Game::instance().getLeftMousePressed()) {
+		if (selected == MENU_BUTTON) state = MENU_CHOSEN;
+		else if (selected == OK_BUTTON) state = OK_CHOSEN;
+	}
 }
 
 void StartScene::render() {
@@ -47,6 +80,16 @@ void StartScene::render() {
 	modelview = glm::mat4(1.0f);
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
+
+	if (selected == MENU_BUTTON)
+		menuSelectedButton->render();
+	else
+		menuButton->render();
+
+	if (selected == OK_BUTTON)
+		okSelectedButton->render();
+	else
+		okButton->render();
 	
 	// Level Num
 	string numLevel = "Level " + to_string(TextProcessor::instance().levelNumber);
@@ -67,31 +110,40 @@ void StartScene::render() {
 	// Max Time
 	string time = "Time " + to_string(TextProcessor::instance().maxTime) + " seconds";
 	simpleText.render(time, glm::vec2(300, 380), 48, colorCian);
-	// Click to continue
-	simpleText.render("Press Enter to continue or Escape to go back to menu", glm::vec2(20, 580), 34, colorYellow);
-
+	
 }
 
 Scene * StartScene::changeState() {
-	if (bExit) {
+	switch (state) {
+	case MENU_CHOSEN: {
 		Scene* menu = new Menu();
 		AudioEngine::instance().buttonEffect();
 		AudioEngine::instance().stopEffect();
 		menu->init();
 		return menu;
 	}
-	else if (bContinue) {
+	case OK_CHOSEN: {
 		Scene* scene = new PlayScene(path);
 		AudioEngine::instance().buttonEffect();
 		scene->init();
 		return scene;
 	}
-
+	}
 	return this;
 
 }
 
-
+StartScene::StartButton StartScene::checkButtonsColision() {
+	int mouseX, mouseY;
+	Game::instance().getMousePosition(mouseX, mouseY);
+	if (mouseY >= buttonPosY * 3 && mouseY <= (buttonPosY + buttonSizeY) * 3) {
+		if ((mouseX >= (20 * 3) && mouseX <= ((20 + buttonSizeX) * 3)))
+			return MENU_BUTTON;
+		else if ((mouseX >= (220 * 3) && mouseX <= ((220 + buttonSizeX) * 3)))
+			return OK_BUTTON;
+	}
+	return NONE_BUTTON;
+}
 
 void StartScene::initShaders() {
 	Shader vShader, fShader;

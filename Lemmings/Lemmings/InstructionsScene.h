@@ -24,13 +24,25 @@ public:
 	void update(int deltaTime);
 	virtual Scene* changeState();
 private:
-	Texture bgTexture, titleTexture;
-	Sprite* background;
-	Sprite* title;
+	enum InstructionsState {
+		ON,
+		MENU_CHOSEN
+	};
+	InstructionsState state;
+
+	enum InstructionsButton {
+		MENU_BUTTON,
+		NONE_BUTTON
+	};
+	InstructionsButton selected;
+	Texture bgTexture, titleTexture, buttonMenuTexture, buttonMenuSelectedTexture;
+	Sprite *background, *menuButton, *menuSelectedButton, *title;
 	ShaderProgram simpleTexProgram;
 	glm::mat4 projection;
-	bool exitToMenu;
 	Text simpleText;
+	float buttonSizeY, buttonSizeX;
+
+	InstructionsButton checkButtonsColision();
 	void initShaders();
 };
 
