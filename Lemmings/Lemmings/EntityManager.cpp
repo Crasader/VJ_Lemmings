@@ -59,8 +59,8 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		timeToDisplay--;
 	}
 	if (timeToDisplay <= -1) {
-		countingDown = false;
 		killAllLemmings2();
+		countingDown = false;
 	}
 	
 	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armageddon && buttonPressed == 9) {
@@ -204,7 +204,7 @@ void EntityManager::killAllLemmings() {
 
 void EntityManager::killAllLemmings2() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i]->changeState(ARMAGEDDON_EFFECT);
+		if(countingDown )lemmings[i]->changeState(ARMAGEDDON_EFFECT);
 	}
 }
 
