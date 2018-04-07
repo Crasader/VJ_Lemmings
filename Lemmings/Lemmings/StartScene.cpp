@@ -28,7 +28,7 @@ void StartScene::init() {
 	bgTexture.setMagFilter(GL_NEAREST);
 	background = Sprite::createSprite(glm::vec2(1920.f / 5.15f, 1080.f / 5.15f), glm::vec2(1.f, 1.f),
 		&bgTexture, &simpleTexProgram);
-
+	background->setPosition(background->position() + glm::vec2(-20, 0));
 	buttonMenuTexture.loadFromFile("images/Button_Short_Menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	buttonMenuTexture.setMinFilter(GL_NEAREST);
 	buttonMenuTexture.setMagFilter(GL_NEAREST);
@@ -118,7 +118,6 @@ Scene * StartScene::changeState() {
 	case MENU_CHOSEN: {
 		Scene* menu = new Menu();
 		AudioEngine::instance().buttonEffect();
-		AudioEngine::instance().stopEffect();
 		menu->init();
 		return menu;
 	}

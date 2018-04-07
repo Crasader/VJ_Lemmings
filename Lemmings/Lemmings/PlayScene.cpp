@@ -18,6 +18,8 @@ PlayScene::~PlayScene() {
 void PlayScene::init() {
 	state = ON;
 	currentTime = 0.0f;
+	armageddon = false;
+	count = 100;
 	
 	initShaders();
 
@@ -47,6 +49,11 @@ void PlayScene::update(int deltaTime) {
 
 	int lemmingsStillAlive = TextProcessor::instance().lemmings - manager->getLemmingsDied() - manager->getLemmingsExited();
 	if (lemmingsStillAlive == 0) state = END;
+	if (armageddon) {
+		count = 0;
+		state = END;
+		armageddon = false;
+	}
 	if (Game::instance().getKey(27)) state = EXIT_CHOSEN;
 
 
@@ -97,8 +104,10 @@ void PlayScene::update(int deltaTime) {
 			manager->doubleSpeedAnimation();
 		else if (buttonPressed == InterfazUsuario::PAUSE_BUTTON) 
 			manager->pause();
-		else if (buttonPressed == InterfazUsuario::ARMAGEDDON_BUTTON)
+		else if (buttonPressed == InterfazUsuario::ARMAGEDDON_BUTTON) {
+			armageddon = true;
 			manager->killAllLemmings();
+		}
 
 
 		if (effect != EntityManager::NONE_EFFECT) 
@@ -122,11 +131,15 @@ Scene * PlayScene::changeState() {
 		return menu;
 	}
 	case END: {
-		Scene* scene = new EndScene(path, manager->getLemmingsExited());
-		AudioEngine::instance().buttonEffect();
-		AudioEngine::instance().stopEffect();
-		scene->init();
-		return scene;
+		if (count > 100) {
+			Scene* scene = new EndScene(path, manager->getLemmingsExited());
+			AudioEngine::instance().buttonEffect();
+			AudioEngine::instance().stopEffect();
+			scene->init();
+			return scene;
+		}
+		else count++;
+		break;
 	}
 	default:
 		break;

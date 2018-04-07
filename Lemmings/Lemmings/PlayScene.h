@@ -51,6 +51,8 @@ private:
 	float cameraX, cameraY;
 	EntityManager *manager;
 	int buttonPressed;
+	int count;
+	bool armageddon;
 	
 
 	int numDiggers, numBlockers, numBashers, numFloaters, numBombers, numClimbers, numBuilders;
