@@ -75,8 +75,6 @@ public:
 		DYING_EXPLOSION_STATE, DYING_EXPLOSION_TRIGGERED,
 
 		DYING_FALL_STATE,
-		COUNTDOWN,
-		DIE_EXPLIDING
 	};
 	LemmingState getState();
 	LemmingState getNextState();
@@ -156,6 +154,7 @@ private:
 	int elapsedTime;
 	int timeToDisplay;
 	Text countdown;
+	bool countingDown;
 
 };
 
