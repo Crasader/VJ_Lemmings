@@ -19,7 +19,7 @@ void PlayScene::init() {
 	state = ON;
 	currentTime = 0.0f;
 	armageddon = false;
-	count = 100;
+	count = 500;
 	
 	initShaders();
 
@@ -131,7 +131,7 @@ Scene * PlayScene::changeState() {
 		return menu;
 	}
 	case END: {
-		if (count > 100) {
+		if (count > 500) {
 			Scene* scene = new EndScene(path, manager->getLemmingsExited());
 			AudioEngine::instance().buttonEffect();
 			AudioEngine::instance().stopEffect();
