@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "VariableTexture.h"
 #include "Texture.h"
+#include "Text.h"
 
 
 // Lemming is basically a Sprite that represents one lemming. As such it has
@@ -73,7 +74,9 @@ public:
 
 		DYING_EXPLOSION_STATE, DYING_EXPLOSION_TRIGGERED,
 
-		DYING_FALL_STATE
+		DYING_FALL_STATE,
+		COUNTDOWN,
+		DIE_EXPLIDING
 	};
 	LemmingState getState();
 	LemmingState getNextState();
@@ -150,6 +153,9 @@ private:
 	LemmingStatus status;	/* current status */
 	int actionTime;			/* time doing action */
 	int counter;			/* builder counter */
+	int elapsedTime;
+	int timeToDisplay;
+	Text countdown;
 
 };
 
