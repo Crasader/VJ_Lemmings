@@ -51,7 +51,7 @@ private:
 	bool doubleSpeed;
 	bool paused;
 	int spawnFrequency;
-	vector<Lemming> lemmings;
+	vector<Lemming*> lemmings;
 	Texture spritesheet;
 	VariableTexture *mask, *map;
 	ShaderProgram shaderProgram;

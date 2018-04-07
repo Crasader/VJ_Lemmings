@@ -49,32 +49,32 @@ void EntityManager::update(int deltaTime, int buttonPressed){
 	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armageddon && buttonPressed == 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
-		lemmings.push_back(Lemming());
-		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
-		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
+		lemmings.push_back(new Lemming());
+		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
+		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
 	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armageddon && buttonPressed != 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
-		lemmings.push_back(Lemming());
-		lemmings[lemmings.size() - 1].init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
-		if (doubleSpeed) lemmings[lemmings.size() - 1].doubleSpeed();
+		lemmings.push_back(new Lemming());
+		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
+		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
 
 	checkStatusLemmings();
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		if (lemmings[i].getStatus() == Lemming::DEAD_STATUS) {
+		if (lemmings[i]->getStatus() == Lemming::DEAD_STATUS) {
 			lemmings.erase(lemmings.begin() + i);
 			lemmingsDied++;
 		}
-		else if (lemmings[i].getStatus() == Lemming::EXITED_STATUS) {
+		else if (lemmings[i]->getStatus() == Lemming::EXITED_STATUS) {
 			lemmings.erase(lemmings.begin() + i);
 			lemmingsSaved++;
 		}
 	}
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].update(deltaTime);
+		lemmings[i]->update(deltaTime);
 	}
 
 	this->buttonPressed = buttonPressed;
@@ -87,13 +87,13 @@ void EntityManager::render() {
 	doorStart->render();
 	doorEnd->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].render();
+		lemmings[i]->render();
 	}
 }
 
 void EntityManager::changeLemmingState(int x) {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].changeState(x);
+		lemmings[i]->changeState(x);
 	}
 	x = 0;
 
@@ -101,9 +101,9 @@ void EntityManager::changeLemmingState(int x) {
 
 bool EntityManager::clickManager(int mouseX, int mouseY, Effect state) {
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
-		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
+		if (checkCollision(lemmings[i]->getPosition(), mouseX, mouseY)) {
 			if (!lemmingHasActionAssigned(i, state)) {
-				lemmings[i].changeState(state);
+				lemmings[i]->changeState(state);
 				return true;
 			}
 			break;
@@ -115,7 +115,7 @@ bool EntityManager::clickManager(int mouseX, int mouseY, Effect state) {
 
 bool EntityManager::lemmingInCursor(int mouseX, int mouseY) {
 	for (int i = lemmings.size() - 1; i >= 0; i--) {
-		if (checkCollision(lemmings[i].getPosition(), mouseX, mouseY)) {
+		if (checkCollision(lemmings[i]->getPosition(), mouseX, mouseY)) {
 			return true;
 		}
 	}
@@ -133,7 +133,7 @@ void EntityManager::doubleSpeedAnimation()
 {
 	doubleSpeed = true;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].doubleSpeed();
+		lemmings[i]->doubleSpeed();
 	}
 
 	doorStart->doubleSpeed();
@@ -145,7 +145,7 @@ void EntityManager::resetNormalSpeed()
 	doubleSpeed = false;
 	paused = false;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].resetSpeed();
+		lemmings[i]->resetSpeed();
 	}
 
 	doorStart->resetSpeed();
@@ -155,7 +155,7 @@ void EntityManager::resetNormalSpeed()
 void EntityManager::pause() {
 	paused = true;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].pause();
+		lemmings[i]->pause();
 	}
 
 	doorStart->pause();
@@ -173,7 +173,7 @@ void EntityManager::decreaseSpawnTime(){
 void EntityManager::killAllLemmings() {
 	armageddon = true;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i].changeState(ARMAGEDDON_EFFECT);
+		lemmings[i]->changeState(ARMAGEDDON_EFFECT);
 	}
 }
 
@@ -190,22 +190,22 @@ int EntityManager::getLemmingsDied()
 
 void EntityManager::checkStatusLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		glm::vec2 posBase = lemmings[i].getPosition() + glm::vec2(7, 16);
+		glm::vec2 posBase = lemmings[i]->getPosition() + glm::vec2(7, 16);
 		if (posBase.x < 0 || posBase.x > mask->width() || posBase.y < 0 || posBase.y > 160)
-			lemmings[i].goKill();
+			lemmings[i]->goKill();
 		glm::vec2 exitBase = doorEndPosition + glm::vec2(18, 32);
 		if (posBase.x == exitBase.x && posBase.y == exitBase.y)
-			lemmings[i].goExit();
+			lemmings[i]->goExit();
 	}
 }
 
 bool EntityManager::lemmingHasActionAssigned(int i, Effect state) {
-	if (state == DIGGER_EFFECT && (lemmings[i].getState() == Lemming::DIGGER_STATE || lemmings[i].getNextState() == Lemming::DIGGER_TRIGGERED)) return true;
-	else if (state == BLOCKER_EFFECT && (lemmings[i].getState() == Lemming::BLOCKER_STATE || lemmings[i].getNextState() == Lemming::BLOCKER_TRIGGERED)) return true;
-	else if (state == BASHER_EFFECT && (lemmings[i].getState() == Lemming::BASHER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BASHER_TRIGGERED || lemmings[i].getState() == Lemming::BASHER_RIGHT_STATE)) return true;
-	else if (state == CLIMBER_EFFECT && (lemmings[i].getState() == Lemming::CLIMBER_LEFT_STATE || lemmings[i].getNextState() == Lemming::CLIMBER_TRIGGERED || lemmings[i].getState() == Lemming::CLIMBER_RIGHT_STATE)) return true;
-	else if (state == BUILDER_EFFECT && (lemmings[i].getState() == Lemming::BUILDER_LEFT_STATE || lemmings[i].getNextState() == Lemming::BUILDER_TRIGGERED || lemmings[i].getState() == Lemming::BUILDER_RIGHT_STATE)) return true;
-	else if (state == FLOATER_EFFECT && (lemmings[i].getState() == Lemming::FLOATER_LEFT_STATE || lemmings[i].getState() == Lemming::FLOATER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::FLOATER_TRIGGERED)) return true;
-	else if (state == BOMBER_EFFECT && (lemmings[i].getState() == Lemming::BOMBER_LEFT_STATE || lemmings[i].getState() == Lemming::BOMBER_RIGHT_STATE || lemmings[i].getNextState() == Lemming::BOMBER_TRIGGERED)) return true;
+	if (state == DIGGER_EFFECT && (lemmings[i]->getState() == Lemming::DIGGER_STATE || lemmings[i]->getNextState() == Lemming::DIGGER_TRIGGERED)) return true;
+	else if (state == BLOCKER_EFFECT && (lemmings[i]->getState() == Lemming::BLOCKER_STATE || lemmings[i]->getNextState() == Lemming::BLOCKER_TRIGGERED)) return true;
+	else if (state == BASHER_EFFECT && (lemmings[i]->getState() == Lemming::BASHER_LEFT_STATE || lemmings[i]->getNextState() == Lemming::BASHER_TRIGGERED || lemmings[i]->getState() == Lemming::BASHER_RIGHT_STATE)) return true;
+	else if (state == CLIMBER_EFFECT && (lemmings[i]->getState() == Lemming::CLIMBER_LEFT_STATE || lemmings[i]->getNextState() == Lemming::CLIMBER_TRIGGERED || lemmings[i]->getState() == Lemming::CLIMBER_RIGHT_STATE)) return true;
+	else if (state == BUILDER_EFFECT && (lemmings[i]->getState() == Lemming::BUILDER_LEFT_STATE || lemmings[i]->getNextState() == Lemming::BUILDER_TRIGGERED || lemmings[i]->getState() == Lemming::BUILDER_RIGHT_STATE)) return true;
+	else if (state == FLOATER_EFFECT && (lemmings[i]->getState() == Lemming::FLOATER_LEFT_STATE || lemmings[i]->getState() == Lemming::FLOATER_RIGHT_STATE || lemmings[i]->getNextState() == Lemming::FLOATER_TRIGGERED)) return true;
+	else if (state == BOMBER_EFFECT && (lemmings[i]->getState() == Lemming::BOMBER_LEFT_STATE || lemmings[i]->getState() == Lemming::BOMBER_RIGHT_STATE || lemmings[i]->getNextState() == Lemming::BOMBER_TRIGGERED)) return true;
 	else return false;
 }
