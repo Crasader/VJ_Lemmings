@@ -151,10 +151,7 @@ private:
 	LemmingStatus status;	/* current status */
 	int actionTime;			/* time doing action */
 	int counter;			/* builder counter */
-	int elapsedTime;
-	int timeToDisplay;
-	Text countdown;
-	bool countingDown;
+
 
 };
 

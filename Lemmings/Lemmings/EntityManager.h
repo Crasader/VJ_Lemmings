@@ -14,7 +14,7 @@ class EntityManager {
 public:
 	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask ,string dorIni, string dorEnd);
 	~EntityManager();
-	void update(int deltaTime, int buttonPressed);
+	void update(int deltaTime, int buttonPressed,int offsetX, int offsetY);
 	void render();
 
 
@@ -40,6 +40,8 @@ public:
 	void increaseSpawnTime();
 	void decreaseSpawnTime();
 	void killAllLemmings();
+
+	void killAllLemmings2();
 
 	int getLemmingsExited();
 	int getLemmingsDied();
@@ -73,6 +75,12 @@ private:
 
 	int doorSColor;
 	int doorEColor;
+
+	int elapsedTime;
+	int timeToDisplay;
+	Text countdown;
+	bool countingDown;
+	int offsetX, offsetY;
 
 	
 

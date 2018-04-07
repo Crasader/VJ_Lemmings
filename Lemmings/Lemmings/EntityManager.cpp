@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#include <iostream>
 
 
 EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask, string dorIni, string dorEnd) {
@@ -19,6 +20,11 @@ EntityManager::~EntityManager() {
 }
 
 void EntityManager::init() {
+	elapsedTime = 0;
+	timeToDisplay = 5;
+	countingDown = false;
+	offsetX = offsetY = 0;
+	if(!countdown.init("fonts/upheavtt.ttf")) std::cout << "could not load font" << endl;
 	spritesheet.loadFromFile("images/lemmings_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheet.setMinFilter(GL_NEAREST);
 	spritesheet.setMagFilter(GL_NEAREST);
@@ -43,8 +49,19 @@ void EntityManager::init() {
 	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
 }
 
-void EntityManager::update(int deltaTime, int buttonPressed){
+void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int offsetY){
+	this->offsetX = offsetX;
+	this->offsetY = offsetY;
 	sceneTime += deltaTime;
+	elapsedTime += deltaTime;
+	if (countingDown && elapsedTime >= 1000) {
+		elapsedTime = 0;
+		timeToDisplay--;
+	}
+	if (timeToDisplay <= -1) {
+		countingDown = false;
+		killAllLemmings2();
+	}
 	
 	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armageddon && buttonPressed == 9) {
 		lastLemmingCreation = sceneTime;
@@ -75,6 +92,7 @@ void EntityManager::update(int deltaTime, int buttonPressed){
 	}
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->update(deltaTime);
+		
 	}
 
 	this->buttonPressed = buttonPressed;
@@ -88,6 +106,15 @@ void EntityManager::render() {
 	doorEnd->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->render();
+			
+	}
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		if (countingDown) {
+			glm::vec2 lemmingPos = lemmings[i]->getPosition();
+			int lemPosX = lemmingPos.x * 3;
+			int lemPosY = lemmingPos.y * 3 + 15;
+			countdown.render(to_string(timeToDisplay), glm::vec2(lemPosX + this->offsetX, lemPosY+ this->offsetY), 20, colorWhite);
+		}
 	}
 }
 
@@ -171,7 +198,11 @@ void EntityManager::decreaseSpawnTime(){
 }
 
 void EntityManager::killAllLemmings() {
+	countingDown = true;
 	armageddon = true;
+}
+
+void EntityManager::killAllLemmings2() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->changeState(ARMAGEDDON_EFFECT);
 	}
@@ -186,7 +217,6 @@ int EntityManager::getLemmingsDied()
 {
 	return lemmingsDied;
 }
-
 
 void EntityManager::checkStatusLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {

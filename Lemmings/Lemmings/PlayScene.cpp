@@ -115,7 +115,7 @@ void PlayScene::update(int deltaTime) {
 				setGUI();
 
 	}
-	manager->update(deltaTime, buttonPressed);
+	manager->update(deltaTime, buttonPressed,cameraX,cameraY);
 	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
 

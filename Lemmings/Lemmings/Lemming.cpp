@@ -23,8 +23,7 @@ Lemming::~Lemming() {
 }
 
 void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *map, VariableTexture *mask) {
-	elapsedTime = 0;
-	timeToDisplay = 5;
+	
 	setMapMask(map, mask);
 	state = FALLING_RIGHT_STATE;
 	status = ALIVE_STATUS;
@@ -35,11 +34,10 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 	sprite->setNumberAnimations(23);
 
 	setAnimations();
-	countingDown = false;
+	
 
 	sprite->changeAnimation(FALLING_RIGHT);
 	sprite->setPosition(initialPosition);
-	if (!countdown.init("fonts/upheavtt.ttf")) cout << "could not load font" << endl;
 }
 
 void Lemming::update(int deltaTime) {
@@ -51,23 +49,11 @@ void Lemming::update(int deltaTime) {
 	// control live, exit or bombs?
 
 	actionTime++;
-	elapsedTime += deltaTime;
-	if (countingDown && elapsedTime >= 1000) {
-		elapsedTime = 0;
-		timeToDisplay--;
-	}
+	
 
 	// die triggered
 	if (nextState == DYING_EXPLOSION_TRIGGERED)
-		goDieExplosion();
-
-	if (timeToDisplay == -1) {
-		countingDown = false;
-		resetActionTime();
-		sprite->changeAnimation(DIE_EXPLOSION);
-		state = DYING_EXPLOSION_STATE;
-		nextState = DYING_EXPLOSION_STATE;
-	}
+		goDieExplosion();	
 
 	switch(state)	{
 
@@ -456,7 +442,10 @@ void Lemming::update(int deltaTime) {
 }
 
 void Lemming::goDieExplosion() {
-	countingDown = true;
+	resetActionTime();
+	sprite->changeAnimation(DIE_EXPLOSION);
+	state = DYING_EXPLOSION_STATE;
+	nextState = DYING_EXPLOSION_STATE;
 }
 
 void Lemming::goDieFall() {
@@ -600,12 +589,8 @@ void Lemming::resetActionTime() {
 }
 
 void Lemming::render() {
-	if (countingDown) {
-		glm::vec2 lemmingPos = sprite->position();
-		countdown.render(to_string(timeToDisplay) , glm::vec2(lemmingPos.x + 4, lemmingPos.y+15), 20, colorWhite);
-	}
-	
 	sprite->render();
+	
 }
 
 void Lemming::setMapMask(VariableTexture *mapMap, VariableTexture *mapMask) {
