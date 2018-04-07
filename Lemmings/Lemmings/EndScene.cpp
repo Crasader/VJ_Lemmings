@@ -82,7 +82,7 @@ void EndScene::update(int deltaTime) {
 
 	if (Game::instance().getLeftMousePressed()) {
 		if (selected == MENU_BUTTON) state = MENU_CHOSEN;
-		else if (selected = NEXT_BUTTON) state = NEXT_CHOSEN;
+		else if (selected == NEXT_BUTTON) state = NEXT_CHOSEN;
 		else if (selected == RETRY_BUTTON) state = RETRY_CHOSEN;
 	}
 }
