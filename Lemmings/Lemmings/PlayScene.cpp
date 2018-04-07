@@ -72,12 +72,12 @@ void PlayScene::update(int deltaTime) {
 		cameraX -= 2;
 	projection = glm::ortho(0.f + cameraX, float(CAMERA_WIDTH - 1) + cameraX, float(CAMERA_HEIGHT - 1), 0.f);
 
-	// mouse click -> gui?
+	EntityManager::Effect effect = EntityManager::NONE_EFFECT;
 	buttonPressed = gui->getButtonPressed();
 	if (Game::instance().getLeftMousePressed()) {
 		manager->resetNormalSpeed();
 		int x = 0, y = 0;
-		EntityManager::Effect effect = EntityManager::NONE_EFFECT;
+		
 		if (buttonPressed == InterfazUsuario::BASHER_BUTTON)
 			effect = EntityManager::BASHER_EFFECT;
 		else if (buttonPressed == InterfazUsuario::BLOCKER_BUTTON)
@@ -110,11 +110,12 @@ void PlayScene::update(int deltaTime) {
 		}
 
 
-		if (effect != EntityManager::NONE_EFFECT) 
-			if (effectForLemming(x, y, effect))
-				setGUI();
+		
 
 	}
+	if (effect != EntityManager::NONE_EFFECT)
+		if (effectForLemming(x, y, effect))
+			setGUI();
 	manager->update(deltaTime, buttonPressed,cameraX,cameraY);
 	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
@@ -178,7 +179,7 @@ bool PlayScene::effectForLemming(int mouseX, int mouseY, EntityManager::Effect e
 	if (effect == EntityManager::DIGGER_EFFECT && numDiggers > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numDiggers--;
-			
+			return true;
 		}
 	}
 	else if (effect == EntityManager::BLOCKER_EFFECT && numBlockers > 0) {
