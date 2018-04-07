@@ -111,9 +111,9 @@ void EntityManager::render() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (countingDown) {
 			glm::vec2 lemmingPos = lemmings[i]->getPosition();
-			int lemPosX = lemmingPos.x * 3;
-			int lemPosY = lemmingPos.y * 3 + 15;
-			countdown.render(to_string(timeToDisplay), glm::vec2(lemPosX + this->offsetX, lemPosY+ this->offsetY), 20, colorWhite);
+			int lemPosX = lemmingPos.x * 3 - this->offsetX * 3 + 16;
+			int lemPosY = lemmingPos.y * 3 + 15 - this->offsetY;
+			countdown.render(to_string(timeToDisplay), glm::vec2(lemPosX , lemPosY ), 15, colorWhite);
 		}
 	}
 }
