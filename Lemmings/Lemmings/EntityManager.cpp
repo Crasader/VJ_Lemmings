@@ -15,6 +15,7 @@ EntityManager::~EntityManager() {
 
 void EntityManager::init() {
 	elapsedTime = 0;
+	firework = new Firework();
 	timeToDisplay = 5;
 	countingDown = false;
 	offsetX = offsetY = 0;
@@ -96,6 +97,7 @@ void EntityManager::render() {
 		lemmings[i]->render();
 			
 	}
+	firework->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (countingDown) {
 			glm::vec2 lemmingPos = lemmings[i]->getPosition();
@@ -194,6 +196,8 @@ void EntityManager::killAllLemmings() {
 }
 
 void EntityManager::killAllLemmings2() {
+	firework->init(glm::vec2(180,60));
+	firework->blowUp();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if(countingDown )lemmings[i]->changeState(ARMAGEDDON_EFFECT);
 	}
@@ -227,6 +231,7 @@ void EntityManager::setEndDoor(glm::vec2 doorEndPosition, int doorEndType) {
 	doorEnd = new DoorEnd(doorEndType);
 	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
 }
+
 void EntityManager::setBomb(glm::vec2 bombPosition) {
 	spritesheetBomb.loadFromFile("images/bomb_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetBomb.setMinFilter(GL_NEAREST);
@@ -234,6 +239,7 @@ void EntityManager::setBomb(glm::vec2 bombPosition) {
 	bomb = new Bomb();
 	bomb->init(bombPosition, shaderProgram, spritesheetBomb, mask);
 }
+
 void EntityManager::checkStatusLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		glm::vec2 posBase = lemmings[i]->getPosition() + glm::vec2(7, 16);
