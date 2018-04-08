@@ -20,6 +20,7 @@
     <ClCompile Include="DoorStart.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Firework.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InterfazUsuario.cpp" />
     <ClCompile Include="InstructionsScene.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="DoorStart.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Firework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InterfazUsuario.h" />
     <ClInclude Include="InstructionsScene.h" />

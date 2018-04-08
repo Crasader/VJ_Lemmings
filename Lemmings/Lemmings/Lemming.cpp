@@ -23,7 +23,7 @@ Lemming::~Lemming() {
 }
 
 void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *map, VariableTexture *mask) {
-	
+	firework = new Firework();
 	setMapMask(map, mask);
 	state = FALLING_RIGHT_STATE;
 	status = ALIVE_STATUS;
@@ -591,7 +591,7 @@ void Lemming::resetActionTime() {
 
 void Lemming::render() {
 	sprite->render();
-	
+	firework->render();
 }
 
 void Lemming::setMapMask(VariableTexture *mapMap, VariableTexture *mapMask) {
