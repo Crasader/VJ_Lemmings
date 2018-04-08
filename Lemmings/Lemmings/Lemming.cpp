@@ -31,7 +31,7 @@ void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgra
 	resetActionTime();
 
 	sprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.125, 0.03125), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(23);
+	sprite->setNumberAnimations(25);
 
 	setAnimations();
 	
@@ -151,14 +151,17 @@ void Lemming::update(int deltaTime) {
 				if (fall < 4) {
 					move(0, fall);
 					//action triggered
-					if (nextState == BLOCKER_TRIGGERED) 
+					if (nextState == BLOCKER_TRIGGERED)
 						goBlocker();
-							
-					else if (nextState == DIGGER_TRIGGERED) 
+
+					else if (nextState == DIGGER_TRIGGERED)
 						goDigger(WALKING_RIGHT_STATE);
-						
-					else if (nextState == BUILDER_TRIGGERED) 
+
+					else if (nextState == BUILDER_TRIGGERED)
 						goBuilderRight();
+
+					else if (nextState == BOMBER_TRIGGERED)
+						goBomberRight();
 						
 					// no action triggered -> continue walking
 				}
@@ -203,7 +206,10 @@ void Lemming::update(int deltaTime) {
 						
 					else if (nextState == BUILDER_TRIGGERED) 
 						goBuilderLeft();
-						
+					
+					else if (nextState == BOMBER_TRIGGERED)
+						goBomberLeft();
+
 					// no action triggered -> continue walking
 				}
 				// falling
@@ -300,7 +306,8 @@ void Lemming::update(int deltaTime) {
 				if (nextState == CLIMBER_TRIGGERED ||
 					nextState == BUILDER_TRIGGERED ||
 					nextState == DIGGER_TRIGGERED ||
-					nextState == BLOCKER_TRIGGERED) 
+					nextState == BLOCKER_TRIGGERED ||
+					nextState == BOMBER_TRIGGERED) 
 					goWalkLeft();
 				// no action triggered -> continue bashing
 				else {
@@ -361,9 +368,15 @@ void Lemming::update(int deltaTime) {
 
 		/* Building */ // TODO triggers should stop builder
 		case BUILDER_RIGHT_STATE:
-			nextState = WALKING_RIGHT_STATE;
 			// all tiles done
 			if (counter == 12) goStopBuilderRight();
+			//action triggered -> stop, walk and trigger again
+			else if (nextState == CLIMBER_TRIGGERED ||
+				nextState == DIGGER_TRIGGERED ||
+				nextState == BLOCKER_TRIGGERED ||
+				nextState == BOMBER_TRIGGERED ||
+				nextState == BASHER_TRIGGERED)
+				goWalkRight();
 			// wall
 			else if (collisionRight(15) < 8) goStopBuilderRight();
 			// head collision
@@ -376,9 +389,15 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case BUILDER_LEFT_STATE:
-			nextState = WALKING_LEFT_STATE;
 			// all tiles done
 			if (counter == 12) goStopBuilderLeft();
+			//action triggered -> stop, walk and trigger again
+			else if (nextState == CLIMBER_TRIGGERED ||
+				nextState == BASHER_TRIGGERED ||
+				nextState == DIGGER_TRIGGERED ||
+				nextState == BLOCKER_TRIGGERED ||
+				nextState == BOMBER_TRIGGERED)
+				goWalkLeft();
 			// wall
 			else if (collisionLeft(15) < 6) goStopBuilderLeft();
 			// head collision
@@ -418,6 +437,15 @@ void Lemming::update(int deltaTime) {
 			// no more falling
 			else goWalkLeft();
 			break;
+
+		
+		/* Bomber */
+		case BOMBER_RIGHT_STATE:
+			if (actionTime > 7) goWalkLeft();
+			break;
+
+		case BOMBER_LEFT_STATE:
+			if (actionTime > 7) goWalkRight();
 
 
 		/* Dying */
@@ -551,6 +579,23 @@ void Lemming::goClimberLeft() {
 	nextState = CLIMBER_TRIGGERED;
 }
 
+void Lemming::goBomberRight() {
+	resetActionTime();
+	sprite->changeAnimation(BOMBER_RIGHT);
+	oldState = WALKING_RIGHT_STATE;
+	nextState = WALKING_LEFT_STATE;
+	state = BOMBER_RIGHT_STATE;
+}
+
+void Lemming::goBomberLeft() {
+	resetActionTime();
+	sprite->changeAnimation(BOMBER_LEFT);
+	oldState = WALKING_LEFT_STATE;
+	nextState = WALKING_RIGHT_STATE;
+	state = BOMBER_LEFT_STATE;
+}
+
+
 void Lemming::goWalkLeft() {
 	sprite->changeAnimation(WALKING_LEFT);
 	state = WALKING_LEFT_STATE;
@@ -623,6 +668,8 @@ void Lemming::doubleSpeed() {
 	sprite->setAnimationSpeed(FLOATER_LEFT, speed);
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, speed * 2);
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, speed * 2);
+	sprite->setAnimationSpeed(BOMBER_RIGHT, speed * 2);
+	sprite->setAnimationSpeed(BOMBER_LEFT, speed * 2);
 }
 
 void Lemming::resetSpeed() {
@@ -649,6 +696,8 @@ void Lemming::resetSpeed() {
 	sprite->setAnimationSpeed(DIE_FALL, speed);
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, speed);
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, speed);
+	sprite->setAnimationSpeed(BOMBER_RIGHT, speed);
+	sprite->setAnimationSpeed(BOMBER_LEFT, speed);
 }
 
 void Lemming::pause() {
@@ -675,6 +724,8 @@ void Lemming::pause() {
 	sprite->setAnimationSpeed(DIE_FALL, 0);
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, 0);
 	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, 0);
+	sprite->setAnimationSpeed(BOMBER_RIGHT, 0);
+	sprite->setAnimationSpeed(BOMBER_LEFT, 0);
 }
 
 glm::vec2 Lemming::getPosition() {
@@ -1029,6 +1080,14 @@ void Lemming::setAnimations() {
 		for (int i = 7; i>4; i--)
 			sprite->addKeyframe(FLOATER_LEFT, glm::vec2(float(i) / 8, 31.f / 32));
 
+	/* Bomber */
+		sprite->setAnimationSpeed(BOMBER_RIGHT, speed);
+		for (int i = 0; i<8; i++)
+			sprite->addKeyframe(BOMBER_RIGHT, glm::vec2(float(i) / 8, 23.f / 32));
+
+		sprite->setAnimationSpeed(BOMBER_LEFT, speed);
+		for (int i = 0; i<8; i++)
+			sprite->addKeyframe(BOMBER_LEFT, glm::vec2(float(i) / 8, 24.f / 32));
 
 	
 }

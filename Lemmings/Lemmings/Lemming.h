@@ -118,6 +118,8 @@ private:
 	void goStopBuilderLeft();
 	void goClimberRight();
 	void goClimberLeft();
+	void goBomberRight();
+	void goBomberLeft();
 	void goWalkLeft();
 	void goWalkRight();
 	void goFallLeft();
@@ -127,8 +129,8 @@ private:
 	
 private:
 	
-	/* Lemming animations, currently 23 */
-	enum LemmingAnims {	
+	/* Lemming animations, currently 25 */
+	enum LemmingAnims {
 		WALKING_RIGHT, WALKING_LEFT,
 		FALLING_RIGHT, FALLING_LEFT,
 		BLOCKER,
@@ -142,7 +144,8 @@ private:
 		DIE_EXPLOSION,
 		DIE_FALL,
 		OPENING_UMBRELLA_RIGHT, FLOATER_RIGHT,
-		OPENING_UMBRELLA_LEFT, FLOATER_LEFT
+		OPENING_UMBRELLA_LEFT, FLOATER_LEFT,
+		BOMBER_RIGHT, BOMBER_LEFT
 	};
 
 	LemmingState 
