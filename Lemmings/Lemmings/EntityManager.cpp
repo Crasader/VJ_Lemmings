@@ -2,18 +2,12 @@
 #include <iostream>
 
 
-EntityManager::EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask, string dorIni, string dorEnd) {
-	this->doorStartPosition = doorStartPosition;
-	this->doorEndPosition = doorEndPosition;
+EntityManager::EntityManager(int numLemmings, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask) {
 	this->shaderProgram = shaderProgram;
 	this->numLemmings = numLemmings;
 	this->mask = mask;
 	this->map = map;
-	this->dorIni = dorIni;
-	this->dorEnd = dorEnd;
-	this->doorSColor = doorStartType;
-	this->doorEColor = doorEndType;
-	init();
+	bomb = NULL;
 }
 
 EntityManager::~EntityManager() {
@@ -24,7 +18,7 @@ void EntityManager::init() {
 	timeToDisplay = 5;
 	countingDown = false;
 	offsetX = offsetY = 0;
-	if(!countdown.init("fonts/upheavtt.ttf")) std::cout << "could not load font" << endl;
+	if (!countdown.init("fonts/upheavtt.ttf")) std::cout << "could not load font" << endl;
 	spritesheet.loadFromFile("images/lemmings_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheet.setMinFilter(GL_NEAREST);
 	spritesheet.setMagFilter(GL_NEAREST);
@@ -36,17 +30,6 @@ void EntityManager::init() {
 	armageddon = false;
 	lemmingsSaved = lemmingsDied = 0;
 
-	spritesheetStart.loadFromFile(dorIni, TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetStart.setMinFilter(GL_NEAREST);
-	spritesheetStart.setMagFilter(GL_NEAREST);
-	doorStart = new DoorStart(doorSColor);
-	doorStart->init(doorStartPosition, shaderProgram, spritesheetStart);
-
-	spritesheetEnd.loadFromFile(dorEnd, TEXTURE_PIXEL_FORMAT_RGBA);
-	spritesheetEnd.setMinFilter(GL_NEAREST);
-	spritesheetEnd.setMagFilter(GL_NEAREST);
-	doorEnd = new DoorEnd(doorEColor);
-	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
 }
 
 void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int offsetY){
@@ -98,12 +81,17 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 	this->buttonPressed = buttonPressed;
 	doorStart->update(deltaTime);
 	doorEnd->update(deltaTime);
+	if (bomb != NULL) {
+		bomb->update(deltaTime);
+		bomb->changeState();
+	}
 
 }
 
 void EntityManager::render() {
 	doorStart->render();
 	doorEnd->render();
+	if (bomb != NULL) bomb->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->render();
 			
@@ -113,7 +101,7 @@ void EntityManager::render() {
 			glm::vec2 lemmingPos = lemmings[i]->getPosition();
 			int lemPosX = lemmingPos.x * 3 - this->offsetX * 3 + 16;
 			int lemPosY = lemmingPos.y * 3 + 15 - this->offsetY;
-			countdown.render(to_string(timeToDisplay), glm::vec2(lemPosX , lemPosY ), 15, colorWhite);
+			countdown.render(to_string(timeToDisplay+1), glm::vec2(lemPosX , lemPosY ), 15, colorWhite);
 		}
 	}
 }
@@ -165,6 +153,7 @@ void EntityManager::doubleSpeedAnimation()
 
 	doorStart->doubleSpeed();
 	doorEnd->doubleSpeed();
+	if (bomb != NULL)bomb->doubleSpeed();
 }
 
 void EntityManager::resetNormalSpeed()
@@ -177,6 +166,7 @@ void EntityManager::resetNormalSpeed()
 
 	doorStart->resetSpeed();
 	doorEnd->resetSpeed();
+	if (bomb != NULL)bomb->resetSpeed();
 }
 
 void EntityManager::pause() {
@@ -187,6 +177,7 @@ void EntityManager::pause() {
 
 	doorStart->pause();
 	doorEnd->pause();
+	if (bomb != NULL)bomb->pause();
 }
 
 void EntityManager::increaseSpawnTime(){
@@ -218,6 +209,31 @@ int EntityManager::getLemmingsDied()
 	return lemmingsDied;
 }
 
+void EntityManager::setStartDoor(glm::vec2 doorStartPosition, int doorStartType) {
+	this->doorStartPosition = doorStartPosition;
+	spritesheetStart.loadFromFile("images/start_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetStart.setMinFilter(GL_NEAREST);
+	spritesheetStart.setMagFilter(GL_NEAREST);
+	doorStart = new DoorStart(doorStartType);
+	doorStart->init(doorStartPosition, shaderProgram, spritesheetStart);
+
+}
+
+void EntityManager::setEndDoor(glm::vec2 doorEndPosition, int doorEndType) {
+	this->doorEndPosition = doorEndPosition;
+	spritesheetEnd.loadFromFile("images/end_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetEnd.setMinFilter(GL_NEAREST);
+	spritesheetEnd.setMagFilter(GL_NEAREST);
+	doorEnd = new DoorEnd(doorEndType);
+	doorEnd->init(doorEndPosition, shaderProgram, spritesheetEnd);
+}
+void EntityManager::setBomb(glm::vec2 bombPosition) {
+	spritesheetBomb.loadFromFile("images/bomb_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetBomb.setMinFilter(GL_NEAREST);
+	spritesheetBomb.setMagFilter(GL_NEAREST);
+	bomb = new Bomb();
+	bomb->init(bombPosition, shaderProgram, spritesheetBomb, mask);
+}
 void EntityManager::checkStatusLemmings() {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		glm::vec2 posBase = lemmings[i]->getPosition() + glm::vec2(7, 16);

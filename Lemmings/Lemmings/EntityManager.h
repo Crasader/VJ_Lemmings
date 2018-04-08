@@ -8,12 +8,14 @@
 #include "Cursor.h"
 #include "DoorEnd.h"
 #include "DoorStart.h"
+#include "Bomb.h"
 
 
 class EntityManager {
 public:
-	EntityManager(int numLemmings, glm::vec2 &doorStartPosition, int doorStartType, glm::vec2 &doorEndPosition, int doorEndType, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask ,string dorIni, string dorEnd);
+	EntityManager(int numLemmings, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask);
 	~EntityManager();
+	void init();
 	void update(int deltaTime, int buttonPressed,int offsetX, int offsetY);
 	void render();
 
@@ -46,6 +48,10 @@ public:
 	int getLemmingsExited();
 	int getLemmingsDied();
 
+	void setStartDoor(glm::vec2 doorStartPosition, int doorStartType);
+	void setEndDoor(glm::vec2 doorEndPosition, int doorEndType);
+	void setBomb(glm::vec2 bombPosition);
+
 
 
 private:
@@ -57,24 +63,19 @@ private:
 	Texture spritesheet;
 	VariableTexture *mask, *map;
 	ShaderProgram shaderProgram;
-	glm::vec2 doorStartPosition;
-	glm::vec2 doorEndPosition;
+	glm::vec2 doorStartPosition, doorEndPosition;
 	int numLemmings;
 	float sceneTime;
 	float lastLemmingCreation;
 	int buttonPressed;
 	DoorEnd* doorEnd;
 	DoorStart* doorStart;
-	Texture spritesheetStart;
-	Texture spritesheetEnd;
-	string dorIni;
-	string dorEnd;
+	Bomb* bomb;
+	Texture spritesheetStart, spritesheetEnd, spritesheetBomb;
 	bool armageddon;
 
 	int lemmingsSaved, lemmingsDied;
 
-	int doorSColor;
-	int doorEColor;
 
 	int elapsedTime;
 	int timeToDisplay;
@@ -84,7 +85,7 @@ private:
 
 	
 
-	void init();	
+	
 	void checkStatusLemmings();
 	bool lemmingHasActionAssigned(int i, Effect state);
 };

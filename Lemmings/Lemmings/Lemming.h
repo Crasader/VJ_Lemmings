@@ -23,9 +23,8 @@ public:
 	
 	void render();
 	
-	
 	void changeState(int x);
-	void setMapMask(VariableTexture *mapMap, VariableTexture *mapMask);
+	
 	void doubleSpeed();
 	void resetSpeed();
 	void pause();
@@ -91,6 +90,8 @@ private:
 	bool collisionHeadLeft();
 	void setAnimations();
 
+	void setMapMask(VariableTexture *mapMap, VariableTexture *mapMask);
+
 	void move(int x, int y);
 
 	void dig();
@@ -98,6 +99,8 @@ private:
 	void bashRight(int q);
 	void build(glm::vec2 offset);
 	void block();
+	void explode();
+	void deleteMask(int xStart, int xEnd, int y);
 
 	/* change Animation and states */
 	void goDieExplosion();

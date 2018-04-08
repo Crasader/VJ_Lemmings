@@ -19,8 +19,8 @@ public:
 		return G;
 	}
 
-	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos;
-	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numbDig, numbStop, numbBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor;
+	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos, bombPos;
+	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numbDig, numbStop, numbBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor, isBomb;
 	string levelName, path, mPath;
 	void loadFileAndProcess(string path);
 	TextProcessor() {}

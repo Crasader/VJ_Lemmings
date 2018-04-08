@@ -26,15 +26,13 @@ void PlayScene::init() {
 	getLevelData();
 	createMap();
 
-	manager = new EntityManager(
-		TextProcessor::instance().lemmings, 
-		TextProcessor::instance().startDoor, 
-		TextProcessor::instance().doorStartColor, 
-		TextProcessor::instance().endDoor,
-		TextProcessor::instance().doorEndColor, 
-		simpleTexProgram, &colorTexture, &maskTexture, 
-		"images/start_spritesheet.png", "images/end_spritesheet.png"
-	);
+	manager = new EntityManager(TextProcessor::instance().lemmings, simpleTexProgram, &colorTexture, &maskTexture);
+	manager->init();
+	manager->setStartDoor(TextProcessor::instance().startDoor, TextProcessor::instance().doorStartColor);
+	manager->setEndDoor(TextProcessor::instance().endDoor, TextProcessor::instance().doorEndColor);
+	if (TextProcessor::instance().isBomb)
+		manager->setBomb(TextProcessor::instance().bombPos);
+
 
 	gui = new InterfazUsuario();
 	setGUI();

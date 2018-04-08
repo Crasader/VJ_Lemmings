@@ -159,6 +159,17 @@ void TextProcessor::processText() {
 					iss >> var;
 					copyStringToVar(var, numbBuild);
 				}
+				else if (tag == "BOMBPOS") {
+					string var1, var2;
+					iss >> var1;
+					iss >> var2;
+					copyStringTovec2(var1, var2, bombPos);
+				}
+				else if (tag == "ISBOMB") {
+					string var;
+					iss >> var;
+					copyStringToVar(var, isBomb);
+				}
 			}
 		}
 	}

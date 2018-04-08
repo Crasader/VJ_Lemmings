@@ -426,7 +426,10 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case DYING_EXPLOSION_STATE:
-			if (actionTime > 14) goKill();
+			if (actionTime > 14) {
+				explode();
+				goKill();
+			}
 			break;
 
 		/* Exiting */
@@ -457,9 +460,7 @@ void Lemming::goDieFall() {
 void Lemming::goBlocker() {
 	block();
 	sprite->changeAnimation(BLOCKER);
-	oldState = BLOCKER_STATE;
-	state = BLOCKER_STATE;
-	nextState = BLOCKER_STATE;
+	oldState = nextState = state = BLOCKER_STATE;
 }
 
 void Lemming::goDigger(LemmingState oldNewState) {
@@ -823,6 +824,40 @@ void Lemming::block() {
 			map->setPixel(x, y, glm::ivec4(0, 0, 0, 0));
 		}
 	}
+}
+
+void Lemming::explode() {
+	glm::ivec2 position = sprite->position();
+	deleteMask(position.x + 6, position.x + 9, position.y + 0);
+	deleteMask(position.x + 3, position.x + 12, position.y + 1);
+	deleteMask(position.x + 1, position.x + 14, position.y + 2);
+	deleteMask(position.x + 0, position.x + 15, position.y + 3);
+	deleteMask(position.x + -1, position.x + 16, position.y + 4);
+	deleteMask(position.x + -2, position.x + 17, position.y + 5);
+	deleteMask(position.x + -2, position.x + 17, position.y + 6);
+	deleteMask(position.x + -3, position.x + 18, position.y + 7);
+	deleteMask(position.x + -3, position.x + 18, position.y + 8);
+	deleteMask(position.x + -3, position.x + 18, position.y + 9);
+	deleteMask(position.x + -4, position.x + 19, position.y + 10);
+	deleteMask(position.x + -4, position.x + 19, position.y + 11);
+	deleteMask(position.x + -4, position.x + 19, position.y + 12);
+	deleteMask(position.x + -4, position.x + 19, position.y + 13);
+	deleteMask(position.x + -3, position.x + 18, position.y + 14);
+	deleteMask(position.x + -3, position.x + 18, position.y + 15);
+	deleteMask(position.x + -3, position.x + 18, position.y + 16);
+	deleteMask(position.x + -2, position.x + 17, position.y + 17);
+	deleteMask(position.x + -2, position.x + 17, position.y + 18);
+	deleteMask(position.x + -1, position.x + 16, position.y + 19);
+	deleteMask(position.x + 0, position.x + 15, position.y + 20);
+	deleteMask(position.x + 1, position.x + 14, position.y + 21);
+	deleteMask(position.x + 3, position.x + 12, position.y + 22);
+	deleteMask(position.x + 6, position.x + 9, position.y + 23);
+}
+
+void Lemming::deleteMask(int xStart, int xEnd, int y) {
+	if (y > 0 && y < mask->height())
+		for (int x = max(0, xStart); x <= min(mask->width(),xEnd); x++)
+			mask->setPixel(x, y, 0);
 }
 
 void Lemming::changeState(int actionTriggered) {
