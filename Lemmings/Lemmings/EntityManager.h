@@ -9,6 +9,7 @@
 #include "DoorEnd.h"
 #include "DoorStart.h"
 #include "Bomb.h"
+#include "Firework.h"
 
 
 class EntityManager {
@@ -73,6 +74,7 @@ private:
 	Bomb* bomb;
 	Texture spritesheetStart, spritesheetEnd, spritesheetBomb;
 	bool armageddon;
+	Firework * firework;
 
 	int lemmingsSaved, lemmingsDied;
 

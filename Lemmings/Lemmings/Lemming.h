@@ -6,7 +6,7 @@
 #include "VariableTexture.h"
 #include "Texture.h"
 #include "Text.h"
-#include "Firework.h"
+
 
 
 // Lemming is basically a Sprite that represents one lemming. As such it has
@@ -155,7 +155,7 @@ private:
 	LemmingStatus status;	/* current status */
 	int actionTime;			/* time doing action */
 	int counter;			/* builder counter */
-	Firework * firework;
+	
 
 };
 
