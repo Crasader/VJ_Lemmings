@@ -196,10 +196,11 @@ void EntityManager::killAllLemmings() {
 }
 
 void EntityManager::killAllLemmings2() {
-	firework->init(glm::vec2(180,60));
-	firework->blowUp();
+	
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		if(countingDown )lemmings[i]->changeState(ARMAGEDDON_EFFECT);
+		if(countingDown)lemmings[i]->changeState(ARMAGEDDON_EFFECT);
+		if (countingDown)firework->init(lemmings[i]->getPosition());
+		if (countingDown)firework->blowUp();
 	}
 }
 

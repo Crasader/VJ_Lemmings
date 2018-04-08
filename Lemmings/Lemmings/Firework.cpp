@@ -1,4 +1,5 @@
 #include "Firework.h"
+#include "common_defs.h"
 
 
 const GLfloat Firework::GRAVITY = 0.05f;
@@ -61,20 +62,20 @@ void Firework::explode()
 
 void Firework::render() {
 	if (hasExploded) {
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(0.0, CAMERA_WIDTH, CAMERA_HEIGHT, 480.0);
 
 		for (int particleLoop = 0; particleLoop < FIREWORK_PARTICLES; particleLoop++)
 		{
 
-			glPointSize(particleSize);
-
+			
 			glBegin(GL_POINTS);
-			glColor4f(red, green, blue, alpha);
-			glVertex2i(x[particleLoop], y[particleLoop]);
+			glColor3f(red, green, blue);
+			glPointSize(particleSize);
+			glVertex2f(x[particleLoop], y[particleLoop]);
 			glEnd();
-			glFlush();
 		}
-
-		// Move the firework appropriately depending on its explosion state
 			explode();
 
 	}
