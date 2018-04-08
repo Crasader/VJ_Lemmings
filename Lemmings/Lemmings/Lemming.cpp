@@ -358,7 +358,7 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case CLIMBER_TOP_STATE:
-			if (actionTime > 8) {
+			if (actionTime > 7) {
 				if (oldState == WALKING_RIGHT_STATE) goWalkRight();
 				else goWalkLeft();
 				move(0, -7);

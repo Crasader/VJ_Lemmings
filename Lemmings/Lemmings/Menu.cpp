@@ -36,7 +36,7 @@ void Menu::update(int deltaTime) {
 Scene* Menu::changeState() {
 	switch (state) {
 	case PLAY_CHOSEN: {
-		Scene * scene = new StartScene("maps/Level1.txt");
+		Scene * scene = new StartScene("maps/Level3.txt");
 		AudioEngine::instance().buttonEffect();
 		AudioEngine::instance().yippee();
 		AudioEngine::instance().playMusic("Music/lemmings.wav");
