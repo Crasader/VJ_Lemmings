@@ -62,17 +62,16 @@ void Firework::explode()
 
 void Firework::render() {
 	if (hasExploded) {
-		glMatrixMode(GL_PROJECTION);
+		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		gluOrtho2D(0.0, CAMERA_WIDTH, CAMERA_HEIGHT, 480.0);
 
 		for (int particleLoop = 0; particleLoop < FIREWORK_PARTICLES; particleLoop++)
 		{
 
 			
-			glBegin(GL_POINTS);
-			glColor3f(red, green, blue);
 			glPointSize(particleSize);
+			glBegin(GL_POINTS);
+			glColor4f(red, green, blue, alpha);
 			glVertex2f(x[particleLoop], y[particleLoop]);
 			glEnd();
 		}
