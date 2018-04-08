@@ -1,9 +1,6 @@
 #ifndef _PLAYSCENE_INCLUDE
 #define _PLAYSCENE_INCLUDE
 
-#include <cmath>
-#include <algorithm>
-
 #include "EntityManager.h"
 #include "InterfazUsuario.h"
 #include "Cursor.h"

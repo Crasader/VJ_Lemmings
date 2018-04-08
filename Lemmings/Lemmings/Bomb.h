@@ -24,6 +24,8 @@ public:
 	};
 	BombState getState();
 
+	void setPosition(glm::vec2 newPosition);
+
 	void goPicked();
 	void goDrop();
 	void goTrigger();

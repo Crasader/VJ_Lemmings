@@ -46,7 +46,7 @@ void Bomb::changeState() {
 		if (actionTime > 16) goExplode();
 		break;
 	case EXPLODED_STATE:
-		if (actionTime > 8) goEnd();
+		if (actionTime > 7) goEnd();
 		break;
 	default:
 		break;
@@ -54,7 +54,11 @@ void Bomb::changeState() {
 }
 
 Bomb::BombState Bomb::getState() {
-	return BombState();
+	return state;
+}
+
+void Bomb::setPosition(glm::vec2 newPosition) {
+	sprite->position() = newPosition;
 }
 
 void Bomb::goPicked() {
@@ -76,6 +80,7 @@ void Bomb::goTrigger() {
 void Bomb::goExplode() {
 	resetActionTime();
 	explode();
+	sprite->changeAnimation(EXPLODING);
 	state = EXPLODED_STATE;
 }
 

@@ -19,7 +19,7 @@ void PlayScene::init() {
 	state = ON;
 	currentTime = 0.0f;
 	armageddon = false;
-	count = 500;
+	count = 300;
 	
 	initShaders();
 
@@ -54,6 +54,10 @@ void PlayScene::update(int deltaTime) {
 	}
 	if (Game::instance().getKey(27)) state = EXIT_CHOSEN;
 
+	numBombers = manager->getBombersAmount();
+	if (numBombers > 0) 
+		setGUI();
+	
 
 	// change cursor if mouse selects a lemmings
 	int x = 0, y = 0;
@@ -106,6 +110,7 @@ void PlayScene::update(int deltaTime) {
 			armageddon = true;
 			manager->killAllLemmings();
 		}
+		buttonPressed = InterfazUsuario::NONE_BUTTON;
 
 
 		
@@ -130,7 +135,7 @@ Scene * PlayScene::changeState() {
 		return menu;
 	}
 	case END: {
-		if (count > 500) {
+		if (count > 300) {
 			Scene* scene = new EndScene(path, manager->getLemmingsExited());
 			AudioEngine::instance().buttonEffect();
 			AudioEngine::instance().stopEffect();

@@ -30,6 +30,7 @@ void EntityManager::init() {
 	spawnFrequency = 0;
 	armageddon = false;
 	lemmingsSaved = lemmingsDied = 0;
+	bombersAmount = 0;
 
 }
 
@@ -64,16 +65,7 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 
 	checkStatusLemmings();
 
-	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		if (lemmings[i]->getStatus() == Lemming::DEAD_STATUS) {
-			lemmings.erase(lemmings.begin() + i);
-			lemmingsDied++;
-		}
-		else if (lemmings[i]->getStatus() == Lemming::EXITED_STATUS) {
-			lemmings.erase(lemmings.begin() + i);
-			lemmingsSaved++;
-		}
-	}
+
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->update(deltaTime);
 		
@@ -82,7 +74,7 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 	this->buttonPressed = buttonPressed;
 	doorStart->update(deltaTime);
 	doorEnd->update(deltaTime);
-	if (bomb != NULL) {
+	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE)) {
 		bomb->update(deltaTime);
 		bomb->changeState();
 	}
@@ -92,11 +84,12 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 void EntityManager::render() {
 	doorStart->render();
 	doorEnd->render();
-	if (bomb != NULL) bomb->render();
+	
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->render();
 			
 	}
+	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE)) bomb->render();
 	firework->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (countingDown) {
@@ -108,6 +101,8 @@ void EntityManager::render() {
 	}
 }
 
+
+// TODO esta función no se utiliza debería borrarse
 void EntityManager::changeLemmingState(int x) {
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->changeState(x);
@@ -121,6 +116,8 @@ bool EntityManager::clickManager(int mouseX, int mouseY, Effect state) {
 		if (checkCollision(lemmings[i]->getPosition(), mouseX, mouseY)) {
 			if (!lemmingHasActionAssigned(i, state)) {
 				lemmings[i]->changeState(state);
+				if (state == BOMBER_EFFECT) // bomber
+					dropBomb(lemmings[i]->getPosition());
 				return true;
 			}
 			break;
@@ -155,7 +152,7 @@ void EntityManager::doubleSpeedAnimation()
 
 	doorStart->doubleSpeed();
 	doorEnd->doubleSpeed();
-	if (bomb != NULL)bomb->doubleSpeed();
+	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->doubleSpeed();
 }
 
 void EntityManager::resetNormalSpeed()
@@ -168,7 +165,7 @@ void EntityManager::resetNormalSpeed()
 
 	doorStart->resetSpeed();
 	doorEnd->resetSpeed();
-	if (bomb != NULL)bomb->resetSpeed();
+	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->resetSpeed();
 }
 
 void EntityManager::pause() {
@@ -179,7 +176,7 @@ void EntityManager::pause() {
 
 	doorStart->pause();
 	doorEnd->pause();
-	if (bomb != NULL)bomb->pause();
+	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->pause();
 }
 
 void EntityManager::increaseSpawnTime(){
@@ -214,6 +211,11 @@ int EntityManager::getLemmingsDied()
 	return lemmingsDied;
 }
 
+int EntityManager::getBombersAmount()
+{
+	return bombersAmount;
+}
+
 void EntityManager::setStartDoor(glm::vec2 doorStartPosition, int doorStartType) {
 	this->doorStartPosition = doorStartPosition;
 	spritesheetStart.loadFromFile("images/start_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -234,11 +236,18 @@ void EntityManager::setEndDoor(glm::vec2 doorEndPosition, int doorEndType) {
 }
 
 void EntityManager::setBomb(glm::vec2 bombPosition) {
+	this->bombPosition = bombPosition;
 	spritesheetBomb.loadFromFile("images/bomb_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	spritesheetBomb.setMinFilter(GL_NEAREST);
 	spritesheetBomb.setMagFilter(GL_NEAREST);
 	bomb = new Bomb();
 	bomb->init(bombPosition, shaderProgram, spritesheetBomb, mask);
+}
+
+void EntityManager::dropBomb(glm::vec2 newPosition) {
+	bombersAmount--;
+	bomb->setPosition(newPosition);
+	bomb->goDrop();
 }
 
 void EntityManager::checkStatusLemmings() {
@@ -249,6 +258,22 @@ void EntityManager::checkStatusLemmings() {
 		glm::vec2 exitBase = doorEndPosition + glm::vec2(18, 32);
 		if (posBase.x == exitBase.x && posBase.y == exitBase.y)
 			lemmings[i]->goExit();
+		glm::vec2 bombBase = bombPosition + glm::vec2(0, 0);
+		if (bomb != NULL && bomb->getState() == Bomb::IDLE_STATE && (posBase.x > bombBase.x && posBase.x < bombBase.x + 17) && (posBase.y > bombBase.y && posBase.y < bombBase.y + 17)) {
+			bombersAmount++;
+			bomb->goPicked();
+		}
+	}
+
+	for (int i = 0; i < (int)lemmings.size(); ++i) {
+		if (lemmings[i]->getStatus() == Lemming::DEAD_STATUS) {
+			lemmings.erase(lemmings.begin() + i);
+			lemmingsDied++;
+		}
+		else if (lemmings[i]->getStatus() == Lemming::EXITED_STATUS) {
+			lemmings.erase(lemmings.begin() + i);
+			lemmingsSaved++;
+		}
 	}
 }
 

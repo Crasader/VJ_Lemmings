@@ -48,10 +48,13 @@ public:
 
 	int getLemmingsExited();
 	int getLemmingsDied();
+	int getBombersAmount();
 
 	void setStartDoor(glm::vec2 doorStartPosition, int doorStartType);
 	void setEndDoor(glm::vec2 doorEndPosition, int doorEndType);
 	void setBomb(glm::vec2 bombPosition);
+
+	void dropBomb(glm::vec2 newPosition);
 
 
 
@@ -64,7 +67,7 @@ private:
 	Texture spritesheet;
 	VariableTexture *mask, *map;
 	ShaderProgram shaderProgram;
-	glm::vec2 doorStartPosition, doorEndPosition;
+	glm::vec2 doorStartPosition, doorEndPosition, bombPosition;
 	int numLemmings;
 	float sceneTime;
 	float lastLemmingCreation;
@@ -85,7 +88,7 @@ private:
 	bool countingDown;
 	int offsetX, offsetY;
 
-	
+	int bombersAmount;
 
 	
 	void checkStatusLemmings();
