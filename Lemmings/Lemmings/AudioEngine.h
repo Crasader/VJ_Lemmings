@@ -12,6 +12,7 @@ public:
 	AudioEngine();
 	~AudioEngine();
 	void playMusic(char * url);
+	void stopMusic();
 	void exitGameEffect();
 	void buttonEffect();
 	void diggEffect();
@@ -20,6 +21,7 @@ public:
 	void explosionEffect();
 	void splatEffect();
 	void umbrellaEffect();
+	void loseEffect();
 private:
 	
 	void init();

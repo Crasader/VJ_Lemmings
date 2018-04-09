@@ -79,8 +79,12 @@
     <ClCompile Include="EndScene.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Bomb.cpp" />
-    <ClCompile Include="Firework.cpp" />
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Firework.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -167,8 +171,12 @@
     <ClInclude Include="EndScene.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Bomb.h" />
-    <ClInclude Include="Firework.h" />
+    <ClInclude Include="Bomb.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Firework.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

@@ -34,6 +34,10 @@ void AudioEngine::playMusic(char *url)
 	music->setVolume(0.1);
 }	
 
+void AudioEngine::stopMusic() {
+	engineMusic->stopAllSounds();
+}
+
 void AudioEngine::buttonEffect() {
 	effect = engineEffects->play2D("Music/button.wav", false, false, true);
 	effect->setVolume(0.5);
@@ -78,5 +82,10 @@ void AudioEngine::splatEffect() {
 
 void AudioEngine::umbrellaEffect() {
 	effect = engineEffects->play2D("Music/PLOP.wav", false, false, true);
+	effect->setVolume(0.15);
+}
+
+void AudioEngine::loseEffect() {
+	effect = engineEffects->play2D("Music/fail.mp3", false, false, true);
 	effect->setVolume(0.15);
 }

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
+#include "AudioEngine.h"
 
 
 
@@ -22,6 +23,7 @@ void StartScene::init() {
 	state = ON;
 
 	TextProcessor::instance().loadFileAndProcess(path);
+	AudioEngine::instance().playMusic("music/startScreen.mp3");
 
 	bgTexture.loadFromFile("images/backTexture.jpg", TEXTURE_PIXEL_FORMAT_RGBA);
 	bgTexture.setMinFilter(GL_NEAREST);

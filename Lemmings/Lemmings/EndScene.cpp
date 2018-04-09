@@ -1,4 +1,5 @@
 #include "EndScene.h"
+#include "AudioEngine.h"
 
 
 
@@ -16,6 +17,11 @@ void EndScene::init() {
 	numLemmingsMin = TextProcessor::instance().minLemmings;
 	numLemmingsTotal = TextProcessor::instance().lemmings;
 	win = (numLemmingsExited >= numLemmingsMin);
+	if (win) AudioEngine::instance().playMusic("Music/win.mp3");
+	else {
+		AudioEngine::instance().stopMusic();
+		AudioEngine::instance().loseEffect();
+	}
 	state = ON;
 	initShaders();
 	currentTime = 0;
@@ -133,10 +139,18 @@ void EndScene::render() {
 
 	// Message
 	string message = "";
-	if (numLemmingsExited == numLemmingsTotal) message = "You rescued every lemming on that level";
-	else if (numLemmingsExited >= numLemmingsMin) message = "You rescued enough lemmings";
-	else if (numLemmingsExited == 0) message = "Oh dear. Not even one poor Lemming saved";
-	else message = "You didn't rescue enough lemmings";
+	if (numLemmingsExited == numLemmingsTotal) {
+		message = "You rescued every lemming on that level";
+	}
+	else if (numLemmingsExited >= numLemmingsMin) {
+		message = "You rescued enough lemmings";
+	}
+	else if (numLemmingsExited == 0) {
+		message = "Oh dear. Not even one poor Lemming saved";
+	}
+	else {
+		message = "You didn't rescue enough lemmings";
+	}
 	simpleText.render(message, glm::vec2(30, 320), 38, colorGreen);
 
 	simpleTexProgram.use();
