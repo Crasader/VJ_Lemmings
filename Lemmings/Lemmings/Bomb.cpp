@@ -1,6 +1,7 @@
 #include "Bomb.h"
 #include <cmath>
 #include <algorithm>
+#include "AudioEngine.h"
 
 
 Bomb::Bomb() {
@@ -78,6 +79,7 @@ void Bomb::goTrigger() {
 }
 
 void Bomb::goExplode() {
+	AudioEngine::instance().explosionEffect();
 	resetActionTime();
 	explode();
 	sprite->changeAnimation(EXPLODING);
