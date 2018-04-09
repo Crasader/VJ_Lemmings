@@ -33,6 +33,7 @@ void AudioEngine::playMusic(char *url)
 	music = engineMusic->play2D(url, true, false, true);
 	music->setVolume(0.1);
 }	
+
 void AudioEngine::buttonEffect() {
 	effect = engineEffects->play2D("Music/button.wav", false, false, true);
 	effect->setVolume(0.5);
@@ -59,7 +60,23 @@ void AudioEngine::exitGameEffect() {
 	effect = engineEffects->play2D("Music/bye.mp3", false,false, true);
 	effect->setVolume(0.2);
 }
+
 void AudioEngine::init() {
 	engineMusic = createIrrKlangDevice();
 	engineEffects = createIrrKlangDevice();
+}
+
+void AudioEngine::explosionEffect() {
+	effect = engineEffects->play2D("Music/Explosion.mp3", false, false, true);
+	effect->setVolume(0.15);
+}
+
+void AudioEngine::splatEffect() {
+	effect = engineEffects->play2D("Music/FALLSPLAT.wav", false, false, true);
+	effect->setVolume(0.15);
+}
+
+void AudioEngine::umbrellaEffect() {
+	effect = engineEffects->play2D("Music/PLOP.wav", false, false, true);
+	effect->setVolume(0.15);
 }

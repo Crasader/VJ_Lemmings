@@ -480,6 +480,7 @@ void Lemming::goDieExplosion() {
 }
 
 void Lemming::goDieFall() {
+	AudioEngine::instance().splatEffect();
 	resetActionTime();
 	sprite->changeAnimation(DIE_FALL);
 	state = DYING_FALL_STATE;
@@ -500,6 +501,7 @@ void Lemming::goDigger(LemmingState oldNewState) {
 }
 
 void Lemming::goFloaterRight() {
+	AudioEngine::instance().umbrellaEffect();
 	resetActionTime();
 	move(0, 1);
 	sprite->changeAnimation(OPENING_UMBRELLA_RIGHT);
@@ -510,6 +512,7 @@ void Lemming::goFloaterRight() {
 }
 
 void Lemming::goFloaterLeft() {
+	AudioEngine::instance().umbrellaEffect();
 	resetActionTime();
 	move(0, 1);
 	sprite->changeAnimation(OPENING_UMBRELLA_LEFT);
@@ -877,6 +880,7 @@ void Lemming::block() {
 }
 
 void Lemming::explode() {
+	AudioEngine::instance().explosionEffect();
 	glm::ivec2 position = sprite->position();
 	deleteMask(position.x + 6, position.x + 9, position.y + 0);
 	deleteMask(position.x + 3, position.x + 12, position.y + 1);

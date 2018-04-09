@@ -17,9 +17,14 @@ public:
 	void diggEffect();
 	void yippee();
 	void stopEffect();
+	void explosionEffect();
+	void splatEffect();
+	void umbrellaEffect();
 private:
 	
 	void init();
+
+	
 	
 };
 
