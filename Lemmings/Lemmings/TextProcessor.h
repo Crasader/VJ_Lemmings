@@ -21,7 +21,7 @@ public:
 
 	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos, bombPos;
 	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numbDig, numbStop, numbBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor, isBomb;
-	string levelName, path, mPath;
+	string levelName, path, mPath, musicPath;
 	void loadFileAndProcess(string path);
 	TextProcessor() {}
 	~TextProcessor();

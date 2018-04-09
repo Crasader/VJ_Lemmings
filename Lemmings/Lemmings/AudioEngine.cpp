@@ -89,3 +89,13 @@ void AudioEngine::loseEffect() {
 	effect = engineEffects->play2D("Music/fail.mp3", false, false, true);
 	effect->setVolume(0.15);
 }
+
+void AudioEngine::openDoor() {
+	effect = engineEffects->play2D("Music/DOOR.wav", false, false, true);
+	effect->setVolume(0.15);
+}
+
+void AudioEngine::enterDoorEffect() {
+	effect = engineEffects->play2D("Music/OING.wav", false, false, true);
+	effect->setVolume(0.15);
+}

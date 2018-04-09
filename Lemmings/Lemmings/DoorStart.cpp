@@ -1,4 +1,5 @@
 #include "DoorStart.h"
+#include "AudioEngine.h"
 
 
 
@@ -44,6 +45,7 @@ void DoorStart::render() {
 }
 
 void DoorStart::open() {
+	AudioEngine::instance().openDoor();
 	sprite->changeAnimation(OPENING);
 }
 

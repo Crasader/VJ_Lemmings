@@ -170,6 +170,11 @@ void TextProcessor::processText() {
 					iss >> var;
 					copyStringToVar(var, isBomb);
 				}
+				else if (tag == "MUSIC"){
+					string var;
+					iss >> var;
+					copyStringToString(var, musicPath);
+				}
 			}
 		}
 	}

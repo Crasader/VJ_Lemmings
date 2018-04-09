@@ -627,6 +627,7 @@ void Lemming::goKill() {
 
 void Lemming::goExit() {
 	if (state != EXITING_STATE) {
+		AudioEngine::instance().enterDoorEffect();
 		resetActionTime();
 		sprite->changeAnimation(EXITING);
 		state = EXITING_STATE;

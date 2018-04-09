@@ -22,6 +22,8 @@ public:
 	void splatEffect();
 	void umbrellaEffect();
 	void loseEffect();
+	void openDoor();
+	void enterDoorEffect();
 private:
 	
 	void init();

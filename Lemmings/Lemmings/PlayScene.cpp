@@ -30,6 +30,7 @@ void PlayScene::init() {
 	manager->init();
 	manager->setStartDoor(TextProcessor::instance().startDoor, TextProcessor::instance().doorStartColor);
 	manager->setEndDoor(TextProcessor::instance().endDoor, TextProcessor::instance().doorEndColor);
+	AudioEngine::instance().playMusic(&TextProcessor::instance().musicPath[0]);
 	if (TextProcessor::instance().isBomb)
 		manager->setBomb(TextProcessor::instance().bombPos);
 
