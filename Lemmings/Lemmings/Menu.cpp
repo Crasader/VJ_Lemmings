@@ -10,6 +10,7 @@ Menu::~Menu() {
 
 void Menu::init() {
 	AudioEngine::instance().playMusic("Music/menu.mp3");
+	Cursor::instance().lemmingInside(false);
 	selected = NONE_BUTTON;
 	state = ON;
 	currentTime = 0.f;

@@ -5,11 +5,11 @@ void Game::init() {
 	bPlay = true;
 	bLeftMouse = bRightMouse = false;
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
+	Cursor::instance().init();
 	scene = new Menu();
 	scene->init();
 
-	Cursor::instance().init();
+	
 	glutSetCursor(GLUT_CURSOR_NONE);
 }
 

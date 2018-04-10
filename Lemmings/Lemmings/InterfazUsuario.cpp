@@ -255,5 +255,10 @@ void InterfazUsuario::setBombers(int bomber) {
 }
 
 int InterfazUsuario::getButtonPressed() {
+	if (buttonSelected == DECREASE_BUTTON || buttonSelected == INCREASE_BUTTON) {
+		int but = buttonSelected;
+		buttonSelected = -1;
+		return but;
+	}
 	return buttonSelected;
 }

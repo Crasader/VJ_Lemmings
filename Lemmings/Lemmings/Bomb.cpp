@@ -41,10 +41,10 @@ void Bomb::render() {
 void Bomb::changeState() {
 	switch (state) {
 	case DROPPED_STATE:
-		if (actionTime > 8) goTrigger();
+		if (actionTime > 7) goTrigger();
 		break;
 	case EXPLODING_STATE:
-		if (actionTime > 16) goExplode();
+		if (actionTime > 15) goExplode();
 		break;
 	case EXPLODED_STATE:
 		if (actionTime > 7) goEnd();
