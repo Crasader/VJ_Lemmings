@@ -3,8 +3,13 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Shader.h"
+#include "ShaderProgram.h"
+#include "Quad.h"
+#include <iostream>
+#include <vector>
 
-const GLint FIREWORK_PARTICLES = 70;
+const GLint FIREWORK_PARTICLES = 1;
 class Firework
 {
 public:
@@ -26,7 +31,10 @@ private:
 	GLfloat y[FIREWORK_PARTICLES];
 	GLfloat xSpeed[FIREWORK_PARTICLES];
 	GLfloat ySpeed[FIREWORK_PARTICLES];
-
+	ShaderProgram program;
+	vector<Quad*> particles;
 	void explode();
+	void initShader();
+	glm::mat4 projection;
 };
 

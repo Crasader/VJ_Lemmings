@@ -77,7 +77,6 @@ private:
 	Bomb* bomb;
 	Texture spritesheetStart, spritesheetEnd, spritesheetBomb;
 	bool armageddon;
-	Firework * firework;
 
 	int lemmingsSaved, lemmingsDied;
 
@@ -89,9 +88,11 @@ private:
 	int offsetX, offsetY;
 
 	int bombersAmount;
+	vector<Firework*> fireworks;
 
 	
 	void checkStatusLemmings();
 	bool lemmingHasActionAssigned(int i, Effect state);
+	void startFireworks();
 };
 
