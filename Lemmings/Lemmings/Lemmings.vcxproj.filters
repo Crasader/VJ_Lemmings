@@ -85,6 +85,7 @@
     <ClCompile Include="Firework.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="Portal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -177,6 +178,7 @@
     <ClInclude Include="Firework.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Portal.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

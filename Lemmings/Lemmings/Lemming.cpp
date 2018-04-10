@@ -634,6 +634,12 @@ void Lemming::goExit() {
 	}
 }
 
+void Lemming::setPosition(glm::vec2 newPosition) {
+	sprite->position() = newPosition;
+}
+
+
+
 void Lemming::resetActionTime() {
 	actionTime = 0;
 }

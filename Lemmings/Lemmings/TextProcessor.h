@@ -19,8 +19,8 @@ public:
 		return G;
 	}
 
-	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos, bombPos;
-	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numbDig, numbStop, numbBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor, isBomb;
+	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos, bombPos, orangePos, bluePos;
+	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numbDig, numbStop, numbBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor, isBomb, isPortal;
 	string levelName, path, mPath, musicPath;
 	void loadFileAndProcess(string path);
 	TextProcessor() {}

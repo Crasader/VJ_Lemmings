@@ -8,6 +8,8 @@ EntityManager::EntityManager(int numLemmings, ShaderProgram &shaderProgram, Vari
 	this->mask = mask;
 	this->map = map;
 	bomb = NULL;
+	portalBlue = NULL;
+	portalOrange = NULL;
 }
 
 EntityManager::~EntityManager() {
@@ -76,6 +78,10 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 	this->buttonPressed = buttonPressed;
 	doorStart->update(deltaTime);
 	doorEnd->update(deltaTime);
+	if (portalBlue != NULL)
+		portalBlue->update(deltaTime);
+	if (portalOrange != NULL)
+		portalOrange->update(deltaTime);
 	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE)) {
 		bomb->update(deltaTime);
 		bomb->changeState();
@@ -87,6 +93,10 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 void EntityManager::render() {
 	doorStart->render();
 	doorEnd->render();
+	if (portalBlue != NULL)
+		portalBlue->render();
+	if (portalOrange != NULL)
+		portalOrange->render();
 	
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->render();
@@ -157,6 +167,10 @@ void EntityManager::doubleSpeedAnimation()
 
 	doorStart->doubleSpeed();
 	doorEnd->doubleSpeed();
+	if (portalBlue != NULL || portalOrange != NULL) {
+		portalBlue->doubleSpeed();
+		portalOrange->doubleSpeed();
+	}
 	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->doubleSpeed();
 }
 
@@ -170,6 +184,10 @@ void EntityManager::resetNormalSpeed()
 
 	doorStart->resetSpeed();
 	doorEnd->resetSpeed();
+	if (portalBlue != NULL || portalOrange != NULL) {
+		portalBlue->resetSpeed();
+		portalOrange->resetSpeed();
+	}
 	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->resetSpeed();
 }
 
@@ -181,6 +199,10 @@ void EntityManager::pause() {
 
 	doorStart->pause();
 	doorEnd->pause();
+	if (portalBlue != NULL || portalOrange != NULL) {
+		portalBlue->pause();
+		portalOrange->pause();
+	}
 	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->pause();
 }
 
@@ -248,6 +270,20 @@ void EntityManager::setBomb(glm::vec2 bombPosition) {
 	bomb->init(bombPosition, shaderProgram, spritesheetBomb, mask);
 }
 
+void EntityManager::setPortals(glm::vec2 portalBluePosition, glm::vec2 portalOrangePosition) {
+	this->portalBluePosition = portalBluePosition;
+	this->portalOrangePosition = portalOrangePosition;
+	spritesheetPortals.loadFromFile("images/portal_spritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheetBomb.setMinFilter(GL_NEAREST);
+	spritesheetBomb.setMagFilter(GL_NEAREST);
+	portalBlue = new Portal(Portal::BLUE);
+	portalBlue->init(portalBluePosition, shaderProgram, spritesheetPortals);
+	portalOrange = new Portal(Portal::ORANGE);
+	portalOrange->init(portalOrangePosition, shaderProgram, spritesheetPortals);
+}
+
+
+
 void EntityManager::dropBomb(glm::vec2 newPosition) {
 	bombersAmount--;
 	bomb->setPosition(newPosition);
@@ -267,6 +303,9 @@ void EntityManager::checkStatusLemmings() {
 			bombersAmount++;
 			bomb->goPicked();
 		}
+		glm::vec2 portalBlueBase = portalBluePosition + glm::vec2(12,31);
+		if (portalBlue != NULL && posBase.x == portalBlueBase.x && posBase.y == portalBlueBase.y)
+			lemmings[i]->setPosition(portalOrangePosition + glm::vec2(8, 8));
 	}
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {

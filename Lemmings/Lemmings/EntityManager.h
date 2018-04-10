@@ -10,6 +10,7 @@
 #include "DoorStart.h"
 #include "Bomb.h"
 #include "Firework.h"
+#include "Portal.h"
 
 
 class EntityManager {
@@ -53,6 +54,7 @@ public:
 	void setStartDoor(glm::vec2 doorStartPosition, int doorStartType);
 	void setEndDoor(glm::vec2 doorEndPosition, int doorEndType);
 	void setBomb(glm::vec2 bombPosition);
+	void setPortals(glm::vec2 portalBluePosition, glm::vec2 portalOrangePosition);
 
 	void dropBomb(glm::vec2 newPosition);
 
@@ -67,7 +69,7 @@ private:
 	Texture spritesheet;
 	VariableTexture *mask, *map;
 	ShaderProgram shaderProgram;
-	glm::vec2 doorStartPosition, doorEndPosition, bombPosition;
+	glm::vec2 doorStartPosition, doorEndPosition, bombPosition, portalBluePosition, portalOrangePosition;
 	int numLemmings;
 	float sceneTime;
 	float lastLemmingCreation;
@@ -75,7 +77,8 @@ private:
 	DoorEnd* doorEnd;
 	DoorStart* doorStart;
 	Bomb* bomb;
-	Texture spritesheetStart, spritesheetEnd, spritesheetBomb;
+	Portal *portalBlue, *portalOrange;
+	Texture spritesheetStart, spritesheetEnd, spritesheetBomb, spritesheetPortals;
 	bool armageddon;
 
 	int lemmingsSaved, lemmingsDied;

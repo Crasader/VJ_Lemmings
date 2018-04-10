@@ -31,6 +31,8 @@ public:
 	void pause();
 	void goKill();
 	void goExit();
+
+	void setPosition(glm::vec2 newPosition);
 	
 	glm::vec2 getPosition();
 

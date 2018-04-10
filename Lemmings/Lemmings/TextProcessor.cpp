@@ -175,6 +175,23 @@ void TextProcessor::processText() {
 					iss >> var;
 					copyStringToString(var, musicPath);
 				}
+				else if (tag == "BLUEPOS") {
+					string var1, var2;
+					iss >> var1;
+					iss >> var2;
+					copyStringTovec2(var1, var2, bluePos);
+				}
+				else if (tag == "ORANGEPOS") {
+					string var1, var2;
+					iss >> var1;
+					iss >> var2;
+					copyStringTovec2(var1, var2, orangePos);
+				}
+				else if (tag == "ISPORTAL") {
+					string var;
+					iss >> var;
+					copyStringToVar(var, isPortal);
+				}
 			}
 		}
 	}

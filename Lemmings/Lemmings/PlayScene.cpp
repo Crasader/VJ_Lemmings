@@ -33,6 +33,9 @@ void PlayScene::init() {
 	AudioEngine::instance().playMusic(&TextProcessor::instance().musicPath[0]);
 	if (TextProcessor::instance().isBomb)
 		manager->setBomb(TextProcessor::instance().bombPos);
+	if (TextProcessor::instance().isPortal)
+		manager->setPortals(TextProcessor::instance().bluePos, TextProcessor::instance().orangePos);
+	
 
 
 	gui = new InterfazUsuario();
