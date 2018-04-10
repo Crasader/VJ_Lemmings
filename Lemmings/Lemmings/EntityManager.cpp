@@ -53,7 +53,6 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		lemmings.push_back(new Lemming());
 		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
 		fireworks.push_back(new Firework());
-		fireworks[fireworks.size() - 1]->init(lemmings[lemmings.size() - 1]->getPosition());
 		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
 	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armageddon && buttonPressed != 9) {
@@ -62,7 +61,6 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		lemmings.push_back(new Lemming());
 		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
 		fireworks.push_back(new Firework());
-		fireworks[fireworks.size() - 1]->init(lemmings[lemmings.size() - 1]->getPosition());
 		
 		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
@@ -103,8 +101,9 @@ void EntityManager::render() {
 			countdown.render(to_string(timeToDisplay+1), glm::vec2(lemPosX , lemPosY ), 15, colorWhite);
 			
 		}
-		fireworks[i]->render();
 	}
+	for (int i = 0; i < (int)fireworks.size(); ++i)
+		fireworks[i]->render();
 }
 
 
@@ -296,7 +295,11 @@ bool EntityManager::lemmingHasActionAssigned(int i, Effect state) {
 }
 
 void EntityManager::startFireworks() {
+	glm::vec2 pos;
 	for (int i = 0; i < lemmings.size(); ++i) {
-		fireworks[i]->blowUp();
+		pos = lemmings[i]->getPosition();
+		pos.x = pos.x - this->offsetX + 8;
+		pos.y = pos.y - this->offsetY + 10;
+		fireworks[i]->blowUp(pos);
 	}
 }

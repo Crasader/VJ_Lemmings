@@ -9,14 +9,13 @@
 #include <iostream>
 #include <vector>
 
-const GLint FIREWORK_PARTICLES = 1;
+const GLint FIREWORK_PARTICLES = 20;
 class Firework
 {
 public:
 	Firework();
 	~Firework();
-	void init(glm::vec2 lemmingPos);
-	void blowUp();
+	void blowUp(glm::vec2 lemmingPos);
 	void render();
 private:
 	bool hasExploded;
@@ -36,5 +35,6 @@ private:
 	void explode();
 	void initShader();
 	glm::mat4 projection;
+	void init(glm::vec2 lemmingPos);
 };
 

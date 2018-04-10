@@ -1,5 +1,6 @@
 #include "Firework.h"
 #include "common_defs.h"
+#include <ctime>
 
 
 const GLfloat Firework::GRAVITY = 0.05f;
@@ -16,30 +17,33 @@ Firework::~Firework()
 
 void Firework::init(glm::vec2 lemmingPos) {
 	initShader();
-	this->lemmingPos = lemmingPos;
-	float xSpeedVal = -2 + ((float)rand() / (float)RAND_MAX) * 4.0f;
-	float ySpeedVal = 4.0f + ((float)rand() / (float)RAND_MAX) * 4.0f;
-	red = ((float)rand() / (float)RAND_MAX);
-	green = ((float)rand() / (float)RAND_MAX);
-	blue = ((float)rand() / (float)RAND_MAX);
+	blue = (float)(rand()) / (float)(RAND_MAX);
+	float xSpeedVal;
+	float ySpeedVal;
+	red = (float)(rand()) / (float)(RAND_MAX);
 	alpha = 1.0f;
+	green = (float)(rand()) / (float)(RAND_MAX);
+	particleSize = 1.0f + ((float)rand() / (float)RAND_MAX) * 2.0f;
 	for (int loop = 0; loop < FIREWORK_PARTICLES; loop++)
-	{
+	{	
+		xSpeedVal = -1 + static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2;
+		ySpeedVal = -2 + static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2;
 		x[loop] =lemmingPos.x;
 		y[loop] = lemmingPos.y; // Push the particle location down off the bottom of the screen
 		xSpeed[loop] = xSpeedVal;
 		ySpeed[loop] = ySpeedVal;
-		particles.push_back(Quad::createQuad(180, 180, 20, 20 , program));
+		particles.push_back(Quad::createQuad(0, 0, particleSize, particleSize , program));
 	}
-	particleSize = 1.0f + ((float)rand() / (float)RAND_MAX) * 3.0f;
+	
 	
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 
 }
 
-void Firework::blowUp()
+void Firework::blowUp(glm::vec2 lemmingPos)
 {
 	hasExploded = true;
+	init(lemmingPos);
 }
 
 void Firework::explode()
@@ -71,16 +75,15 @@ void Firework::render() {
 		for (int particleLoop = 0; particleLoop < FIREWORK_PARTICLES; particleLoop++)
 		{
 			program.use();
-			modelview = glm::mat4(1.0f);
 			program.setUniformMatrix4f("projection", projection);
-			program.setUniform4f("color", 1, 1, 1, 1);
-			//modelview = glm::translate(modelview, glm::vec3(x[particleLoop], y[particleLoop], 0));
+			program.setUniform4f("color", red, green, blue, alpha);
+			modelview = glm::translate(glm::mat4(1.0f), glm::vec3(x[particleLoop], y[particleLoop], 0.f));
 			program.setUniformMatrix4f("modelview", modelview);
 			particles[particleLoop]->render();
 			
 			
 		}
-			explode();
+		explode();
 
 	}
 }
