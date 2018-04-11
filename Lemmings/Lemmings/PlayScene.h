@@ -41,7 +41,7 @@ private:
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	
 	string path;
-	float currentTime;
+	float currentTime,maxTime, timeLeft;
 	glm::mat4 projection;
 	
 

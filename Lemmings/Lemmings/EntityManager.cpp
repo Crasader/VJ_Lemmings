@@ -283,7 +283,9 @@ void EntityManager::setPortals(glm::vec2 portalBluePosition, glm::vec2 portalOra
 	portalOrange->init(portalOrangePosition, shaderProgram, spritesheetPortals);
 }
 
-
+int EntityManager::getNumLemmingsOut() {
+	return lemmings.size();
+}
 
 void EntityManager::dropBomb(glm::vec2 newPosition) {
 	bombersAmount--;

@@ -56,6 +56,8 @@ public:
 	void setBomb(glm::vec2 bombPosition);
 	void setPortals(glm::vec2 portalBluePosition, glm::vec2 portalOrangePosition);
 
+	int getNumLemmingsOut();
+
 	void dropBomb(glm::vec2 newPosition);
 
 

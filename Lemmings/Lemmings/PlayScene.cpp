@@ -126,6 +126,9 @@ void PlayScene::update(int deltaTime) {
 	manager->update(deltaTime, buttonPressed,cameraX,cameraY);
 	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
+	timeLeft = maxTime - (currentTime / 1000);
+	gui->setTime(timeLeft);
+	gui->setLemmingsOut(manager->getNumLemmingsOut());
 
 }
 
@@ -176,8 +179,6 @@ void PlayScene::render() {
 	gui->render();
 	
 }
-
-
 
 bool PlayScene::effectForLemming(int mouseX, int mouseY, EntityManager::Effect effect) {
 	int x, y;
@@ -249,7 +250,7 @@ void PlayScene::setGUI() {
 void PlayScene::getLevelData() {
 	cameraX = TextProcessor::instance().camPos.x;
 	cameraY = TextProcessor::instance().camPos.y;
-
+	maxTime = TextProcessor::instance().maxTime;
 	numDiggers = TextProcessor::instance().numbDig;
 	numBlockers = TextProcessor::instance().numbStop;
 	numBashers = TextProcessor::instance().numbBash;
