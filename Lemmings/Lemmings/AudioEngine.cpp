@@ -99,3 +99,12 @@ void AudioEngine::enterDoorEffect() {
 	effect = engineEffects->play2D("Music/OING.wav", false, false, true);
 	effect->setVolume(0.15);
 }
+
+void AudioEngine::portalEffect() {
+	effect = engineEffects->play2D("Music/portal.mp3", false, false, true);
+	
+}
+void AudioEngine::orderLemmingEffect() {
+	effect = engineEffects->play2D("Music/CHANGEOP.wav", false, false, true);
+	effect->setVolume(0.5);
+ }

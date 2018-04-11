@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 #include <iostream>
+#include "AudioEngine.h"
 
 
 EntityManager::EntityManager(int numLemmings, ShaderProgram &shaderProgram, VariableTexture *map, VariableTexture *mask) {
@@ -304,8 +305,10 @@ void EntityManager::checkStatusLemmings() {
 			bomb->goPicked();
 		}
 		glm::vec2 portalBlueBase = portalBluePosition + glm::vec2(12,31);
-		if (portalBlue != NULL && posBase.x == portalBlueBase.x && posBase.y == portalBlueBase.y)
+		if (portalBlue != NULL && posBase.x == portalBlueBase.x && posBase.y == portalBlueBase.y) {
+			AudioEngine::instance().portalEffect();
 			lemmings[i]->setPosition(portalOrangePosition + glm::vec2(8, 8));
+		}
 	}
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {

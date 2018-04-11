@@ -186,42 +186,49 @@ bool PlayScene::effectForLemming(int mouseX, int mouseY, EntityManager::Effect e
 	if (effect == EntityManager::DIGGER_EFFECT && numDiggers > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numDiggers--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}
 	else if (effect == EntityManager::BLOCKER_EFFECT && numBlockers > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numBlockers--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}
 	else if (effect == EntityManager::BASHER_EFFECT && numBashers > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numBashers--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}
 	else if (effect == EntityManager::CLIMBER_EFFECT && numClimbers > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numClimbers--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}
 	else if (effect == EntityManager::BUILDER_EFFECT && numBuilders > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numBuilders--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}
 	else if (effect == EntityManager::FLOATER_EFFECT && numFloaters > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numFloaters--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}
 	else if (effect == EntityManager::BOMBER_EFFECT && numBombers > 0) {
 		if (manager->clickManager(cameraX + x / 3, cameraY + y / 3, effect)) {
 			numBombers--;
+			AudioEngine::instance().orderLemmingEffect();
 			return true;
 		}
 	}

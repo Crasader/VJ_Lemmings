@@ -24,6 +24,8 @@ public:
 	void loseEffect();
 	void openDoor();
 	void enterDoorEffect();
+	void portalEffect();
+	void orderLemmingEffect();
 private:
 	
 	void init();
