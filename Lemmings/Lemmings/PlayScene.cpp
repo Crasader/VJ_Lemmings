@@ -18,7 +18,7 @@ PlayScene::~PlayScene() {
 void PlayScene::init() {
 	state = ON;
 	currentTime = 0.0f;
-	armageddon = false;
+	armageddon = doubleSpeed = false;
 	count = 300;
 	
 	initShaders();
@@ -47,8 +47,11 @@ void PlayScene::init() {
 }
 
 void PlayScene::update(int deltaTime) {
-	currentTime += deltaTime;
+	if (doubleSpeed) currentTime += deltaTime * 2;
+	else currentTime += deltaTime;
+	timeLeft = maxTime - (currentTime / 1000);
 
+	if (timeLeft < 0) state = END;
 	int lemmingsStillAlive = TextProcessor::instance().lemmings - manager->getLemmingsDied() - manager->getLemmingsExited();
 	if (lemmingsStillAlive == 0) state = END;
 	if (armageddon) {
@@ -106,8 +109,10 @@ void PlayScene::update(int deltaTime) {
 			gui->increaseSpawnRate();
 			manager->decreaseSpawnTime();
 		}
-		else if (buttonPressed == InterfazUsuario::SPEED_BUTTON) 
+		else if (buttonPressed == InterfazUsuario::SPEED_BUTTON) {
+			doubleSpeed = !doubleSpeed;
 			manager->doubleSpeedAnimation();
+		}
 		else if (buttonPressed == InterfazUsuario::PAUSE_BUTTON) 
 			manager->pause();
 		else if (buttonPressed == InterfazUsuario::ARMAGEDDON_BUTTON) {
@@ -126,7 +131,7 @@ void PlayScene::update(int deltaTime) {
 	manager->update(deltaTime, buttonPressed,cameraX,cameraY);
 	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
-	timeLeft = maxTime - (currentTime / 1000);
+	
 	gui->setTime(timeLeft);
 	gui->setLemmingsOut(manager->getNumLemmingsOut());
 

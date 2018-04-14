@@ -454,10 +454,7 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case DYING_EXPLOSION_STATE:
-			if (actionTime > 14) {
-				explode();
-				goKill();
-			}
+			if (actionTime > 14) goExplode();
 			break;
 
 		/* Exiting */
@@ -619,6 +616,11 @@ void Lemming::goFallRight() {
 	resetActionTime();
 	sprite->changeAnimation(FALLING_RIGHT);
 	state = FALLING_RIGHT_STATE;
+}
+
+void Lemming::goExplode() {
+	explode();
+	status = EXPLODED_STATUS;
 }
 
 void Lemming::goKill() {

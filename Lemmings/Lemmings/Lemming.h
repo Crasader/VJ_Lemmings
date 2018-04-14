@@ -39,9 +39,10 @@ public:
 
 	/* Lemming status. Dead and Exited aren't rendered */
 	enum LemmingStatus {
-		ALIVE_STATUS,	/* Still alive				*/
-		EXITED_STATUS,	/* Have been saved			*/
-		DEAD_STATUS		/* Have died				*/
+		ALIVE_STATUS,		/* Still alive				*/
+		EXITED_STATUS,		/* Have been saved			*/
+		EXPLODED_STATUS,	/* Have exploded			*/	
+		DEAD_STATUS			/* Have died				*/
 	};
 	LemmingStatus getStatus();
 
@@ -126,6 +127,7 @@ private:
 	void goWalkRight();
 	void goFallLeft();
 	void goFallRight();
+	void goExplode();
 
 	void resetActionTime();
 	

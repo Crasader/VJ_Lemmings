@@ -49,7 +49,7 @@ private:
 	EntityManager *manager;
 	int buttonPressed;
 	int count;
-	bool armageddon;
+	bool armageddon, doubleSpeed;
 	
 
 	int numDiggers, numBlockers, numBashers, numFloaters, numBombers, numClimbers, numBuilders;
