@@ -31,6 +31,7 @@ private:
 	enum PlayState {
 		ON,
 		EXIT_CHOSEN,
+		ARMAGEDDON,
 		END
 	};
 	PlayState state;

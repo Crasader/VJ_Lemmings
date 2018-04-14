@@ -57,7 +57,7 @@ void PlayScene::update(int deltaTime) {
 	if (lemmingsStillAlive == 0) state = END;
 	if (armageddon) {
 		count = 0;
-		state = END;
+		state = ARMAGEDDON;
 		armageddon = false;
 	}
 	if (Game::instance().getKey(27)) state = EXIT_CHOSEN;
@@ -116,8 +116,10 @@ void PlayScene::update(int deltaTime) {
 		else if (buttonPressed == InterfazUsuario::PAUSE_BUTTON)
 			pause = true;
 		else if (buttonPressed == InterfazUsuario::ARMAGEDDON_BUTTON) {
-			armageddon = true;
-			manager->killAllLemmings();
+			if (state != ARMAGEDDON) {
+				armageddon = true;
+				manager->killAllLemmings();
+			}
 		}
 		buttonPressed = InterfazUsuario::NONE_BUTTON;
 
@@ -147,16 +149,17 @@ Scene * PlayScene::changeState() {
 		return menu;
 	}
 	case END: {
-		if (count > 300) {
-			Scene* scene = new EndScene(path, manager->getLemmingsExited());
-			AudioEngine::instance().buttonEffect();
-			AudioEngine::instance().stopEffect();
-			scene->init();
-			return scene;
-		}
-		else count++;
+		Scene* scene = new EndScene(path, manager->getLemmingsExited());
+		AudioEngine::instance().buttonEffect();
+		AudioEngine::instance().stopEffect();
+		scene->init();
+		return scene;
 		break;
 	}
+	case ARMAGEDDON:
+		count++;
+		if (count > 300)
+			state = END;
 	default:
 		break;
 	}

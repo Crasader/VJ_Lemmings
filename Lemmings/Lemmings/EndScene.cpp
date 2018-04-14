@@ -104,10 +104,18 @@ Scene * EndScene::changeState() {
 		return menu;
 	}
 	case NEXT_CHOSEN: {
-		Scene * scene = new StartScene(newPath);
-		AudioEngine::instance().buttonEffect();
-		scene->init();
-		return scene;
+		if (TextProcessor::instance().levelNumber < 4) {
+			Scene * scene = new StartScene(newPath);
+			AudioEngine::instance().buttonEffect();
+			scene->init();
+			return scene;
+		}
+		else {
+			Scene * scene = new Credits();
+			AudioEngine::instance().buttonEffect();
+			scene->init();
+			return scene;
+		}
 	}
 	case RETRY_CHOSEN: {
 		Scene* scene = new PlayScene(path);
