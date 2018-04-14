@@ -126,6 +126,7 @@ private:
 	void goWalkRight();
 	void goFallLeft();
 	void goFallRight();
+	void goExplode();
 
 	void resetActionTime();
 	

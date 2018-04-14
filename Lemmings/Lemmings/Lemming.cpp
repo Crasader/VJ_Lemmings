@@ -622,8 +622,8 @@ void Lemming::goFallRight() {
 }
 
 void Lemming::goExplode() {
-	explode();
-	status = EXPLODED_STATUS;
+	//explode();
+	//status = EXPLODED_STATUS;
 }
 
 void Lemming::goKill() {

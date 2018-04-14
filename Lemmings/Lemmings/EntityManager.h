@@ -38,8 +38,6 @@ public:
 	bool clickManager(int mouseX, int mouseY, Effect state);
 	bool lemmingInCursor(int mouseX, int mouseY);
 	bool checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int mouseY);
-	void doubleSpeedAnimation();
-	void resetNormalSpeed();
 	void pause();
 	void increaseSpawnTime();
 	void decreaseSpawnTime();

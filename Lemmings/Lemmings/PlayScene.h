@@ -49,6 +49,7 @@ private:
 	EntityManager *manager;
 	int buttonPressed;
 	int count;
+	bool pause;
 	bool armageddon, doubleSpeed;
 	
 

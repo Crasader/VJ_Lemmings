@@ -157,39 +157,6 @@ bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int 
 
 }
 
-void EntityManager::doubleSpeedAnimation()
-{
-	doubleSpeed = true;
-	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i]->doubleSpeed();
-	}
-
-	doorStart->doubleSpeed();
-	doorEnd->doubleSpeed();
-	if (portalBlue != NULL || portalOrange != NULL) {
-		portalBlue->doubleSpeed();
-		portalOrange->doubleSpeed();
-	}
-	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->doubleSpeed();
-}
-
-void EntityManager::resetNormalSpeed()
-{
-	doubleSpeed = false;
-	paused = false;
-	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i]->resetSpeed();
-	}
-
-	doorStart->resetSpeed();
-	doorEnd->resetSpeed();
-	if (portalBlue != NULL || portalOrange != NULL) {
-		portalBlue->resetSpeed();
-		portalOrange->resetSpeed();
-	}
-	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->resetSpeed();
-}
-
 void EntityManager::pause() {
 	paused = true;
 	for (int i = 0; i < (int)lemmings.size(); ++i) {

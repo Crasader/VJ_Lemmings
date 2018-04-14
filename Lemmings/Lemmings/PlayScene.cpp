@@ -20,7 +20,7 @@ void PlayScene::init() {
 	currentTime = 0.0f;
 	armageddon = doubleSpeed = false;
 	count = 300;
-	
+	pause = false;
 	initShaders();
 
 	getLevelData();
@@ -47,8 +47,9 @@ void PlayScene::init() {
 }
 
 void PlayScene::update(int deltaTime) {
-	if (doubleSpeed) currentTime += deltaTime * 2;
-	else currentTime += deltaTime;
+	if (doubleSpeed) deltaTime = deltaTime * 2;
+	else if (pause) deltaTime = 0;
+	currentTime += deltaTime;
 	timeLeft = maxTime - (currentTime / 1000);
 
 	if (timeLeft < 0) state = END;
@@ -84,9 +85,8 @@ void PlayScene::update(int deltaTime) {
 	EntityManager::Effect effect = EntityManager::NONE_EFFECT;
 	buttonPressed = gui->getButtonPressed();
 	if (Game::instance().getLeftMousePressed()) {
-		manager->resetNormalSpeed();
 		int x = 0, y = 0;
-		
+		doubleSpeed = pause = false;
 		if (buttonPressed == InterfazUsuario::BASHER_BUTTON)
 			effect = EntityManager::BASHER_EFFECT;
 		else if (buttonPressed == InterfazUsuario::BLOCKER_BUTTON)
@@ -110,11 +110,11 @@ void PlayScene::update(int deltaTime) {
 			manager->decreaseSpawnTime();
 		}
 		else if (buttonPressed == InterfazUsuario::SPEED_BUTTON) {
-			doubleSpeed = !doubleSpeed;
-			manager->doubleSpeedAnimation();
+			doubleSpeed = true;
+
 		}
-		else if (buttonPressed == InterfazUsuario::PAUSE_BUTTON) 
-			manager->pause();
+		else if (buttonPressed == InterfazUsuario::PAUSE_BUTTON)
+			pause = true;
 		else if (buttonPressed == InterfazUsuario::ARMAGEDDON_BUTTON) {
 			armageddon = true;
 			manager->killAllLemmings();
