@@ -39,9 +39,9 @@ public:
 
 	/* Lemming status. Dead and Exited aren't rendered */
 	enum LemmingStatus {
-		ALIVE_STATUS,	/* Still alive				*/
-		EXITED_STATUS,	/* Have been saved			*/
-		DEAD_STATUS		/* Have died				*/
+		ALIVE_STATUS,		/* Still alive				*/
+		EXITED_STATUS,		/* Have been saved			*/
+		DEAD_STATUS			/* Have died				*/
 	};
 	LemmingStatus getStatus();
 

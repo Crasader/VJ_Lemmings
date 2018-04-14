@@ -621,6 +621,11 @@ void Lemming::goFallRight() {
 	state = FALLING_RIGHT_STATE;
 }
 
+void Lemming::goExplode() {
+	explode();
+	status = EXPLODED_STATUS;
+}
+
 void Lemming::goKill() {
 	status = DEAD_STATUS;
 }
