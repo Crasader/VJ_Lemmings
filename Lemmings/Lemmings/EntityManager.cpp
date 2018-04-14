@@ -55,7 +55,6 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		numLemmings--;
 		lemmings.push_back(new Lemming());
 		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
-		fireworks.push_back(new Firework());
 		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
 	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armageddon && buttonPressed != 9) {
@@ -87,7 +86,7 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		bomb->update(deltaTime);
 		bomb->changeState();
 	}
-
+	
 
 }
 
@@ -116,7 +115,6 @@ void EntityManager::render() {
 	for (int i = 0; i < (int)fireworks.size(); ++i)
 		fireworks[i]->render();
 }
-
 
 // TODO esta función no se utiliza debería borrarse
 void EntityManager::changeLemmingState(int x) {
@@ -224,7 +222,6 @@ void EntityManager::killAllLemmings2() {
 	
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if(countingDown)lemmings[i]->changeState(ARMAGEDDON_EFFECT);
-		if (countingDown) startFireworks();
 	}
 }
 
@@ -315,13 +312,12 @@ void EntityManager::checkStatusLemmings() {
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		if (lemmings[i]->getStatus() == Lemming::DEAD_STATUS) {
+			if (armageddon) startFireworks(i);
 			lemmings.erase(lemmings.begin() + i);
-			fireworks.erase(fireworks.begin() + i);
 			lemmingsDied++;
 		}
 		else if (lemmings[i]->getStatus() == Lemming::EXITED_STATUS) {
 			lemmings.erase(lemmings.begin() + i);
-			fireworks.erase(fireworks.begin() + i);
 			lemmingsSaved++;
 		}
 	}
@@ -338,12 +334,11 @@ bool EntityManager::lemmingHasActionAssigned(int i, Effect state) {
 	else return false;
 }
 
-void EntityManager::startFireworks() {
-	glm::vec2 pos;
-	for (int i = 0; i < lemmings.size(); ++i) {
+void EntityManager::startFireworks(int i) {
+		glm::vec2 pos;
 		pos = lemmings[i]->getPosition();
 		pos.x = pos.x - this->offsetX + 8;
 		pos.y = pos.y - this->offsetY + 10;
-		fireworks[i]->blowUp(pos);
-	}
+		fireworks.push_back(new Firework());
+		fireworks[fireworks.size() - 1]->blowUp(pos);
 }

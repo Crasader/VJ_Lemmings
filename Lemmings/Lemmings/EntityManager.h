@@ -98,6 +98,6 @@ private:
 	
 	void checkStatusLemmings();
 	bool lemmingHasActionAssigned(int i, Effect state);
-	void startFireworks();
+	void startFireworks(int i);
 };
 

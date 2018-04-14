@@ -51,7 +51,7 @@ void Credits::init(){
 	menuSelectedButton->setPosition(glm::vec2(20, 175));
 
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
-	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
+	if (!simpleText.init("fonts/upheavtt.ttf")) {
 		cout << "Couldn't load font" << endl;
 	}
 }
@@ -65,9 +65,10 @@ void Credits::render(){
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
 	title->render();
-	simpleText.render("Replica of the Lemmings DOS game made by:", glm::vec2(446 * 0.15, textRPos ), 32, colorWhite);
-	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+64), 32, colorGreen);
-	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 96), 32, colorGreen);
+	simpleText.render("Replica of the", glm::vec2(446 * 0.15, textRPos ), 32, colorWhite);
+	simpleText.render("Lemmings DOS game made by:", glm::vec2(446 * 0.15, textRPos+32), 32, colorWhite);
+	simpleText.render("Isabel Codina Garcia", glm::vec2(446 * 0.15, textRPos+96), 32, colorGreen);
+	simpleText.render("Borja Fernandez Ruizdelgado", glm::vec2(446 * 0.15, textRPos + 128), 32, colorGreen);
 
 
 

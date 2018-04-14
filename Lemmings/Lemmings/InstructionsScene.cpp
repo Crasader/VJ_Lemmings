@@ -41,7 +41,7 @@ void InstructionsScene::init(){
 	
 	
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
-	if (!simpleText.init("fonts/Cartoon_Regular.ttf")) {
+	if (!simpleText.init("fonts/upheavtt.ttf")) {
 		cout << "Couldn't load font" << endl;
 	}
 	
@@ -56,8 +56,13 @@ void InstructionsScene::render(){
 	simpleTexProgram.setUniformMatrix4f("modelview", modelview);
 	background->render();
 	title->render();
-	simpleText.render("descibir funcionalidades del juego aqui:", glm::vec2(446 * 0.15, textRPos), 32, colorWhite);
-
+	simpleText.render("Lead the lemmings to the end door.", glm::vec2(446 * 0.15 -28, textRPos -32), 24, colorWhite);
+	simpleText.render("Select an action from the bottom ", glm::vec2(446 * 0.15 -28, textRPos -8 ), 24, colorWhite);
+	simpleText.render("and then select a lemming to assign it", glm::vec2(446 * 0.15 -28, textRPos +16), 24, colorWhite);
+	simpleText.render("make all lemmigs explode with", glm::vec2(446 * 0.15 - 28, textRPos + 48), 24, colorWhite);
+	simpleText.render("the bomb button", glm::vec2(446 * 0.15 - 28, textRPos + 72), 24, colorWhite);
+	simpleText.render("to move the camera drag the mouse to", glm::vec2(446 * 0.15 - 28, textRPos + 106), 24, colorWhite);
+	simpleText.render("the left or right screen border", glm::vec2(446 * 0.15 - 28, textRPos + 130), 24, colorWhite);
 
 	simpleTexProgram.use();
 	if (selected == MENU_BUTTON)
