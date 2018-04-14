@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-const GLint FIREWORK_PARTICLES = 20;
+const GLint FIREWORK_PARTICLES = 30;
 class Firework
 {
 public:

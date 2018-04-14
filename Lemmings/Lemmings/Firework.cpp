@@ -23,7 +23,7 @@ void Firework::init(glm::vec2 lemmingPos) {
 	red = (float)(rand()) / (float)(RAND_MAX);
 	alpha = 1.0f;
 	green = (float)(rand()) / (float)(RAND_MAX);
-	particleSize = 1.0f + ((float)rand() / (float)RAND_MAX) * 2.0f;
+	particleSize = 1.0f + ((float)rand() / (float)RAND_MAX);
 	for (int loop = 0; loop < FIREWORK_PARTICLES; loop++)
 	{	
 		xSpeedVal = -1 + static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2;
@@ -64,7 +64,7 @@ void Firework::explode()
 	// Fade out the particles (alpha is stored per firework, not per particle)
 	if (alpha > 0.0f)
 	{
-		alpha -= 0.01f;
+		alpha -= 0.005f;
 	}
 }
 
