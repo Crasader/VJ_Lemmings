@@ -454,7 +454,10 @@ void Lemming::update(int deltaTime) {
 			break;
 
 		case DYING_EXPLOSION_STATE:
-			if (actionTime > 14) goExplode();
+			if (actionTime > 14) {
+				explode();
+				goKill();
+			}
 			break;
 
 		/* Exiting */
