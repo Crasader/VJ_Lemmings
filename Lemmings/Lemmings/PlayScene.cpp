@@ -13,6 +13,12 @@ PlayScene::~PlayScene() {
 	if (map != NULL) {
 		delete map;
 	}
+	if (gui != NULL) {
+		delete gui;
+	}
+	if (manager != NULL) {
+		delete manager;
+	}
 }
 
 void PlayScene::init() {
@@ -42,7 +48,7 @@ void PlayScene::init() {
 	setGUI();
 	gui->init(colorTexture, maskTexture, cameraX, cameraY);
 
-	projection = glm::ortho(cameraX, cameraX + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	projection = glm::ortho(float(cameraX), float(cameraX) + float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	
 }
 
@@ -54,7 +60,7 @@ void PlayScene::update(int deltaTime) {
 
 	if (timeLeft < 0) state = END;
 	int lemmingsStillAlive = TextProcessor::instance().lemmings - manager->getLemmingsDied() - manager->getLemmingsExited();
-	if (lemmingsStillAlive == 0) state = END;
+	if (lemmingsStillAlive == 0 && state != ARMAGEDDON) state = END;
 	if (armageddon) {
 		count = 0;
 		state = ARMAGEDDON;
@@ -134,7 +140,7 @@ void PlayScene::update(int deltaTime) {
 	gui->setLemmingsIn(manager->getLemmingsExited());
 	gui->update(x/3,  y/3);
 	
-	gui->setTime(timeLeft);
+	gui->setTime(int(timeLeft));
 	gui->setLemmingsOut(manager->getNumLemmingsOut());
 
 }
@@ -258,7 +264,7 @@ void PlayScene::setGUI() {
 void PlayScene::getLevelData() {
 	cameraX = TextProcessor::instance().camPos.x;
 	cameraY = TextProcessor::instance().camPos.y;
-	maxTime = TextProcessor::instance().maxTime;
+	maxTime = float(TextProcessor::instance().maxTime);
 	numDiggers = TextProcessor::instance().numbDig;
 	numBlockers = TextProcessor::instance().numbStop;
 	numBashers = TextProcessor::instance().numbBash;

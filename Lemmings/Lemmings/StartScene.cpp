@@ -14,7 +14,18 @@ StartScene::StartScene(string pathLevel) {
 }
 
 
-StartScene::~StartScene() {}
+StartScene::~StartScene() {
+	if (background != NULL)
+		delete background;
+	if (okButton != NULL)
+		delete okButton;
+	if (okSelectedButton != NULL)
+		delete okSelectedButton;
+	if (menuButton != NULL)
+		delete menuButton;
+	if (menuSelectedButton != NULL)
+		delete menuSelectedButton;
+}
 
 void StartScene::init() {
 	initShaders();

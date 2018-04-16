@@ -19,7 +19,7 @@ public:
 		return G;
 	}
 
-	glm::vec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos, bombPos, orangePos, bluePos;
+	glm::ivec2 startDoor, endDoor, lemmingsStart, lemmingsEnd, camPos, bombPos, orangePos, bluePos;
 	int levelNumber, minLemmings, width, height, maxTime, lemmings, spawnrate, numbDig, numbStop, numbBash, numbCli, numbFlo, numbBomb, numbBuild, doorStartColor, doorEndColor, isBomb, isPortal;
 	string levelName, path, mPath, musicPath;
 	void loadFileAndProcess(string path);
@@ -31,7 +31,7 @@ private:
 	void processText();
 	void copyStringToVar(string var, int &variable);
 	void copyStringToString(string var, string &variable);
-	void copyStringTovec2(string var1, string var2, glm::vec2 & vector);
+	void copyStringTovec2(string var1, string var2, glm::ivec2 & vector);
 
 };
 

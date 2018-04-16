@@ -13,7 +13,7 @@ InterfazUsuario::~InterfazUsuario()
 {
 }
 
-void InterfazUsuario::init(VariableTexture & colorTexture, VariableTexture & maskTexture, float & camX, float & camY)
+void InterfazUsuario::init(VariableTexture & colorTexture, VariableTexture & maskTexture, int & camX, int & camY)
 {	
 	initShader();
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(float(TextProcessor::instance().width), float(TextProcessor::instance().height)) };
@@ -92,7 +92,7 @@ void InterfazUsuario::update(int mouseX, int mouseY) {
 		if (checkColisionMinimap(mouseX, mouseY)) {
 			float topMiniMap = CAMERA_WIDTH - 64;
 			float diff = mouseX - topMiniMap;
-			*camX = diff / scaleFactor;
+			*camX = int(diff / scaleFactor);
 		}
 		
 		

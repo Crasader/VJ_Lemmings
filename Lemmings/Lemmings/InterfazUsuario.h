@@ -26,7 +26,7 @@ class InterfazUsuario {
 public:
 	InterfazUsuario();
 	~InterfazUsuario();
-	void init(VariableTexture & colorTexture, VariableTexture & maskTexture,float & camX, float & camY);
+	void init(VariableTexture & colorTexture, VariableTexture & maskTexture, int & camX, int & camY);
 	void render();
 	void update(int mouseX, int mouseY);
 	void setTime(int time);
@@ -75,7 +75,7 @@ private:
 	int blocker;
 	int bomber;
 	int builder;
-	float  *camX, *camY;
+	int  *camX, *camY;
 	Texture frame, selector;
 	VariableTexture colorTexture;
 	VariableTexture maskTexture;

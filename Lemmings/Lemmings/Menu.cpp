@@ -6,6 +6,26 @@ Menu::Menu() {
 
 
 Menu::~Menu() {
+	if (background != NULL)
+		delete background;
+	if (title != NULL)
+		delete title;
+	if (instructionsButton != NULL)
+		delete instructionsButton;
+	if (instructionsSelectedButton != NULL)
+		delete instructionsSelectedButton;
+	if (creditsButton != NULL)
+		delete creditsButton;
+	if (creditsSelectedButton != NULL)
+		delete creditsSelectedButton;
+	if (exitButton != NULL)
+		delete exitButton;
+	if (exitSelectedButton != NULL)
+		delete exitSelectedButton;
+	if (playButton != NULL)
+		delete playButton;
+	if (playSelectedButton != NULL)
+		delete playSelectedButton;
 }
 
 void Menu::init() {

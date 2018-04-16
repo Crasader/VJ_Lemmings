@@ -51,7 +51,7 @@ void Firework::explode()
 	for (int loop = 0; loop < FIREWORK_PARTICLES; loop++)
 	{
 		// Dampen the horizontal speed by 1% per frame
-		xSpeed[loop] *= 0.99;
+		xSpeed[loop] *= 0.99f;
 
 		// Move the particle
 		x[loop] += xSpeed[loop];

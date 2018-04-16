@@ -4,9 +4,7 @@
 
 
 
-TextProcessor::~TextProcessor()
-{
-}
+TextProcessor::~TextProcessor() {}
 
 void TextProcessor::loadFileAndProcess(string path) {
 	try {
@@ -209,7 +207,7 @@ void TextProcessor::copyStringToString(string var, string & variable)
 	variable = var;
 }
 
-void TextProcessor::copyStringTovec2(string var1, string var2, glm::vec2 & vector)
+void TextProcessor::copyStringTovec2(string var1, string var2, glm::ivec2 & vector)
 {
 	std::string::size_type sz;
 	vector.x = std::stoi(var1, &sz);

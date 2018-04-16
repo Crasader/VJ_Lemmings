@@ -10,7 +10,22 @@ EndScene::EndScene(string levelPath, int lemmingsExited) {
 }
 
 
-EndScene::~EndScene() {}
+EndScene::~EndScene() {
+	if (background != NULL)
+		delete background;
+	if (retryButton != NULL)
+		delete retryButton;
+	if (retrySelectedButton != NULL)
+		delete retrySelectedButton;
+	if (menuButton != NULL)
+		delete menuButton;
+	if (menuSelectedButton != NULL)
+		delete menuSelectedButton;
+	if (nextButton != NULL)
+		delete nextButton;
+	if (nextSelectedButton != NULL)
+		delete nextSelectedButton;
+}
 
 void EndScene::init() {
 	bExit = bContinue = bRetry = false;
@@ -187,7 +202,7 @@ EndScene::EndButton EndScene::checkButtonsColision() {
 	if (mouseY >= buttonPosY * 3 && mouseY <= (buttonPosY + buttonSizeY) * 3) {
 		if ((mouseX >= (20 * 3) && mouseX <= ((20 + buttonSizeX) * 3)))
 			return MENU_BUTTON;
-		else if ((mouseX >= (220 * 3) && mouseX <= ((220 + buttonSizeX) * 3)))
+		else if (mouseX >= (220 * 3) && mouseX <= (220 + buttonSizeX) * 3 && win)
 			return NEXT_BUTTON;
 		else if ((mouseX >= (120 * 3) && mouseX <= ((120 + buttonSizeX) * 3)))
 			return RETRY_BUTTON;

@@ -9,14 +9,18 @@
 
 
 
-Credits::Credits()
-{
-}
+Credits::Credits() {}
 
 
-Credits::~Credits()
-{
-	
+Credits::~Credits() {
+	if (background != NULL)
+		delete background;
+	if (title != NULL)
+		delete title;
+	if (menuButton != NULL)
+		delete menuButton;
+	if (menuSelectedButton != NULL)
+		delete menuSelectedButton;
 }
 
 void Credits::init(){

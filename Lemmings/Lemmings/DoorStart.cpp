@@ -13,6 +13,8 @@ DoorStart::DoorStart(int color) {
 }
 
 DoorStart::~DoorStart() {
+	if (sprite != NULL)
+		delete sprite;
 }
 
 void DoorStart::init(const glm::vec2 & initialPosition, ShaderProgram & shaderProgram, Texture & spritesheet) {

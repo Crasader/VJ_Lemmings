@@ -19,6 +19,8 @@ DoorEnd::DoorEnd(int color) {
 
 
 DoorEnd::~DoorEnd() {
+	if (sprite != NULL)
+		delete sprite;
 }
 
 void DoorEnd::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet) {

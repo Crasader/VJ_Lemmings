@@ -20,6 +20,8 @@ Lemming::Lemming() {
 }
 
 Lemming::~Lemming() {
+	if (sprite != NULL)
+		delete sprite;
 }
 
 void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *map, VariableTexture *mask) {

@@ -31,7 +31,7 @@ void AudioEngine::playMusic(char *url)
 {
 	engineMusic->stopAllSounds();
 	music = engineMusic->play2D(url, true, false, true);
-	music->setVolume(0.1);
+	music->setVolume(0.1f);
 }	
 
 void AudioEngine::stopMusic() {
@@ -40,19 +40,19 @@ void AudioEngine::stopMusic() {
 
 void AudioEngine::buttonEffect() {
 	effect = engineEffects->play2D("Music/button.wav", false, false, true);
-	effect->setVolume(0.5);
+	effect->setVolume(0.5f);
 }
 
 void AudioEngine::diggEffect()
 {
 
 	effect = engineEffects->play2D("Music/dig.mp3",false,false,true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::yippee() {
 	effect = engineEffects->play2D("Music/YIPPEE.wav", false, false, true);
-	effect->setVolume(0.2);
+	effect->setVolume(0.2f);
 }
 
 void AudioEngine::stopEffect()
@@ -62,7 +62,7 @@ void AudioEngine::stopEffect()
 
 void AudioEngine::exitGameEffect() {
 	effect = engineEffects->play2D("Music/bye.mp3", false,false, true);
-	effect->setVolume(0.2);
+	effect->setVolume(0.2f);
 }
 
 void AudioEngine::init() {
@@ -72,32 +72,32 @@ void AudioEngine::init() {
 
 void AudioEngine::explosionEffect() {
 	effect = engineEffects->play2D("Music/Explosion.mp3", false, false, true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::splatEffect() {
 	effect = engineEffects->play2D("Music/FALLSPLAT.wav", false, false, true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::umbrellaEffect() {
 	effect = engineEffects->play2D("Music/PLOP.wav", false, false, true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::loseEffect() {
 	effect = engineEffects->play2D("Music/fail.mp3", false, false, true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::openDoor() {
 	effect = engineEffects->play2D("Music/DOOR.wav", false, false, true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::enterDoorEffect() {
 	effect = engineEffects->play2D("Music/OING.wav", false, false, true);
-	effect->setVolume(0.15);
+	effect->setVolume(0.15f);
 }
 
 void AudioEngine::portalEffect() {
@@ -106,5 +106,5 @@ void AudioEngine::portalEffect() {
 }
 void AudioEngine::orderLemmingEffect() {
 	effect = engineEffects->play2D("Music/CHANGEOP.wav", false, false, true);
-	effect->setVolume(0.5);
+	effect->setVolume(0.5f);
  }

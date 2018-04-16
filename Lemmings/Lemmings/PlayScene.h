@@ -42,11 +42,11 @@ private:
 	ShaderProgram simpleTexProgram, maskedTexProgram;
 	
 	string path;
-	float currentTime,maxTime, timeLeft;
+	float currentTime, maxTime, timeLeft;
 	glm::mat4 projection;
 	
 
-	float cameraX, cameraY;
+	int cameraX, cameraY;
 	EntityManager *manager;
 	int buttonPressed;
 	int count;
