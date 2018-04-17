@@ -69,7 +69,7 @@ void InstructionsScene::render(){
 	simpleText.render("and then select a lemming to assign it", glm::vec2(446 * 0.15 -28, textRPos +16), 24, colorWhite);
 	simpleText.render("make all lemmigs explode with", glm::vec2(446 * 0.15 - 28, textRPos + 48), 24, colorWhite);
 	simpleText.render("the bomb button", glm::vec2(446 * 0.15 - 28, textRPos + 72), 24, colorWhite);
-	simpleText.render("to move the camera drag the mouse to", glm::vec2(446 * 0.15 - 28, textRPos + 106), 24, colorWhite);
+	simpleText.render("to move the camera move the mouse to", glm::vec2(446 * 0.15 - 28, textRPos + 106), 24, colorWhite);
 	simpleText.render("the left or right screen border", glm::vec2(446 * 0.15 - 28, textRPos + 130), 24, colorWhite);
 
 	simpleTexProgram.use();

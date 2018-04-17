@@ -22,6 +22,10 @@ Lemming::Lemming() {
 Lemming::~Lemming() {
 	if (sprite != NULL)
 		delete sprite;
+	if (map != NULL)
+		delete map;
+	if (mask != NULL)
+		delete mask;
 }
 
 void Lemming::init(const glm::vec2 &initialPosition, ShaderProgram &shaderProgram, Texture &spritesheet, VariableTexture *map, VariableTexture *mask) {

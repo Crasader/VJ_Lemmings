@@ -1,10 +1,8 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Game.h"
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
-
-//Remove console (only works in Visual Studio)
-//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 
 #define TIME_PER_FRAME 1000.f / 30.f // Approx. 30 fps

@@ -14,6 +14,16 @@ EntityManager::EntityManager(int numLemmings, ShaderProgram &shaderProgram, Vari
 }
 
 EntityManager::~EntityManager() {
+	if (bomb != NULL)
+		delete bomb;
+	if (portalBlue != NULL)
+		delete portalBlue;
+	if (portalOrange != NULL)
+		delete portalOrange;
+	if (map != NULL)
+		delete map;
+	if (mask != NULL)
+		delete mask;
 }
 
 void EntityManager::init() {
