@@ -46,7 +46,7 @@ void EntityManager::init() {
 
 }
 
-void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int offsetY){
+void EntityManager::update(int deltaTime, int buttonPressed, int offsetX, int offsetY) {
 	this->offsetX = offsetX;
 	this->offsetY = offsetY;
 	sceneTime += deltaTime;
@@ -59,13 +59,12 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		killAllLemmings2();
 		countingDown = false;
 	}
-	
-	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency)/2 && (numLemmings > 0)) && !paused && !armageddon && buttonPressed == 9) {
+
+	if ((sceneTime - lastLemmingCreation > (spawnTime + spawnFrequency) / 2 && (numLemmings > 0)) && !paused && !armageddon && buttonPressed == 9) {
 		lastLemmingCreation = sceneTime;
 		numLemmings--;
 		lemmings.push_back(new Lemming());
 		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
-		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
 	else if ((sceneTime - lastLemmingCreation > spawnTime + spawnFrequency && (numLemmings > 0)) && !paused && !armageddon && buttonPressed != 9) {
 		lastLemmingCreation = sceneTime;
@@ -73,8 +72,6 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		lemmings.push_back(new Lemming());
 		lemmings[lemmings.size() - 1]->init(doorStartPosition + glm::vec2(16, 0), shaderProgram, spritesheet, map, mask);
 		fireworks.push_back(new Firework());
-		
-		if (doubleSpeed) lemmings[lemmings.size() - 1]->doubleSpeed();
 	}
 
 	checkStatusLemmings();
@@ -82,7 +79,7 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
 		lemmings[i]->update(deltaTime);
-		
+
 	}
 
 	this->buttonPressed = buttonPressed;
@@ -92,9 +89,13 @@ void EntityManager::update(int deltaTime, int buttonPressed,int offsetX, int off
 		portalBlue->update(deltaTime);
 	if (portalOrange != NULL)
 		portalOrange->update(deltaTime);
-	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE)) {
-		bomb->update(deltaTime);
-		bomb->changeState();
+	if (bomb != NULL) {
+		if (bomb->getState() == Bomb::EXPLODED_STATE)
+			killLemmingsAround(bomb->getPosition());
+		if (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE) {
+			bomb->update(deltaTime);
+			bomb->changeState();
+		}
 	}
 	
 
@@ -109,8 +110,7 @@ void EntityManager::render() {
 		portalOrange->render();
 	
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i]->render();
-			
+		lemmings[i]->render();		
 	}
 	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE)) bomb->render();
 	for (int i = 0; i < (int)lemmings.size(); ++i) {
@@ -124,15 +124,6 @@ void EntityManager::render() {
 	}
 	for (int i = 0; i < (int)fireworks.size(); ++i)
 		fireworks[i]->render();
-}
-
-// TODO esta función no se utiliza debería borrarse
-void EntityManager::changeLemmingState(int x) {
-	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i]->changeState(x);
-	}
-	x = 0;
-
 }
 
 bool EntityManager::clickManager(int mouseX, int mouseY, Effect state) {
@@ -165,21 +156,6 @@ bool EntityManager::checkCollision(glm::vec2 lemmingTopLeftPos, int mouseX, int 
 	if (mouseX >= lemmingTopLeftPos.x  && mouseX <= (lemmingTopLeftPos.x + 16) && mouseY >= lemmingTopLeftPos.y && mouseY <= (lemmingTopLeftPos.y + 16)) return true;
 	else return false;
 
-}
-
-void EntityManager::pause() {
-	paused = true;
-	for (int i = 0; i < (int)lemmings.size(); ++i) {
-		lemmings[i]->pause();
-	}
-
-	doorStart->pause();
-	doorEnd->pause();
-	if (portalBlue != NULL || portalOrange != NULL) {
-		portalBlue->pause();
-		portalOrange->pause();
-	}
-	if (bomb != NULL && (bomb->getState() != Bomb::PICKED_STATE && bomb->getState() != Bomb::END_STATE))bomb->pause();
 }
 
 void EntityManager::increaseSpawnTime(){
@@ -318,4 +294,16 @@ void EntityManager::startFireworks(int i) {
 		pos.y = pos.y - this->offsetY + 10;
 		fireworks.push_back(new Firework());
 		fireworks[fireworks.size() - 1]->blowUp(pos);
+}
+
+void EntityManager::killLemmingsAround(glm::vec2 startPos) {
+	for (int x = max(0, int(startPos.x - 4)); x < min(map->width(), int(startPos.x + 19)); x++) {
+		for (int y = max(0, int(startPos.y)); y < min(mask->height(), int(startPos.y + 23)); y++) {
+			for (int i = 0; i < (int)lemmings.size(); ++i) {
+				if (lemmings[i]->getPosition() + glm::vec2(5,5) == glm::vec2(x, y))
+					lemmings[i]->goKill();
+			}
+		}
+	}
+
 }

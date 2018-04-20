@@ -102,6 +102,7 @@ private:
 	void bashRight(int q);
 	void build(glm::vec2 offset);
 	void block();
+	void unblock();
 	void explode();
 	void deleteMask(int xStart, int xEnd, int y);
 

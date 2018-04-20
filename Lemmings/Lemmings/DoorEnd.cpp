@@ -51,15 +51,3 @@ void DoorEnd::render() {
 glm::vec2 DoorEnd::getPosition() {
 	return sprite->position();
 }
-
-void DoorEnd::pause() {
-	sprite->setAnimationSpeed(0, 0);
-}
-
-void DoorEnd::doubleSpeed() {
-	sprite->setAnimationSpeed(0, speedDoorEnd*2);
-}
-
-void DoorEnd::resetSpeed() {
-	sprite->setAnimationSpeed(0, speedDoorEnd);
-}

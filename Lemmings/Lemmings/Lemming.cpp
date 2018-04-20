@@ -604,7 +604,6 @@ void Lemming::goBomberLeft() {
 	state = BOMBER_LEFT_STATE;
 }
 
-
 void Lemming::goWalkLeft() {
 	sprite->changeAnimation(WALKING_LEFT);
 	state = WALKING_LEFT_STATE;
@@ -627,13 +626,10 @@ void Lemming::goFallRight() {
 	state = FALLING_RIGHT_STATE;
 }
 
-void Lemming::goExplode() {
-	//explode();
-	//status = EXPLODED_STATUS;
-}
-
 void Lemming::goKill() {
 	status = DEAD_STATUS;
+	if (state == BLOCKER_STATE)
+		unblock();
 }
 
 void Lemming::goExit() {
@@ -664,89 +660,6 @@ void Lemming::setMapMask(VariableTexture *mapMap, VariableTexture *mapMask) {
 	mask = mapMask;
 }
 
-void Lemming::doubleSpeed() {
-	sprite->setAnimationSpeed(WALKING_RIGHT, speed*2);
-	sprite->setAnimationSpeed(WALKING_LEFT, speed * 2);
-	sprite->setAnimationSpeed(FALLING_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(FALLING_LEFT, speed * 2);
-	sprite->setAnimationSpeed(DIGGER, speed * 2);
-	sprite->setAnimationSpeed(BLOCKER, speed * 2);
-	sprite->setAnimationSpeed(BASHER_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(BASHER_LEFT, speed * 2);
-	sprite->setAnimationSpeed(CLIMBER_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(CLIMBER_LEFT, speed * 2);
-	sprite->setAnimationSpeed(CLIMBER_TOP_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(CLIMBER_TOP_LEFT, speed * 2);
-	sprite->setAnimationSpeed(BUILDER_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(BUILDER_LEFT, speed * 2);
-	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(BUILDER_STOP_LEFT, speed * 2);
-	sprite->setAnimationSpeed(EXITING, speed * 2);
-	sprite->setAnimationSpeed(DIE_FALL, speed * 2);
-	sprite->setAnimationSpeed(DIE_EXPLOSION, 20);
-	sprite->setAnimationSpeed(FLOATER_RIGHT, speed);
-	sprite->setAnimationSpeed(FLOATER_LEFT, speed);
-	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, speed * 2);
-	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(BOMBER_RIGHT, speed * 2);
-	sprite->setAnimationSpeed(BOMBER_LEFT, speed * 2);
-}
-
-void Lemming::resetSpeed() {
-	sprite->setAnimationSpeed(WALKING_RIGHT, speed);
-	sprite->setAnimationSpeed(WALKING_LEFT, speed);
-	sprite->setAnimationSpeed(FALLING_RIGHT, speed);
-	sprite->setAnimationSpeed(FALLING_LEFT, speed);
-	sprite->setAnimationSpeed(DIGGER, speed);
-	sprite->setAnimationSpeed(BLOCKER, speed);
-	sprite->setAnimationSpeed(BASHER_RIGHT, speed);
-	sprite->setAnimationSpeed(BASHER_LEFT, speed);
-	sprite->setAnimationSpeed(CLIMBER_RIGHT, speed);
-	sprite->setAnimationSpeed(CLIMBER_LEFT, speed);
-	sprite->setAnimationSpeed(CLIMBER_TOP_RIGHT, speed);
-	sprite->setAnimationSpeed(CLIMBER_TOP_LEFT, speed);
-	sprite->setAnimationSpeed(BUILDER_RIGHT, speed);
-	sprite->setAnimationSpeed(BUILDER_LEFT, speed);
-	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, speed);
-	sprite->setAnimationSpeed(BUILDER_STOP_LEFT, speed);
-	sprite->setAnimationSpeed(EXITING, speed);
-	sprite->setAnimationSpeed(DIE_EXPLOSION, 10);
-	sprite->setAnimationSpeed(FLOATER_RIGHT, speed/2);
-	sprite->setAnimationSpeed(FLOATER_LEFT, speed/2);
-	sprite->setAnimationSpeed(DIE_FALL, speed);
-	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, speed);
-	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, speed);
-	sprite->setAnimationSpeed(BOMBER_RIGHT, speed);
-	sprite->setAnimationSpeed(BOMBER_LEFT, speed);
-}
-
-void Lemming::pause() {
-	sprite->setAnimationSpeed(WALKING_RIGHT, 0);
-	sprite->setAnimationSpeed(WALKING_LEFT, 0);
-	sprite->setAnimationSpeed(FALLING_RIGHT, 0);
-	sprite->setAnimationSpeed(FALLING_LEFT, 0);
-	sprite->setAnimationSpeed(DIGGER, 0);
-	sprite->setAnimationSpeed(BLOCKER, 0);
-	sprite->setAnimationSpeed(BASHER_RIGHT, 0);
-	sprite->setAnimationSpeed(BASHER_LEFT, 0);
-	sprite->setAnimationSpeed(CLIMBER_RIGHT, 0);
-	sprite->setAnimationSpeed(CLIMBER_LEFT, 0);
-	sprite->setAnimationSpeed(CLIMBER_TOP_RIGHT, 0);
-	sprite->setAnimationSpeed(CLIMBER_TOP_LEFT, 0);
-	sprite->setAnimationSpeed(BUILDER_RIGHT, 0);
-	sprite->setAnimationSpeed(BUILDER_LEFT, 0);
-	sprite->setAnimationSpeed(BUILDER_STOP_RIGHT, 0);
-	sprite->setAnimationSpeed(BUILDER_STOP_LEFT, 0);
-	sprite->setAnimationSpeed(EXITING, 0);
-	sprite->setAnimationSpeed(DIE_EXPLOSION, 0);
-	sprite->setAnimationSpeed(FLOATER_RIGHT, 0);
-	sprite->setAnimationSpeed(FLOATER_LEFT, 0);
-	sprite->setAnimationSpeed(DIE_FALL, 0);
-	sprite->setAnimationSpeed(OPENING_UMBRELLA_LEFT, 0);
-	sprite->setAnimationSpeed(OPENING_UMBRELLA_RIGHT, 0);
-	sprite->setAnimationSpeed(BOMBER_RIGHT, 0);
-	sprite->setAnimationSpeed(BOMBER_LEFT, 0);
-}
 
 glm::vec2 Lemming::getPosition() {
 	return sprite->position();
@@ -892,6 +805,16 @@ void Lemming::block() {
 	for (int x = max(0, int(posBase.x)); x < min(map->width(), int(posBase.x + 10)); x++) {
 		for (int y = max(0, int(posBase.y)); y < min(mask->height(), int(posBase.y + 9)); y++) {
 			mask->setPixel(x, y, 254);
+			map->setPixel(x, y, glm::ivec4(0, 0, 0, 0));
+		}
+	}
+}
+
+void Lemming::unblock() {
+	glm::vec2 posBase = sprite->position() + glm::vec2(3, 6);
+	for (int x = max(0, int(posBase.x)); x < min(map->width(), int(posBase.x + 10)); x++) {
+		for (int y = max(0, int(posBase.y)); y < min(mask->height(), int(posBase.y + 9)); y++) {
+			mask->setPixel(x, y, 0);
 			map->setPixel(x, y, glm::ivec4(0, 0, 0, 0));
 		}
 	}

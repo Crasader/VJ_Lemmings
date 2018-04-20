@@ -62,6 +62,10 @@ void Bomb::setPosition(glm::vec2 newPosition) {
 	sprite->position() = newPosition;
 }
 
+glm::vec2 Bomb::getPosition() {
+	return sprite->position();
+}
+
 void Bomb::goPicked() {
 	state = PICKED_STATE;
 }
@@ -91,26 +95,6 @@ void Bomb::goEnd() {
 	state = END_STATE;
 }
 
-void Bomb::doubleSpeed() {
-	sprite->setAnimationSpeed(IDLE, speed * 2);
-	sprite->setAnimationSpeed(DROPPED, speed * 2);
-	sprite->setAnimationSpeed(GOING_TO_EXPLODE, speed * 2);
-	sprite->setAnimationSpeed(EXPLODING, speed * 2);
-}
-
-void Bomb::resetSpeed() {
-	sprite->setAnimationSpeed(IDLE, speed);
-	sprite->setAnimationSpeed(DROPPED, speed);
-	sprite->setAnimationSpeed(GOING_TO_EXPLODE, speed);
-	sprite->setAnimationSpeed(EXPLODING, speed);
-}
-
-void Bomb::pause() {
-	sprite->setAnimationSpeed(IDLE, 0);
-	sprite->setAnimationSpeed(DROPPED, 0);
-	sprite->setAnimationSpeed(GOING_TO_EXPLODE, 0);
-	sprite->setAnimationSpeed(EXPLODING, 0);
-}
 
 void Bomb::explode() {
 	glm::ivec2 position = sprite->position();

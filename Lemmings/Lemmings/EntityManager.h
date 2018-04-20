@@ -11,6 +11,8 @@
 #include "Bomb.h"
 #include "Firework.h"
 #include "Portal.h"
+#include <cmath>
+#include <algorithm>
 
 
 class EntityManager {
@@ -97,5 +99,6 @@ private:
 	void checkStatusLemmings();
 	bool lemmingHasActionAssigned(int i, Effect state);
 	void startFireworks(int i);
+	void killLemmingsAround(glm::vec2 startPos);
 };
 

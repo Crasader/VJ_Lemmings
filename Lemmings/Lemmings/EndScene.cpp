@@ -154,27 +154,33 @@ void EndScene::render() {
 
 	// Saved
 	string saved = "Saved: " + to_string(numLemmingsExited);
-	simpleText.render(saved, glm::vec2(340, 200), 48, colorGreen);
+	simpleText.render(saved, glm::vec2(340, 200), 48, colorOrange);
 
 	// Required
 	string required = "Required: " + to_string(numLemmingsMin);
-	simpleText.render(required, glm::vec2(340, 260), 48, colorGreen);
+	simpleText.render(required, glm::vec2(340, 260), 48, colorOrange);
 
 	// Message
 	string message = "";
 	if (numLemmingsExited == numLemmingsTotal) {
-		message = "You rescued every lemming on that level";
+		message = "You rescued every lemming";
+		simpleText.render(message, glm::vec2(150, 320), 38, colorCian);
 	}
 	else if (numLemmingsExited >= numLemmingsMin) {
 		message = "You rescued enough lemmings";
+		simpleText.render(message, glm::vec2(150, 320), 38, colorCian);
 	}
 	else if (numLemmingsExited == 0) {
-		message = "Oh dear. Not even one poor Lemming saved";
+		message = "Oh dear."; 
+		simpleText.render(message, glm::vec2(370, 320), 38, colorRed);
+		message = "Not even one poor Lemming saved";
+		simpleText.render(message, glm::vec2(140, 360), 38, colorRed);
 	}
 	else {
 		message = "You didn't rescue enough lemmings";
+		simpleText.render(message, glm::vec2(135, 320), 38, colorRed);
 	}
-	simpleText.render(message, glm::vec2(30, 320), 38, colorGreen);
+	
 
 	simpleTexProgram.use();
 	// Continue

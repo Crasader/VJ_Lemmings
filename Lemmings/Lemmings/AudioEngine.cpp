@@ -55,8 +55,7 @@ void AudioEngine::yippee() {
 	effect->setVolume(0.2f);
 }
 
-void AudioEngine::stopEffect()
-{
+void AudioEngine::stopEffect() {
 	engineEffects->stopAllSounds();
 }
 
